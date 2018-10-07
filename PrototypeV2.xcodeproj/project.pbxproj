@@ -12,6 +12,7 @@
 		A50348DD21693E8F005BE136 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A50348DB21693E8F005BE136 /* Main.storyboard */; };
 		A50348DF21693E8F005BE136 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A50348DE21693E8F005BE136 /* Assets.xcassets */; };
 		A50348E221693E8F005BE136 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A50348E021693E8F005BE136 /* LaunchScreen.storyboard */; };
+		A50348EB21697779005BE136 /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50348EA21697779005BE136 /* ContainerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		A50348DE21693E8F005BE136 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A50348E121693E8F005BE136 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A50348E321693E8F005BE136 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A50348EA21697779005BE136 /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 		A50348D621693E8E005BE136 /* PrototypeV2 */ = {
 			isa = PBXGroup;
 			children = (
+				A50348E921697740005BE136 /* View */,
 				A50348D721693E8E005BE136 /* AppDelegate.swift */,
 				A50348D921693E8E005BE136 /* ViewController.swift */,
 				A50348DB21693E8F005BE136 /* Main.storyboard */,
@@ -62,6 +65,14 @@
 				A50348E321693E8F005BE136 /* Info.plist */,
 			);
 			path = PrototypeV2;
+			sourceTree = "<group>";
+		};
+		A50348E921697740005BE136 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A50348EA21697779005BE136 /* ContainerView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,6 +149,7 @@
 			files = (
 				A50348DA21693E8E005BE136 /* ViewController.swift in Sources */,
 				A50348D821693E8E005BE136 /* AppDelegate.swift in Sources */,
+				A50348EB21697779005BE136 /* ContainerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
