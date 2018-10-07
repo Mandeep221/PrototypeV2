@@ -21,15 +21,13 @@ class ViewController: UIViewController {
         let btn = UIButton(type: .system)
         let image = UIImage(named: "feedback")
         btn.setImage(image, for: .normal)
-       // btn.backgroundColor = .blue
         btn.translatesAutoresizingMaskIntoConstraints = false
-        //btn.titleLabel?.text = "Slide"
         btn.addTarget(self, action: #selector(btnClicked), for: .touchUpInside)
         return btn
     }()
     
     @objc func btnClicked(sender: UIButton!) {
-        self.containerView.performSlide()
+        //self.containerView.performSlide()
     }
     
     let containerView: ContainerView = {
@@ -46,20 +44,13 @@ class ViewController: UIViewController {
         
         view.addSubview(containerView)
         
-        view.addSubview(sliderButton)
+        //view.addSubview(sliderButton)
         
-//        view.addConstraint(NSLayoutConstraint(item: sliderButton, attribute: .top, relatedBy: .equal, toItem: containerView, attribute: .bottom, multiplier: 1, constant: 20))
-//
-//        view.addConstraint(NSLayoutConstraint(item: sliderButton, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0))
-        
-
         // Horizontal constraint
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-16-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : containerView]))
         
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[v0]-20-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : sliderButton]))
-        
         // Vertical constraint
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-100-[v0(100)]-20-[v1(50)]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : containerView, "v1" : sliderButton]))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-100-[v0(100)]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : containerView]))
     }
 
     override func didReceiveMemoryWarning() {
