@@ -34,7 +34,7 @@ class ViewController: UIViewController {
         let cv = ContainerView()
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.backgroundColor = .gray
-        cv.cellCount = 3
+        cv.cellCount = 7
         return cv
     }()
     
@@ -64,30 +64,21 @@ class ViewController: UIViewController {
     }
 
     func getX(slideCounter: Int) -> CGFloat{
-        
-       // container_view.width - cell_width - (slideCounter * (cell_width + cellGap)
-        
-        //let numberOfCells = CGFloat((containerView.cellViews?.count)!)
 
-        let lMargin = containerView.frame.width - containerView.cellWidth - (CGFloat(slideCounter) * (containerView.cellWidth + containerView.cellGap))
-        
-//        let leftMargin = (numberOfCells * containerView.cellWidth) + (numberOfCells - 1 - CGFloat(slideCounter)) * containerView.cellGap
-//        let remaining = containerView.cellWidth/2
-//
-       // let finalLeftMargin = leftMargin - remaining
-        
-        return lMargin
+        let leftMargin = containerView.frame.width - containerView.cellWidth - (CGFloat(slideCounter) * (containerView.cellWidth + containerView.cellGap))
+        return leftMargin
     }
     
     func addPulsatingAnimation() {
         
         let trackLayer = CAShapeLayer()
-//                let targetCell = containerView.cellViews![1]
+                let targetCell = containerView.cellViews![1]
+                print(targetCell.frame.minY)
 //
 //                print(targetCell.frame.origin.x)
 //                print(targetCell.frame.origin.y)
         
-                let frame = CGRect(x: getX(slideCounter: 1) - 2 , y: 28, width: 42, height: 42)
+                let frame = CGRect(x: getX(slideCounter: 1) - 1 , y: targetCell.frame.minY - 1, width: containerView.cellWidth + 2, height: containerView.cellHeight + 2)
                 let rectPAth = UIBezierPath(rect: frame)
         
                 trackLayer.path = rectPAth.cgPath

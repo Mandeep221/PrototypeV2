@@ -11,9 +11,10 @@ import UIKit
 
 class ContainerView: UIView {
     
-    let cellWidth:CGFloat = 40
-    let cellHeight:CGFloat = 40
-    let cellGap:CGFloat = 8
+    let cellWidth:CGFloat = 30
+    let cellHeight:CGFloat = 30
+    let cellGap:CGFloat = 4
+    let containerHeight:CGFloat = 100
     
     var slideCounter = 0 {
         didSet{
@@ -87,9 +88,11 @@ class ContainerView: UIView {
 
                 cellView.backgroundColor = .red
                 let leftMargin = index * Int(cellWidth + cellGap)
-                addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(leftMargin)-[v0(40)]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : cellView]))
-
-                addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-30-[v0(40)]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : cellView]))
+                addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(leftMargin)-[v0(\(Int(cellWidth)))]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : cellView]))
+                //let containerHeight = self.frame.height
+                let letLeftMargin = containerHeight - cellHeight - ((containerHeight - cellHeight)/2)
+                
+                addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-\(Int(letLeftMargin))-[v0(\(Int(cellHeight)))]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : cellView]))
                 cellViews?.append(cellView)
             }
         }
@@ -179,8 +182,10 @@ class ContainerView: UIView {
             
             UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 
-                let x = self.frame.width - 40 - (CGFloat(self.slideCounter) * (self.cellWidth + self.cellGap))
-                view.frame = CGRect(x: x, y: self.frame.height - 70, width: self.cellWidth, height: self.cellHeight)
+                let x = self.frame.width - self.cellWidth - (CGFloat(self.slideCounter) * (self.cellWidth + self.cellGap))
+                
+                
+                view.frame = CGRect(x: x, y: view.frame.origin.y, width: self.cellWidth, height: self.cellHeight)
                 self.slideCounter += 1
                 
             }, completion: nil)
