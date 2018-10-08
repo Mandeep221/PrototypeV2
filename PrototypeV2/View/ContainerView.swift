@@ -17,7 +17,11 @@ class ContainerView: UIView {
     
     var slideCounter = 0 {
         didSet{
-           // handleHandGesture()
+            if slideCounter == 3{
+                if let view = viewRef{
+                  view.addPulsatingAnimation()
+                }
+            }
         }
     }
     
@@ -93,7 +97,40 @@ class ContainerView: UIView {
         // add hand image
         addSubview(swipeDirectionArrowImageView)
         handleHandGesture()
-
+        //showPulsatingEffect()
+    }
+    let rectLayer = CAShapeLayer()
+    var viewRef: ViewController?
+    
+    func showPulsatingEffect(){
+        
+        //let view = ViewController
+        
+         
+         let targetCell = self
+         let newRectPath = CGRect(x: targetCell.frame.origin.x - 10, y: targetCell.frame.origin.y - 10, width: targetCell.frame.width + 10, height: targetCell.frame.height + 10)
+         let rectangularpath  = UIBezierPath(rect: newRectPath)
+         rectLayer.path = rectangularpath.cgPath
+        
+        rectLayer.fillColor = UIColor.green.cgColor
+        rectLayer.position = targetCell.center
+        rectLayer.bounds = CGRect(x: targetCell.frame.origin.x - 4, y: targetCell.frame.origin.y - 4, width: targetCell.frame.width + 4, height: targetCell.frame.height + 4)
+        
+        viewRef?.view.layer.addSublayer(rectLayer)
+        
+        
+        animateRectLayer()
+    }
+    
+    func animateRectLayer() {
+        let animation = CABasicAnimation(keyPath: "transform.scale")
+        
+        animation.toValue = 1.3
+        animation.duration = 3
+        animation.autoreverses = true
+        animation.repeatCount =  Float.infinity
+        
+        rectLayer.add(animation, forKey: "pulse")
     }
     
     func handleHandGesture(){
@@ -161,4 +198,5 @@ class ContainerView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
 }
