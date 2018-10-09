@@ -30,10 +30,18 @@ class ViewController: UIViewController {
         //self.containerView.performSlide()
     }
     
-    let containerView: ContainerView = {
+    let containerViewOne: ContainerView = {
         let cv = ContainerView()
         cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.backgroundColor = .gray
+        //cv.backgroundColor = .gray
+        cv.cellCount = 7
+        return cv
+    }()
+    
+    let containerViewTwo: ContainerView = {
+        let cv = ContainerView()
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        //cv.backgroundColor = .gray
         cv.cellCount = 7
         return cv
     }()
@@ -41,20 +49,22 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        containerView.viewRef = self
+        containerViewOne.viewRef = self
         //containerView.showPulsatingEffect()
         
         view.backgroundColor = .white
         
-        view.addSubview(containerView)
+        view.addSubview(containerViewOne)
+        view.addSubview(containerViewTwo)
         
         //view.addSubview(sliderButton)
         
         // Horizontal constraint
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-16-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : containerView]))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-16-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : containerViewOne]))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-16-[v0]-16-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : containerViewTwo]))
         
         // Vertical constraint
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-100-[v0(100)]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : containerView]))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-100-[v0(100)]-40-[v1(100)]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : containerViewOne, "v1": containerViewTwo]))
         
     }
 
@@ -65,20 +75,20 @@ class ViewController: UIViewController {
 
     func getX(slideCounter: Int) -> CGFloat{
 
-        let leftMargin = containerView.frame.width - containerView.cellWidth - (CGFloat(slideCounter) * (containerView.cellWidth + containerView.cellGap))
+        let leftMargin = containerViewOne.frame.width - containerViewOne.cellWidth - (CGFloat(slideCounter) * (containerViewOne.cellWidth + containerViewOne.cellGap))
         return leftMargin
     }
     
     func addPulsatingAnimation() {
         
         let trackLayer = CAShapeLayer()
-                let targetCell = containerView.cellViews![1]
+                let targetCell = containerViewOne.cellViews![1]
                 print(targetCell.frame.minY)
 //
 //                print(targetCell.frame.origin.x)
 //                print(targetCell.frame.origin.y)
         
-                let frame = CGRect(x: getX(slideCounter: 1) - 1 , y: targetCell.frame.minY - 1, width: containerView.cellWidth + 2, height: containerView.cellHeight + 2)
+                let frame = CGRect(x: getX(slideCounter: 1) - 1 , y: targetCell.frame.minY - 1, width: containerViewOne.cellWidth + 2, height: containerViewOne.cellHeight + 2)
                 let rectPAth = UIBezierPath(rect: frame)
         
                 trackLayer.path = rectPAth.cgPath
@@ -87,7 +97,7 @@ class ViewController: UIViewController {
                 trackLayer.lineWidth = 2
                 trackLayer.fillColor = UIColor.clear.cgColor
         
-                containerView.layer.addSublayer(trackLayer)
+                containerViewOne.layer.addSublayer(trackLayer)
         
                 let animation = CABasicAnimation(keyPath: "opacity")
         
