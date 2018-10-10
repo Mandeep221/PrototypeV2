@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = UINavigationController(rootViewController: ViewController())
         
         // for navigation bar color
-        UINavigationBar.appearance().barTintColor = UIColor(rgb: 0x2C163B)
+        UINavigationBar.appearance().barTintColor = UIColor(rgb: 0x2C163B, alpha: 1)
         
         // get rid of the bottom shadow/line underneath nav bar
         UINavigationBar.appearance().shadowImage = UIImage()

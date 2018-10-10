@@ -33,13 +33,6 @@ class ContainerView: UIView {
         return cell
     }()
     
-//    let anchorBarView: UIView = {
-//        let anchor = UIView()
-//        anchor.translatesAutoresizingMaskIntoConstraints = false
-//        anchor.backgroundColor = .red
-//        return anchor
-//    }()
-    
     let swipeDirectionArrowImageView: UIImageView = {
         let arrow = UIImageView()
         arrow.translatesAutoresizingMaskIntoConstraints = false
@@ -78,7 +71,7 @@ class ContainerView: UIView {
                 
                 addSubview(cellView)
 
-                cellView.backgroundColor = UIColor.init(rgb: 0xF6B691)
+                cellView.backgroundColor = UIColor.init(rgb: 0xF6B691, alpha: 1)
                 let leftMargin = index * Int(cellWidth + cellGap)
                 addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(leftMargin)-[v0(\(Int(cellWidth)))]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : cellView]))
                 //let containerHeight = self.frame.height
@@ -165,7 +158,7 @@ class ContainerView: UIView {
                 view.frame = CGRect(x: x, y: view.frame.origin.y, width: self.cellWidth, height: self.cellHeight)
                 self.swipeCounter += 1
                 
-                view.backgroundColor = UIColor.init(rgb: 0xED5169)
+                view.backgroundColor = UIColor.init(rgb: 0xED5169, alpha: 1)
                 
             }, completion: nil)
             
@@ -182,5 +175,4 @@ class ContainerView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 }
