@@ -13,16 +13,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
+       
         //ignore storyboards
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         
         //create a rootviewcontroller, and it to the window created above
         window?.rootViewController = UINavigationController(rootViewController: ViewController())
+        
+        // for navigation bar color
+        UINavigationBar.appearance().barTintColor = UIColor(rgb: 0x2C163B)
+        
+        // get rid of the bottom shadow/line underneath nav bar
+        UINavigationBar.appearance().shadowImage = UIImage()
+        UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
         return true
     }
 
@@ -48,6 +54,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    /*
+     Fonts:
+     
+     OpenSans-Bold
+     OpenSans-Semibold
+     OpenSans
+     Montserrat-Regular
+     Montserrat-Bold
+     */
 
 }
 

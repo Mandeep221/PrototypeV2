@@ -13,12 +13,12 @@ class ContainerView: UIView {
     
     let cellWidth:CGFloat = 30
     let cellHeight:CGFloat = 30
-    let cellGap:CGFloat = 4
-    let containerHeight:CGFloat = 100
+    let cellGap:CGFloat = 6
+    let containerHeight:CGFloat = 50
     
-    var slideCounter = 0 {
+    var swipeCounter = 0 {
         didSet{
-            if slideCounter == 3{
+            if swipeCounter == 3{
                 if let view = viewRef{
                   view.addPulsatingAnimation()
                 }
@@ -33,12 +33,12 @@ class ContainerView: UIView {
         return cell
     }()
     
-    let anchorBarView: UIView = {
-        let anchor = UIView()
-        anchor.translatesAutoresizingMaskIntoConstraints = false
-        anchor.backgroundColor = .red
-        return anchor
-    }()
+//    let anchorBarView: UIView = {
+//        let anchor = UIView()
+//        anchor.translatesAutoresizingMaskIntoConstraints = false
+//        anchor.backgroundColor = .red
+//        return anchor
+//    }()
     
     let swipeDirectionArrowImageView: UIImageView = {
         let arrow = UIImageView()
@@ -60,14 +60,6 @@ class ContainerView: UIView {
     
     func setUpCells() {
         
-        // add the anchor bar
-         addSubview(anchorBarView)
-        
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : anchorBarView]))
-        
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-48-[v0(4)]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : anchorBarView]))
-        
-        
         cellViews?.append(cellView)
         // add cells
         cellViews = [UIView]()
@@ -79,14 +71,14 @@ class ContainerView: UIView {
                 cellView.translatesAutoresizingMaskIntoConstraints = false
                 
                 // add right swipe gesture to the current cellView
-                let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleGesture))
+                let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture))
                 swipeRight.direction = .right
                 cellView.addGestureRecognizer(swipeRight)
 
                 
                 addSubview(cellView)
 
-                cellView.backgroundColor = .red
+                cellView.backgroundColor = UIColor.init(rgb: 0xF6B691)
                 let leftMargin = index * Int(cellWidth + cellGap)
                 addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(leftMargin)-[v0(\(Int(cellWidth)))]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : cellView]))
                 //let containerHeight = self.frame.height
@@ -99,7 +91,7 @@ class ContainerView: UIView {
         
         // add hand image
         addSubview(swipeDirectionArrowImageView)
-        handleHandGesture()
+        handleSwipeDirectionHelp()
         //showPulsatingEffect()
     }
     let rectLayer = CAShapeLayer()
@@ -121,39 +113,22 @@ class ContainerView: UIView {
         
         viewRef?.view.layer.addSublayer(rectLayer)
         
-        
-        animateRectLayer()
     }
     
-    func animateRectLayer() {
-        let animation = CABasicAnimation(keyPath: "transform.scale")
-        
-        animation.toValue = 1.3
-        animation.duration = 3
-        animation.autoreverses = true
-        animation.repeatCount =  Float.infinity
-        
-        rectLayer.add(animation, forKey: "pulse")
-    }
-    
-    func handleHandGesture(){
+    /*This method provides with an animation
+     that shows which direction the objects need to be swiped */
+    func handleSwipeDirectionHelp(){
         let numberOfCells = CGFloat((cellViews?.count)!)
         
         // slideCounter will change on every swipe, hence left margin value will also change
-        let leftMargin = (numberOfCells * cellWidth) + (numberOfCells - 1 - CGFloat(slideCounter)) * cellGap - cellWidth/2
+        let leftMargin = (numberOfCells * cellWidth) + (numberOfCells - 1 - CGFloat(swipeCounter)) * cellGap - cellWidth/2
         
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(leftMargin)-[v0(24)]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : swipeDirectionArrowImageView]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-50-[v0(24)]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : swipeDirectionArrowImageView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0(24)]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : swipeDirectionArrowImageView]))
         
         
-        let cellToSlide = cellViews![slideCounter]
-        
-        if (cellViews?.contains(cellToSlide))!{
-            print(cellViews?.index(of: cellToSlide))
-        }else{
-            print("NOT FOUND")
-        }
+        let cellToSlide = cellViews![swipeCounter]
         
         UIView.animate(withDuration: 0.75, delay: 0, options: [.repeat], animations: {
             UIView.setAnimationRepeatCount(3)
@@ -166,10 +141,12 @@ class ContainerView: UIView {
         
     }
     
-    @objc func handleGesture(gesture: UISwipeGestureRecognizer) {
+    /*This method changes the position of the object that is swiped
+     and also increses the count for number of objects that has been swiped*/
+    @objc func handleSwipeGesture(gesture: UISwipeGestureRecognizer) {
         if let view = gesture.view {
             
-            if slideCounter == (cellViews?.count)!{
+            if swipeCounter == (cellViews?.count)!{
                 return
             }
             
@@ -182,11 +159,13 @@ class ContainerView: UIView {
             
             UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 
-                let x = self.frame.width - self.cellWidth - (CGFloat(self.slideCounter) * (self.cellWidth + self.cellGap))
+                let x = self.frame.width - self.cellWidth - (CGFloat(self.swipeCounter) * (self.cellWidth + self.cellGap))
                 
                 
                 view.frame = CGRect(x: x, y: view.frame.origin.y, width: self.cellWidth, height: self.cellHeight)
-                self.slideCounter += 1
+                self.swipeCounter += 1
+                
+                view.backgroundColor = UIColor.init(rgb: 0xED5169)
                 
             }, completion: nil)
             

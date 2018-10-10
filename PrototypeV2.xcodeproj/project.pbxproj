@@ -13,6 +13,11 @@
 		A50348DF21693E8F005BE136 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A50348DE21693E8F005BE136 /* Assets.xcassets */; };
 		A50348E221693E8F005BE136 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A50348E021693E8F005BE136 /* LaunchScreen.storyboard */; };
 		A50348EB21697779005BE136 /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50348EA21697779005BE136 /* ContainerView.swift */; };
+		A534C0A3216DCF7100FD56D4 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A534C0A1216DCF7100FD56D4 /* Montserrat-Bold.ttf */; };
+		A534C0A4216DCF7100FD56D4 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A534C0A2216DCF7100FD56D4 /* Montserrat-Regular.ttf */; };
+		A534C0A8216DCFE800FD56D4 /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A534C0A5216DCFE700FD56D4 /* OpenSans-Semibold.ttf */; };
+		A534C0A9216DCFE800FD56D4 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A534C0A6216DCFE800FD56D4 /* OpenSans-Bold.ttf */; };
+		A534C0AA216DCFE800FD56D4 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A534C0A7216DCFE800FD56D4 /* OpenSans-Regular.ttf */; };
 		A56337B6216B775D0081D561 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56337B5216B775D0081D561 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +30,11 @@
 		A50348E121693E8F005BE136 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A50348E321693E8F005BE136 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A50348EA21697779005BE136 /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
+		A534C0A1216DCF7100FD56D4 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
+		A534C0A2216DCF7100FD56D4 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
+		A534C0A5216DCFE700FD56D4 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
+		A534C0A6216DCFE800FD56D4 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
+		A534C0A7216DCFE800FD56D4 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		A56337B5216B775D0081D561 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -58,6 +68,7 @@
 		A50348D621693E8E005BE136 /* PrototypeV2 */ = {
 			isa = PBXGroup;
 			children = (
+				A534C0A0216DCF6300FD56D4 /* Fonts */,
 				A56337B4216B77230081D561 /* Helper */,
 				A50348E921697740005BE136 /* View */,
 				A50348D721693E8E005BE136 /* AppDelegate.swift */,
@@ -76,6 +87,18 @@
 				A50348EA21697779005BE136 /* ContainerView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		A534C0A0216DCF6300FD56D4 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				A534C0A6216DCFE800FD56D4 /* OpenSans-Bold.ttf */,
+				A534C0A7216DCFE800FD56D4 /* OpenSans-Regular.ttf */,
+				A534C0A5216DCFE700FD56D4 /* OpenSans-Semibold.ttf */,
+				A534C0A1216DCF7100FD56D4 /* Montserrat-Bold.ttf */,
+				A534C0A2216DCF7100FD56D4 /* Montserrat-Regular.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		A56337B4216B77230081D561 /* Helper */ = {
@@ -145,8 +168,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A534C0A8216DCFE800FD56D4 /* OpenSans-Semibold.ttf in Resources */,
+				A534C0A9216DCFE800FD56D4 /* OpenSans-Bold.ttf in Resources */,
+				A534C0A3216DCF7100FD56D4 /* Montserrat-Bold.ttf in Resources */,
 				A50348E221693E8F005BE136 /* LaunchScreen.storyboard in Resources */,
 				A50348DF21693E8F005BE136 /* Assets.xcassets in Resources */,
+				A534C0A4216DCF7100FD56D4 /* Montserrat-Regular.ttf in Resources */,
+				A534C0AA216DCFE800FD56D4 /* OpenSans-Regular.ttf in Resources */,
 				A50348DD21693E8F005BE136 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
