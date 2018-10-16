@@ -27,7 +27,7 @@ class DesignableOptionView: UIView{
         //label.textColor = UIColor.init(rgb: 0x908FAA, alpha: 1)
         label.font = UIFont(name: "Montserrat-Regular", size: 12)
         label.textAlignment = .center
-        label.text = "Thirty Four"
+        label.text = "text"
         return label
     }()
     
@@ -56,14 +56,28 @@ class DesignableOptionView: UIView{
         fatalError("init(coder:) has not been implemented")
     }
     
-    func handleOptionClickAnimation(){
-        self.shake()
-        UIView.animate(withDuration: 0.25, animations: {
-            self.backgroundColor = UIColor.init(rgb: 0xED5169, alpha: 0.6)
-        }) { (true) in
-            UIView.animate(withDuration: 0.25, animations: {
-                self.backgroundColor = UIColor.init(rgb: 0xFFFFFF, alpha: 0.1)
+    func handleOptionClickAnimation(isCorrect: Bool){
+        if isCorrect{
+            UIView.animate(withDuration: 0.5, animations: {
+                self.backgroundColor = UIColor.init(rgb: 0x41B3A3, alpha: 1)
             }, completion: nil)
+        }else{
+            self.shake()
+            UIView.animate(withDuration: 0.25, animations: {
+                self.backgroundColor = UIColor.init(rgb: 0xED5169, alpha: 0.6)
+            }) { (true) in
+                UIView.animate(withDuration: 0.25, animations: {
+                    self.backgroundColor = UIColor.init(rgb: 0xFFFFFF, alpha: 0.1)
+                }, completion: nil)
+            }
         }
+        
+    }
+    
+    func setNumberOptionLabel(text: String) {
+        numberOptionLabel.text = text
+    }
+    func setTextOptionLabel(text: String) {
+        textOptionLabel.text = text
     }
 }

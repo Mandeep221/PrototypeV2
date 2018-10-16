@@ -15,12 +15,17 @@ class ContainerView: UIView {
     let cellHeight:CGFloat = 30
     let cellGap:CGFloat = 6
     let containerHeight:CGFloat = 50
+    var viewRef: ViewController?
     
+    // Maximum number of cells that can be swiped
+    var swipableCellCount = 0
+    
+    // Number of cells that have been swiped at any given time
     var swipeCounter = 0 {
         didSet{
-            if swipeCounter == 3{
+            if swipeCounter == swipableCellCount{
                 if let view = viewRef{
-                  view.addPulsatingAnimation()
+                    view.updateTotalCellsSwiped(cellsSwiped: swipableCellCount)
                 }
             }
         }
@@ -38,7 +43,8 @@ class ContainerView: UIView {
         arrow.translatesAutoresizingMaskIntoConstraints = false
         arrow.image = UIImage(named: "hand")?.withRenderingMode(.alwaysTemplate)
         arrow.contentMode = .scaleAspectFill
-        arrow.tintColor = .green
+        arrow.tintColor = .white
+        arrow.alpha = 0
         return arrow
     }()
     
@@ -49,6 +55,10 @@ class ContainerView: UIView {
             // set up cells
             setUpCells()
         }
+    }
+    
+    func setSwipableCells(count: Int) {
+        swipableCellCount = count
     }
     
     func setUpCells() {
@@ -84,11 +94,10 @@ class ContainerView: UIView {
         
         // add hand image
         addSubview(swipeDirectionArrowImageView)
-        handleSwipeDirectionHelp()
+        //handleSwipeDirectionHelp()
         //showPulsatingEffect()
     }
     let rectLayer = CAShapeLayer()
-    var viewRef: ViewController?
     
     func showPulsatingEffect(){
         
@@ -123,8 +132,9 @@ class ContainerView: UIView {
         
         let cellToSlide = cellViews![swipeCounter]
         
-        UIView.animate(withDuration: 0.75, delay: 0, options: [.repeat], animations: {
-            UIView.setAnimationRepeatCount(3)
+        UIView.animate(withDuration: 0.75, delay: 1.5, options: [.repeat], animations: {
+            UIView.setAnimationRepeatCount(2)
+            self.swipeDirectionArrowImageView.alpha = 1.0
             self.swipeDirectionArrowImageView.frame = CGRect(x: cellToSlide.frame.origin.x + 20 , y: self.swipeDirectionArrowImageView.frame.origin.y, width: self.swipeDirectionArrowImageView.frame.width, height: self.swipeDirectionArrowImageView.frame.height)
         }, completion: {(isCompleted) in
             UIView.animate(withDuration: 0.75, animations: {
@@ -139,7 +149,7 @@ class ContainerView: UIView {
     @objc func handleSwipeGesture(gesture: UISwipeGestureRecognizer) {
         if let view = gesture.view {
             
-            if swipeCounter == (cellViews?.count)!{
+            if swipeCounter == swipableCellCount || swipeCounter == (cellViews?.count)!{
                 return
             }
             
@@ -174,5 +184,19 @@ class ContainerView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func animateSwipedCells() {
+         let indexToStartFrom = cellCount! - swipableCellCount
+        UIView.setAnimationRepeatCount(5)
+        
+        for index in indexToStartFrom..<cellCount!{
+            let view = self.cellViews![index]
+            UIView.animate(withDuration: 1, animations: {
+                view.alpha = 0.2
+            }, completion: { (isCompleted) in
+                view.alpha = 1.0
+            })
+        }
     }
 }

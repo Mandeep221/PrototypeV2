@@ -10,6 +10,10 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    var num1 = 0
+    var num2 = 0
+    var answer = 0
+    
     let anchorForContainerOne: UIView = {
         let abchorView = UIView()
         //abchorView.backgroundColor = UIColor.init(rgb: 0xF7CE3E)
@@ -49,6 +53,7 @@ class ViewController: UIViewController {
         label.textColor = .white
         label.font = UIFont(name: "Montserrat-Regular", size: 16)
         label.text = "Can you swipe two cells to the right?"
+        label.alpha = 0
         return label
     }()
     
@@ -65,6 +70,7 @@ class ViewController: UIViewController {
         label.textColor = .white
         label.font = UIFont(name: "Montserrat-Regular", size: 16)
         label.text = "Can you swipe two cells to the right?"
+        label.alpha = 0
         return label
     }()
     
@@ -73,6 +79,16 @@ class ViewController: UIViewController {
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.cellCount = 7
         return cv
+    }()
+    
+    let instructionThreeLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 2
+        label.textColor = .white
+        label.font = UIFont(name: "Montserrat-Bold", size: 16)
+        label.text = "Can you count the RED cells you swiped?"
+        label.alpha = 0
+        return label
     }()
     
     let optionOneButton: UIButton = {
@@ -125,27 +141,38 @@ class ViewController: UIViewController {
         for index in 0...3 {
             let option = DesignableOptionView()
             option.isUserInteractionEnabled = true
-            option.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hand)))
+            option.alpha = 0.0
+            option.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleOptionSelection)))
             opt.append(option)
         }
         return opt
     }()
     
-    @objc func hand(gesture: UITapGestureRecognizer) {
+    @objc func handleOptionSelection(gesture: UITapGestureRecognizer) {
         let currentView = gesture.view as! DesignableOptionView
         if optionButton.contains(currentView){
-            currentView.handleOptionClickAnimation()
+            
+            if Int(currentView.numberOptionLabel.text!) == answer{
+                currentView.handleOptionClickAnimation(isCorrect: true)
+            }else{
+                currentView.handleOptionClickAnimation(isCorrect: false)
+            }
+            
+            
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        containerViewOne.handleSwipeDirectionHelp()
         // nav bar
         navigationController?.navigationBar.isTranslucent = false
         
         edgesForExtendedLayout = []
+        
+        // provide this view controller reference to each container view
         containerViewOne.viewRef = self
+        containerViewTwo.viewRef = self
         
         //#2C163B
         view.backgroundColor = UIColor(rgb: 0x2C163B, alpha: 1)
@@ -162,6 +189,7 @@ class ViewController: UIViewController {
         view.addSubview(optionTwoButton)
         view.addSubview(optionThreeButton)
         view.addSubview(optionFourButton)
+        view.addSubview(instructionThreeLabel)
         for index in 0...optionButton.count - 1{
            view.addSubview(optionButton[index])
         }
@@ -183,8 +211,31 @@ class ViewController: UIViewController {
         
         containerViewTwo.anchor(top: instructionTwoLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 50))
         
+//        // for the third instruction
+//        instructionThreeLabel.anchor(top: containerViewTwo.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 8, left: 16, bottom: 16, right: 16), size: .init(width: view.frame.width, height: 40))
+        
         setConstraintsForOptions()
         
+        //
+        generateTwoRandomNumbers()
+        setUpFourOptions()
+        setSwipableCells()
+        handleScene(label: instructionOneLabel, show: true)
+        //containerViewOne.handleSwipeDirectionHelp()
+    }
+    
+    func setUpFourOptions(){
+//            let op1 = Int(arc4random_uniform(UInt32(num1 + num2)))
+//            let op2 = Int(arc4random_uniform(UInt32(num1)))
+//            let op3 = Int(arc4random_uniform(UInt32(num2)))
+//            let op4 = Int(arc4random_uniform(UInt32(num1 > num2 ? (num1 - num2) : (num2 - num1))))
+        
+        
+        
+        optionButton[0].setNumberOptionLabel(text: String(num2))
+        optionButton[1].setNumberOptionLabel(text: String(num1))
+        optionButton[2].setNumberOptionLabel(text: String(num1 + num2))
+        optionButton[3].setNumberOptionLabel(text: String(num1 > num2 ? (num1 - num2) : (num2 - num1)))
     }
     
     func setConstraintsForOptions() {
@@ -193,6 +244,7 @@ class ViewController: UIViewController {
         let optionThreeButton = optionButton[2]
         let optionFourButton = optionButton[3]
         
+       
         //#TODO: width does not make sense, but somehow works
         optionThreeButton.anchor(top: nil, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: nil, padding: .init(top: 0, left: 16, bottom: 20, right: 16), size: .init(width: view.frame.width / 2 - 16 - 8, height: 64))
         
@@ -202,6 +254,10 @@ class ViewController: UIViewController {
         optionOneButton.anchor(top: nil, leading: view.leadingAnchor, bottom: optionThreeButton.topAnchor, trailing: nil, padding: .init(top: 20, left: 16, bottom: 16, right: 16), size: .init(width: view.frame.width / 2 - 16 - 8, height: 64))
         
         optionTwoButton.anchor(top: nil, leading: nil, bottom: optionFourButton.topAnchor, trailing: view.trailingAnchor, padding: .init(top: 20, left: 16, bottom: 16, right: 16), size: .init(width: view.frame.width / 2 - 16 - 8, height: 64))
+    
+        // for the third instruction
+        instructionThreeLabel.anchor(top: nil, leading: view.leadingAnchor, bottom: optionOneButton.topAnchor, trailing: view.trailingAnchor, padding: .init(top: 8, left: 16, bottom: 16, right: 16), size: .init(width: view.frame.width, height: 40))
+
     }
     
     
@@ -211,16 +267,63 @@ class ViewController: UIViewController {
         return leftMargin
     }
     
-    func addPulsatingAnimation() {
+    // every time the required number of cells are swiped in each container,
+    // this method updates the total number of cells swiped and stores it in the answer variable
+    func updateTotalCellsSwiped(cellsSwiped: Int) {
+        answer += cellsSwiped
         
+        // all cells swiped in first container
+        if answer == num1{
+            //hide first instruction
+            handleScene(label: instructionOneLabel, show: false)
+            
+            //show second instruction
+            handleScene(label: instructionTwoLabel , show: true)
+            
+            // swipe direction help for container two
+            //containerViewTwo.handleSwipeDirectionHelp()
+        }
+        
+        // when all the cells have been swiped in both containers, total will be the answer of final count
+        // thats when we start pulsating animation
+        if answer == num1 + num2 {
+            //hide first instruction
+            handleScene(label: instructionOneLabel, show: false)
+            
+            //hide second instruction
+            handleScene(label: instructionTwoLabel , show: false)
+
+            //show third instruction
+            handleScene(label: instructionThreeLabel , show: true)
+            
+            showAllOptions()
+            //animateAllSwipedCells()
+            //animate cells
+            //containerViewOne.animateSwipedCells()
+            //containerViewTwo.animateSwipedCells()
+        }
+    }
+    
+    func animateAllSwipedCells() {
+        var indexToStartFrom = 0
+        // Animate in first container
+        indexToStartFrom = containerViewOne.cellCount! - containerViewOne.swipableCellCount
+        for index in indexToStartFrom..<containerViewOne.cellCount!{
+             let targetCell = containerViewOne.cellViews![index]
+            addPulsatingAnimation(viewToAnimate: targetCell, containerView: containerViewOne, delay: 1)
+        }
+        
+        // Animate in Second container
+        indexToStartFrom = containerViewTwo.cellCount! - containerViewTwo.swipableCellCount
+        for index in indexToStartFrom..<containerViewTwo.cellCount!{
+            let targetCell = containerViewTwo.cellViews![index]
+            addPulsatingAnimation(viewToAnimate: targetCell, containerView: containerViewTwo, delay: 1)
+        }
+    }
+    
+    func addPulsatingAnimation(viewToAnimate: UIView, containerView: ContainerView, delay: Double) {
         let trackLayer = CAShapeLayer()
-        let targetCell = containerViewOne.cellViews![1]
-        print(targetCell.frame.minY)
-        //
-        //                print(targetCell.frame.origin.x)
-        //                print(targetCell.frame.origin.y)
-        
-        let frame = CGRect(x: getX(slideCounter: 1) - 1 , y: targetCell.frame.minY - 1, width: containerViewOne.cellWidth + 2, height: containerViewOne.cellHeight + 2)
+        let frame = CGRect(x: getX(slideCounter: 1) - 1 , y: viewToAnimate.frame.minY - 1, width: containerView.cellWidth + 2, height: containerView.cellHeight + 2)
         let rectPAth = UIBezierPath(rect: frame)
         
         trackLayer.path = rectPAth.cgPath
@@ -229,7 +332,7 @@ class ViewController: UIViewController {
         trackLayer.lineWidth = 2
         trackLayer.fillColor = UIColor.clear.cgColor
         
-        containerViewOne.layer.addSublayer(trackLayer)
+        containerView.layer.addSublayer(trackLayer)
         
         let animation = CABasicAnimation(keyPath: "opacity")
         
@@ -238,8 +341,47 @@ class ViewController: UIViewController {
         animation.duration = 1
         animation.autoreverses = true
         animation.repeatCount =  3
+        animation.beginTime = CACurrentMediaTime() + delay
         
         trackLayer.add(animation, forKey: "pulse")
+    }
+    
+    func generateTwoRandomNumbers() {
+        num1 = Int(arc4random_uniform(4) + 1)
+        num2 = Int(arc4random_uniform(3) + 1)
+        print(num1)
+        print(num2)
+        //assign values to instructions
+        instructionOneLabel.text = self.num1>1 ? "Can you swipe "+String(self.num1) + " cells to the right?" : "Can you swipe 1 cell to the right?"
+         instructionTwoLabel.text = self.num2>1 ? "Can you swipe "+String(self.num2) + " cells to the right?" : "Can you swipe 1 cell to the right?"
+    }
+    
+    // This method caps the number of cells that can be swiped in each container
+    // i.e. num1 and num2 in each respective containers
+    func setSwipableCells(){
+        containerViewOne.setSwipableCells(count: num1)
+        containerViewTwo.setSwipableCells(count: num2)
+    }
+    
+    // modifies the scene by hiding and showing the instruction labels
+    func handleScene(label: UILabel, show: Bool) {
+        if show {
+            UIView.animate(withDuration: 1, delay: 0.5, options: [.curveEaseOut], animations: {
+                label.alpha = 1.0
+            }, completion: nil)
+        }else{
+            UIView.animate(withDuration: 1, animations: {
+                label.alpha = 0.0
+            }, completion: nil)
+        }
+    }
+    
+    func showAllOptions() {
+        for index in 0..<optionButton.count{
+            UIView.animate(withDuration: 0.25, delay: 0.5, options: [.curveEaseOut], animations:{
+                self.optionButton[index].alpha = 1.0
+            }, completion: nil)
+        }
     }
 }
 
