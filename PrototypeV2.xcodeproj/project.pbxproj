@@ -15,6 +15,7 @@
 		A50348EB21697779005BE136 /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50348EA21697779005BE136 /* ContainerView.swift */; };
 		A50D9579216E7FAC002F1DC3 /* DesignableOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50D9578216E7FAB002F1DC3 /* DesignableOptionView.swift */; };
 		A53393E8217B9E9C00F7C428 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53393E7217B9E9C00F7C428 /* HomeController.swift */; };
+		A53393EA217BD4DC00F7C428 /* InputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53393E9217BD4DC00F7C428 /* InputView.swift */; };
 		A534C0A3216DCF7100FD56D4 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A534C0A1216DCF7100FD56D4 /* Montserrat-Bold.ttf */; };
 		A534C0A4216DCF7100FD56D4 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A534C0A2216DCF7100FD56D4 /* Montserrat-Regular.ttf */; };
 		A534C0A8216DCFE800FD56D4 /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A534C0A5216DCFE700FD56D4 /* OpenSans-Semibold.ttf */; };
@@ -35,6 +36,7 @@
 		A50348EA21697779005BE136 /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
 		A50D9578216E7FAB002F1DC3 /* DesignableOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignableOptionView.swift; sourceTree = "<group>"; };
 		A53393E7217B9E9C00F7C428 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
+		A53393E9217BD4DC00F7C428 /* InputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
 		A534C0A1216DCF7100FD56D4 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		A534C0A2216DCF7100FD56D4 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		A534C0A5216DCFE700FD56D4 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 			children = (
 				A50348EA21697779005BE136 /* ContainerView.swift */,
 				A50D9578216E7FAB002F1DC3 /* DesignableOptionView.swift */,
+				A53393E9217BD4DC00F7C428 /* InputView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -208,6 +211,7 @@
 				A50348DA21693E8E005BE136 /* ViewController.swift in Sources */,
 				A50348D821693E8E005BE136 /* AppDelegate.swift in Sources */,
 				A50348EB21697779005BE136 /* ContainerView.swift in Sources */,
+				A53393EA217BD4DC00F7C428 /* InputView.swift in Sources */,
 				A53393E8217B9E9C00F7C428 /* HomeController.swift in Sources */,
 				A56337B6216B775D0081D561 /* Extensions.swift in Sources */,
 			);
