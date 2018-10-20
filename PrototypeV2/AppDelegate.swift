@@ -21,14 +21,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         
         //create a rootviewcontroller, and it to the window created above
-        window?.rootViewController = UINavigationController(rootViewController: ViewController())
+        window?.rootViewController = UINavigationController(rootViewController: LoginController())
         
         // for navigation bar color
-        UINavigationBar.appearance().barTintColor = UIColor(rgb: 0x2C163B, alpha: 1)
+        //UINavigationBar.appearance().barTintColor = UIColor(rgb: 0x2C163B, alpha: 1)
         
         // get rid of the bottom shadow/line underneath nav bar
-        UINavigationBar.appearance().shadowImage = UIImage()
-        UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
+//        UINavigationBar.appearance().shadowImage = UIImage()
+//        UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
         return true
     }
 

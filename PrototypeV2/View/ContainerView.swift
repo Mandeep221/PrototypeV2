@@ -11,8 +11,8 @@ import UIKit
 
 class ContainerView: UIView {
     
-    let cellWidth:CGFloat = 30
-    let cellHeight:CGFloat = 30
+    let cellWidth:CGFloat = 25
+    let cellHeight:CGFloat = 25
     let cellGap:CGFloat = 6
     let containerHeight:CGFloat = 50
     var viewRef: ViewController?

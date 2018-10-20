@@ -49,7 +49,14 @@ class DesignableOptionView: UIView{
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        //drawShadow()
         setUpViews()
+    }
+    
+    func drawShadow() {
+        self.layer.shadowColor = UIColor(white: 0.4, alpha: 0.4).cgColor
+        self.layer.shadowRadius = 4
+        self.layer.shadowOpacity = 0.5
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -60,7 +60,7 @@ class ViewController: UIViewController {
     let containerViewOne: ContainerView = {
         let cv = ContainerView()
         cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.cellCount = 7
+        cv.cellCount = 10
         return cv
     }()
     
@@ -77,7 +77,7 @@ class ViewController: UIViewController {
     let containerViewTwo: ContainerView = {
         let cv = ContainerView()
         cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.cellCount = 7
+        cv.cellCount = 10
         return cv
     }()
     
@@ -143,6 +143,10 @@ class ViewController: UIViewController {
             option.isUserInteractionEnabled = true
             option.alpha = 0.0
             option.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleOptionSelection)))
+            
+            // give shadow
+            
+            
             opt.append(option)
         }
         return opt
@@ -225,13 +229,6 @@ class ViewController: UIViewController {
     }
     
     func setUpFourOptions(){
-//            let op1 = Int(arc4random_uniform(UInt32(num1 + num2)))
-//            let op2 = Int(arc4random_uniform(UInt32(num1)))
-//            let op3 = Int(arc4random_uniform(UInt32(num2)))
-//            let op4 = Int(arc4random_uniform(UInt32(num1 > num2 ? (num1 - num2) : (num2 - num1))))
-        
-        
-        
         optionButton[0].setNumberOptionLabel(text: String(num2))
         optionButton[1].setNumberOptionLabel(text: String(num1))
         optionButton[2].setNumberOptionLabel(text: String(num1 + num2))
@@ -297,7 +294,7 @@ class ViewController: UIViewController {
             handleScene(label: instructionThreeLabel , show: true)
             
             showAllOptions()
-            //animateAllSwipedCells()
+            animateAllSwipedCells()
             //animate cells
             //containerViewOne.animateSwipedCells()
             //containerViewTwo.animateSwipedCells()

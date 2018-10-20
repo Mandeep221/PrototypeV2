@@ -50,6 +50,7 @@ extension UIView{
         }
     }
     
+    
     // drop shadow
     func dropShadow(scale: Bool = true) {
         layer.masksToBounds = false
