@@ -8,116 +8,114 @@
 
 import UIKit
 
-class LoginController: UIViewController {
-
-    let inputsContainerView: UIView = {
-        let containerView = UIView()
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        //containerView.backgroundColor = .white
-        return containerView
-    }()
+class LoginController: UIViewController, UITextFieldDelegate {
     
-    let nameInput: InputView = {
-       let name = InputView()
-        name.titleLabel.text = "NAME"
-        name.valueTextField.placeholder = "Name"
-        return name
-    }()
-    
-    let emailInput: InputView = {
-        let email = InputView()
-        email.titleLabel.text = "EMAIL"
-        email.valueTextField.placeholder = "Email"
-        return email
-    }()
-    
-    let passwordInput: InputView = {
-        let password = InputView()
-        password.titleLabel.text = "PASSWORD"
-        password.valueTextField.placeholder = "Password"
-        return password
-    }()
-    
-    let nameLabel: UILabel = {
+    let instructionLabel: UILabel = {
         let label = UILabel()
-        label.text = "Name"
-        label.font = UIFont(name: "Montserrat-Regular", size: 12)
+        label.textColor = UIColor.init(rgb: 0xFFFFFF, alpha: 0.4)
+        label.text = "You will receive an OTP on your mobile\n number for verification"
+        label.numberOfLines = 2
+        label.font = UIFont(name: "Montserrat-Regular", size: 14)
+        label.textAlignment = .center
         return label
     }()
     
-    
-    
-    let nameTextField: UITextField = {
-        let name = UITextField()
-        name.placeholder = "Name"
-        name.backgroundColor = .red
-        name.translatesAutoresizingMaskIntoConstraints = false
-        return name
+    let phoneNumberTextField: UITextField = {
+        let phoneTextField = UITextField()
+        phoneTextField.text = "+1 "
+        phoneTextField.font = UIFont(name: "Montserrat-Regular", size: 18)
+        phoneTextField.textAlignment = .center
+        phoneTextField.textColor = UIColor.init(rgb: 0xFFFFFF, alpha: 1)
+        return phoneTextField
     }()
     
-    let emailTextField: UITextField = {
-        let email = UITextField()
-        email.placeholder = "Email"
-        email.translatesAutoresizingMaskIntoConstraints = false
-        return email
+    let isdCodeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "+1"
+        label.font = UIFont(name: "Montserrat-Regular", size: 14)
+        return label
     }()
     
-    let passwordTextField: UITextField = {
-        let password = UITextField()
-        password.placeholder = "Password"
-        password.translatesAutoresizingMaskIntoConstraints = false
-        return password
+    let phoneBorderView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        return view
     }()
+    
+    let phoneContainerView: UIView = {
+        let containerView = UIView()
+        return containerView
+    }()
+    
+    let proceedButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 21
+        return button
+    }()
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        print(range)
+        print(string)
+        
+//        if (textField.text?.characters.count == 1) {//When detect backspace when have one character.
+//            textField.text = "myText"
+//        }
+        return true
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.edgesForExtendedLayout = []
+        navigationController?.navigationBar.isTranslucent = false
+        
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIColor.init(rgb: 0x323260, alpha: 1).as1ptImage()
+        
+        // Custom Navigation bar title
+        let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32, height: view.frame.height))
+        titleLabel.text = "Enter your mobile number"
+        //titleLabel.textColor = UIColor.init(rgb: 0x8C8EAC, alpha: 1)
+        titleLabel.textColor = UIColor.init(rgb: 0xFFFFFF, alpha: 1)
+        titleLabel.textAlignment = .center
+        titleLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
+        navigationItem.titleView = titleLabel
         
         view.backgroundColor = UIColor.init(rgb: 0x2B2D5C, alpha: 1)
+        //view.backgroundColor = UIColor.init(rgb: 0xFFFFFF, alpha: 1)
         //23234F : input color
         //add views
-        view.addSubview(inputsContainerView)
-        inputsContainerView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 12, left: 12, bottom: 12, right: 12), size: .init(width: view.frame.width, height: nameInput.totalInputViewHeight * 3))
+        phoneNumberTextField.delegate = self
         
-        inputsContainerView.addSubview(nameInput)
-        inputsContainerView.addSubview(emailInput)
-        inputsContainerView.addSubview(passwordInput)
+        view.addSubview(instructionLabel)
+        view.addSubview(phoneNumberTextField)
+        view.addSubview(phoneContainerView)
+        view.addSubview(proceedButton)
+        phoneContainerView.addSubview(phoneNumberTextField)
+        phoneContainerView.addSubview(isdCodeLabel)
+        phoneContainerView.addSubview(phoneBorderView)
         
-        // name constraint
-        nameInput.anchor(top: inputsContainerView.topAnchor, leading: inputsContainerView.leadingAnchor, bottom: nil, trailing: inputsContainerView.trailingAnchor, padding: .init(top: 12, left: 0, bottom: 12, right: 0), size:.init(width: inputsContainerView.frame.width, height: nameInput.totalInputViewHeight))
+        // Constraints
+        instructionLabel.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 24, left: 20, bottom: 0, right: 20), size: .init(width: view.frame.width, height: 48))
         
-        // email constraint
-        emailInput.anchor(top: nameInput.bottomAnchor, leading: inputsContainerView.leadingAnchor, bottom: nil, trailing: inputsContainerView.trailingAnchor, padding: .init(top: 12, left: 0, bottom: 12, right: 0), size:.init(width: inputsContainerView.frame.width, height: emailInput.totalInputViewHeight))
+//        phoneNumberTextField.anchor(top: instructionLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 32, left: 32, bottom: 0, right: 32), size: .init(width: view.frame.width, height: 48))
         
-        // password constraint
-        passwordInput.anchor(top: emailInput.bottomAnchor, leading: inputsContainerView.leadingAnchor, bottom: nil, trailing: inputsContainerView.trailingAnchor, padding: .init(top: 12, left: 0, bottom: 12, right: 0), size:.init(width: inputsContainerView.frame.width, height: passwordInput.totalInputViewHeight))
+        phoneContainerView.anchor(top: instructionLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 32, left: 32, bottom: 0, right: 32), size: .init(width: view.frame.width, height: 49))
+        
+        phoneNumberTextField.anchor(top: phoneContainerView.topAnchor, leading: phoneContainerView.leadingAnchor, bottom: phoneBorderView.bottomAnchor, trailing: phoneContainerView.trailingAnchor, padding: .zero, size: .zero)
+        
+        phoneBorderView.anchor(top: nil, leading: phoneContainerView.leadingAnchor, bottom: phoneContainerView.bottomAnchor, trailing: phoneContainerView.trailingAnchor, padding: .zero, size: .init(width: phoneContainerView.frame.width, height: 1))
+        
+//        proceedButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//        proceedButton.topAnchor.constraint(equalTo: phoneContainerView.bottomAnchor).isActive = true
+//        proceedButton.widthAnchor.constraint(equalToConstant: 42)
+//        proceedButton.heightAnchor.constraint(equalToConstant: 42)
         
     }
     
-    func setupInputsContainerView() {
-        //add constraints
-        
-        inputsContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        inputsContainerView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        inputsContainerView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
-        inputsContainerView.heightAnchor.constraint(equalToConstant: 150).isActive = true
     
-        inputsContainerView.addSubview(nameTextField)
-        inputsContainerView.addSubview(nameLabel)
-        
-        // add name constraints
-        nameTextField.topAnchor.constraint(equalTo: inputsContainerView.topAnchor).isActive = true
-        nameTextField.leadingAnchor.constraint(equalTo: inputsContainerView.leadingAnchor, constant: 12).isActive = true
-        nameTextField.trailingAnchor.constraint(equalTo: inputsContainerView.trailingAnchor, constant: -12).isActive = true
-        nameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/3).isActive = true
-        
-        // add name label constraints
-        nameLabel.topAnchor.constraint(equalTo: inputsContainerView.topAnchor).isActive = true
-        nameTextField.leadingAnchor.constraint(equalTo: inputsContainerView.leadingAnchor, constant: 12).isActive = true
-        nameTextField.trailingAnchor.constraint(equalTo: inputsContainerView.trailingAnchor, constant: -12).isActive = true
-        nameTextField.heightAnchor.constraint(equalTo: inputsContainerView.heightAnchor, multiplier: 1/3).isActive = true
-    }
     
     // changes status bar content in wite color: date, battery etc
     override var preferredStatusBarStyle: UIStatusBarStyle {
