@@ -10,7 +10,7 @@ import UIKit
 
 class LoginController: UIViewController, UITextFieldDelegate {
     
-    let instructionLabel: UILabel = {
+    let instructionMobileNumberLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.init(rgb: 0xFFFFFF, alpha: 0.4)
         label.text = "You will receive an OTP on your mobile\n number for verification"
@@ -20,12 +20,31 @@ class LoginController: UIViewController, UITextFieldDelegate {
         return label
     }()
     
+    let instructionOtpLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.init(rgb: 0xFFFFFF, alpha: 0.4)
+        label.text = "A 4 digit OTP has been sent on your\n mobile number"
+        label.numberOfLines = 2
+        label.font = UIFont(name: "Montserrat-Regular", size: 14)
+        label.textAlignment = .center
+        return label
+    }()
+    
+    let otpDigitsContainerView: UIView = {
+        let containerView = UIView()
+        return containerView
+    }()
+    
     let phoneNumberTextField: UITextField = {
         let phoneTextField = UITextField()
         phoneTextField.text = "+1 "
         phoneTextField.font = UIFont(name: "Montserrat-Regular", size: 18)
         phoneTextField.textAlignment = .center
         phoneTextField.textColor = UIColor.init(rgb: 0xFFFFFF, alpha: 1)
+        phoneTextField.keyboardType = .numberPad
+        
+        // edit action
+        phoneTextField.addTarget(self, action: #selector(phoneTextfieldDidChange), for: .editingChanged)
         return phoneTextField
     }()
     
@@ -48,21 +67,40 @@ class LoginController: UIViewController, UITextFieldDelegate {
     }()
     
     let proceedButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
         button.backgroundColor = .white
-        button.layer.cornerRadius = 21
+        button.layer.cornerRadius = 25
+        let image = UIImage(named: "right_arrow")
+        button.setImage(image, for: .normal)
+        button.alpha = 0
+        button.tintColor = UIColor.init(rgb: Color.primary.rawValue, alpha: 1)
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
+    @objc func phoneTextfieldDidChange(textField: UITextField) {
+        if textField.text?.characters.count == 13{
+            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                self.proceedButton.alpha = 1
+                self.proceedButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+            }, completion: nil)
+        }else{
+            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                self.proceedButton.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+                self.proceedButton.alpha = 0
+            }, completion: nil)
+        }
+    }
+    
+    // limit the phone length to 13 characters, including ISD code
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        print(range)
-        print(string)
+        let currentText = textField.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else { return false }
         
-//        if (textField.text?.characters.count == 1) {//When detect backspace when have one character.
-//            textField.text = "myText"
-//        }
-        return true
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        
+        return updatedText.count <= 13
     }
     
     override func viewDidLoad() {
@@ -77,41 +115,46 @@ class LoginController: UIViewController, UITextFieldDelegate {
         // Custom Navigation bar title
         let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32, height: view.frame.height))
         titleLabel.text = "Enter your mobile number"
-        //titleLabel.textColor = UIColor.init(rgb: 0x8C8EAC, alpha: 1)
-        titleLabel.textColor = UIColor.init(rgb: 0xFFFFFF, alpha: 1)
+        titleLabel.textColor = UIColor.init(rgb: Color.textPrimary.rawValue, alpha: 1)
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
         navigationItem.titleView = titleLabel
         
-        view.backgroundColor = UIColor.init(rgb: 0x2B2D5C, alpha: 1)
-        //view.backgroundColor = UIColor.init(rgb: 0xFFFFFF, alpha: 1)
-        //23234F : input color
+        // add background gradient
+//        let gradient = CAGradientLayer()
+//        gradient.frame = view.bounds
+//        gradient.colors = [UIColor.init(rgb: Color.primaryPurple.rawValue, alpha: 1).cgColor, UIColor.init(rgb: Color.primaryBlue.rawValue, alpha: 1).cgColor]
+//        view.layer.insertSublayer(gradient, at: 0)
+//
+        view.backgroundColor = UIColor.init(rgb: Color.primary.rawValue, alpha: 1)
+        
         //add views
         phoneNumberTextField.delegate = self
         
-        view.addSubview(instructionLabel)
+        view.addSubview(instructionMobileNumberLabel)
         view.addSubview(phoneNumberTextField)
         view.addSubview(phoneContainerView)
-        view.addSubview(proceedButton)
         phoneContainerView.addSubview(phoneNumberTextField)
         phoneContainerView.addSubview(isdCodeLabel)
         phoneContainerView.addSubview(phoneBorderView)
-        
+        view.addSubview(proceedButton)
         // Constraints
-        instructionLabel.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 24, left: 20, bottom: 0, right: 20), size: .init(width: view.frame.width, height: 48))
+        // For Mobile number screen
+        instructionMobileNumberLabel.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 24, left: 20, bottom: 0, right: 20), size: .init(width: view.frame.width, height: 48))
         
-//        phoneNumberTextField.anchor(top: instructionLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 32, left: 32, bottom: 0, right: 32), size: .init(width: view.frame.width, height: 48))
-        
-        phoneContainerView.anchor(top: instructionLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 32, left: 32, bottom: 0, right: 32), size: .init(width: view.frame.width, height: 49))
+        phoneContainerView.anchor(top: instructionMobileNumberLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 32, left: 32, bottom: 0, right: 32), size: .init(width: view.frame.width, height: 49))
         
         phoneNumberTextField.anchor(top: phoneContainerView.topAnchor, leading: phoneContainerView.leadingAnchor, bottom: phoneBorderView.bottomAnchor, trailing: phoneContainerView.trailingAnchor, padding: .zero, size: .zero)
         
         phoneBorderView.anchor(top: nil, leading: phoneContainerView.leadingAnchor, bottom: phoneContainerView.bottomAnchor, trailing: phoneContainerView.trailingAnchor, padding: .zero, size: .init(width: phoneContainerView.frame.width, height: 1))
         
-//        proceedButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//        proceedButton.topAnchor.constraint(equalTo: phoneContainerView.bottomAnchor).isActive = true
-//        proceedButton.widthAnchor.constraint(equalToConstant: 42)
-//        proceedButton.heightAnchor.constraint(equalToConstant: 42)
+        proceedButton.topAnchor.constraint(equalTo: phoneContainerView.bottomAnchor, constant: 48).isActive = true
+        proceedButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
+        proceedButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        proceedButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        // For OTP screen
         
     }
     

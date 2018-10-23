@@ -13,6 +13,7 @@
 		A50348DF21693E8F005BE136 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A50348DE21693E8F005BE136 /* Assets.xcassets */; };
 		A50348E221693E8F005BE136 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A50348E021693E8F005BE136 /* LaunchScreen.storyboard */; };
 		A50348EB21697779005BE136 /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50348EA21697779005BE136 /* ContainerView.swift */; };
+		A50B23B4217EC56B00D72B03 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50B23B3217EC56B00D72B03 /* Color.swift */; };
 		A50D9579216E7FAC002F1DC3 /* DesignableOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50D9578216E7FAB002F1DC3 /* DesignableOptionView.swift */; };
 		A53393E8217B9E9C00F7C428 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53393E7217B9E9C00F7C428 /* HomeController.swift */; };
 		A53393EA217BD4DC00F7C428 /* InputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53393E9217BD4DC00F7C428 /* InputView.swift */; };
@@ -34,6 +35,7 @@
 		A50348E121693E8F005BE136 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A50348E321693E8F005BE136 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A50348EA21697779005BE136 /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
+		A50B23B3217EC56B00D72B03 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		A50D9578216E7FAB002F1DC3 /* DesignableOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignableOptionView.swift; sourceTree = "<group>"; };
 		A53393E7217B9E9C00F7C428 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		A53393E9217BD4DC00F7C428 /* InputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				A56337B5216B775D0081D561 /* Extensions.swift */,
+				A50B23B3217EC56B00D72B03 /* Color.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 				A50348EB21697779005BE136 /* ContainerView.swift in Sources */,
 				A53393EA217BD4DC00F7C428 /* InputView.swift in Sources */,
 				A53393E8217B9E9C00F7C428 /* HomeController.swift in Sources */,
+				A50B23B4217EC56B00D72B03 /* Color.swift in Sources */,
 				A56337B6216B775D0081D561 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
