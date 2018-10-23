@@ -17,22 +17,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
         label.numberOfLines = 2
         label.font = UIFont(name: "Montserrat-Regular", size: 14)
         label.textAlignment = .center
+        label.isHidden = true
         return label
-    }()
-    
-    let instructionOtpLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor.init(rgb: 0xFFFFFF, alpha: 0.4)
-        label.text = "A 4 digit OTP has been sent on your\n mobile number"
-        label.numberOfLines = 2
-        label.font = UIFont(name: "Montserrat-Regular", size: 14)
-        label.textAlignment = .center
-        return label
-    }()
-    
-    let otpDigitsContainerView: UIView = {
-        let containerView = UIView()
-        return containerView
     }()
     
     let phoneNumberTextField: UITextField = {
@@ -40,9 +26,9 @@ class LoginController: UIViewController, UITextFieldDelegate {
         phoneTextField.text = "+1 "
         phoneTextField.font = UIFont(name: "Montserrat-Regular", size: 18)
         phoneTextField.textAlignment = .center
-        phoneTextField.textColor = UIColor.init(rgb: 0xFFFFFF, alpha: 1)
         phoneTextField.keyboardType = .numberPad
-        
+        phoneTextField.textColor = UIColor.init(rgb: 0xFFFFFF, alpha: 1)
+        phoneTextField.isHidden = true
         // edit action
         phoneTextField.addTarget(self, action: #selector(phoneTextfieldDidChange), for: .editingChanged)
         return phoneTextField
@@ -52,17 +38,20 @@ class LoginController: UIViewController, UITextFieldDelegate {
         let label = UILabel()
         label.text = "+1"
         label.font = UIFont(name: "Montserrat-Regular", size: 14)
+        label.isHidden = true
         return label
     }()
     
     let phoneBorderView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
+        view.isHidden = true
         return view
     }()
     
     let phoneContainerView: UIView = {
         let containerView = UIView()
+        containerView.isHidden = true
         return containerView
     }()
     
@@ -78,7 +67,31 @@ class LoginController: UIViewController, UITextFieldDelegate {
         return button
     }()
     
+    
+    let instructionOtpLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.init(rgb: 0xFFFFFF, alpha: 0.4)
+        label.text = "A 4 digit OTP has been sent on your\n mobile number"
+        label.numberOfLines = 2
+        label.font = UIFont(name: "Montserrat-Regular", size: 14)
+        label.textAlignment = .center
+        return label
+    }()
+    
+    let optCellWidth: CGFloat = 44
+    let otpCellHeight: CGFloat = 44
+    let otpCellGap: CGFloat = 6
+    var otpCellFields = [UITextField]()
+    
+    let otpCellsContainerView: UIView = {
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        return containerView
+    }()
+    
+    
     @objc func phoneTextfieldDidChange(textField: UITextField) {
+        // #TODO: Fix this deprecated code
         if textField.text?.characters.count == 13{
             UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 self.proceedButton.alpha = 1
@@ -128,7 +141,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
 //
         view.backgroundColor = UIColor.init(rgb: Color.primary.rawValue, alpha: 1)
         
-        //add views
+        //add Mobile input views
         phoneNumberTextField.delegate = self
         
         view.addSubview(instructionMobileNumberLabel)
@@ -138,6 +151,11 @@ class LoginController: UIViewController, UITextFieldDelegate {
         phoneContainerView.addSubview(isdCodeLabel)
         phoneContainerView.addSubview(phoneBorderView)
         view.addSubview(proceedButton)
+        
+        //add OTP views
+        view.addSubview(instructionOtpLabel)
+        view.addSubview(otpCellsContainerView)
+        setUpOtpCells()
         // Constraints
         // For Mobile number screen
         instructionMobileNumberLabel.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 24, left: 20, bottom: 0, right: 20), size: .init(width: view.frame.width, height: 48))
@@ -155,11 +173,49 @@ class LoginController: UIViewController, UITextFieldDelegate {
         proceedButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         // For OTP screen
+        instructionOtpLabel.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 24, left: 20, bottom: 0, right: 20), size: .init(width: view.frame.width, height: 48))
         
+        otpCellsContainerView.topAnchor.constraint(equalTo: instructionOtpLabel.bottomAnchor, constant: 32).isActive = true
+        otpCellsContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        let totalWidthOfOtpCellContainer = 6 * optCellWidth + 5 * otpCellGap
+        otpCellsContainerView.widthAnchor.constraint(equalToConstant: totalWidthOfOtpCellContainer).isActive = true
+        otpCellsContainerView.heightAnchor.constraint(equalToConstant: otpCellHeight).isActive = true
+        
+        
+//        otpCellsContainerView.anchor(top: instructionOtpLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 32, left: 32, bottom: 0, right: 32), size: .init(width: optCellWidth * 6, height: otpCellHeight))
+//
     }
     
+    func setUpOtpCells() {
+        for index in 0..<6{
+            let otpCell = UITextField()
+            otpCell.translatesAutoresizingMaskIntoConstraints = false
+            otpCell.backgroundColor = .white
+            otpCell.font = UIFont(name: "Montserrat-Regular", size: 18)
+            otpCell.textAlignment = .center
+            otpCell.keyboardType = .numberPad
+            otpCell.layer.cornerRadius = 8
+            addCellToContaine(otpCell: otpCell, index: index)
+            otpCellFields.append(otpCell)
+        }
+    }
     
-    
+    func addCellToContaine(otpCell: UITextField, index: Int) {
+        otpCellsContainerView.addSubview(otpCell)
+        // constraint
+        let marginFromLeadingEdge = CGFloat(index) * optCellWidth + CGFloat(index) * otpCellGap
+        otpCell.leadingAnchor.constraint(equalTo: otpCellsContainerView.leadingAnchor, constant: marginFromLeadingEdge).isActive = true
+        otpCell.topAnchor.constraint(equalTo: otpCellsContainerView.topAnchor).isActive = true
+        otpCell.bottomAnchor.constraint(equalTo: otpCellsContainerView.bottomAnchor).isActive = true
+        otpCell.widthAnchor.constraint(equalToConstant: optCellWidth).isActive = true
+        otpCell.widthAnchor.constraint(equalToConstant: otpCellHeight).isActive = true
+        
+//        if index % 2 == 0 {
+//            otpCell.backgroundColor = .red
+//        }else{
+//            otpCell.backgroundColor = .blue
+//        }
+    }
     // changes status bar content in wite color: date, battery etc
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
