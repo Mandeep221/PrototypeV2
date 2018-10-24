@@ -12,5 +12,5 @@ enum Color: UInt{
     case primaryBlue = 0x1E0D3B
     case primary = 0x2B2D5C
     case secondary = 0xEEEEEE
-    case textPrimary = 0xFFFFFF
+    case whiteColor = 0xFFFFFF
 }

@@ -18,7 +18,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         label.numberOfLines = 2
         label.font = UIFont(name: "Montserrat-Regular", size: 14)
         label.textAlignment = .center
-        //label.isHidden = true
+        label.isHidden = true
         return label
     }()
     
@@ -29,7 +29,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         phoneTextField.textAlignment = .center
         phoneTextField.keyboardType = .numberPad
         phoneTextField.textColor = UIColor.init(rgb: 0xFFFFFF, alpha: 1)
-        //phoneTextField.isHidden = true
+        phoneTextField.isHidden = true
         // edit action
         phoneTextField.addTarget(self, action: #selector(phoneTextfieldDidChange), for: .editingChanged)
         return phoneTextField
@@ -46,13 +46,13 @@ class LoginController: UIViewController, UITextFieldDelegate {
     let phoneBorderView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        //view.isHidden = true
+        view.isHidden = true
         return view
     }()
     
     let phoneContainerView: UIView = {
         let containerView = UIView()
-        //containerView.isHidden = true
+        containerView.isHidden = true
         return containerView
     }()
     
@@ -66,6 +66,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         button.tintColor = UIColor.init(rgb: Color.primary.rawValue, alpha: 1)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(handleProceed), for: .touchUpInside)
+        button.isHidden = true
         return button
     }()
     
@@ -107,11 +108,11 @@ class LoginController: UIViewController, UITextFieldDelegate {
     let instructionOtpLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.init(rgb: 0xFFFFFF, alpha: 0.4)
-        label.text = "A 4 digit OTP has been sent on your\n mobile number"
+        label.text = "A 6 digit OTP has been sent on your\n mobile number"
         label.numberOfLines = 2
         label.font = UIFont(name: "Montserrat-Regular", size: 14)
         label.textAlignment = .center
-        label.alpha = 0
+        //label.alpha = 0
         return label
     }()
     
@@ -123,8 +124,38 @@ class LoginController: UIViewController, UITextFieldDelegate {
     let otpCellsContainerView: UIView = {
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.alpha = 0
+        //containerView.alpha = 0
         return containerView
+    }()
+    
+    let resendOtpButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .clear
+        button.layer.cornerRadius = 16
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.init(rgb: Color.whiteColor.rawValue, alpha: 0.4).cgColor
+        button.titleLabel?.font = UIFont(name: "Montserrat-Regular", size: 13)
+        //button.alpha = 0
+        button.setTitle("Resend OTP", for: .normal)
+        button.setTitleColor(UIColor.init(rgb: Color.whiteColor.rawValue, alpha: 1), for: .normal)
+        button.tintColor = UIColor.init(rgb: Color.primary.rawValue, alpha: 1)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        //button.addTarget(self, action: #selector(handleProceed), for: .touchUpInside)
+        return button
+    }()
+    
+    let verifyOtpButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 25
+        let image = UIImage(named: "right_arrow")
+        button.setImage(image, for: .normal)
+        //button.alpha = 0
+        button.tintColor = UIColor.init(rgb: Color.primary.rawValue, alpha: 1)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        //button.addTarget(self, action: #selector(handleProceed), for: .touchUpInside)
+        //button.isHidden = true
+        return button
     }()
     
     func changeScene(sceneId: String) {
@@ -180,6 +211,21 @@ class LoginController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = UIColor.init(rgb: Color.primary.rawValue, alpha: 1)
+        
+        setupNavigationBar()
+        addViews()
+        addConstraints()
+        
+        // add background gradient
+//        let gradient = CAGradientLayer()
+//        gradient.frame = view.bounds
+//        gradient.colors = [UIColor.init(rgb: Color.primaryPurple.rawValue, alpha: 1).cgColor, UIColor.init(rgb: Color.primaryBlue.rawValue, alpha: 1).cgColor]
+//        view.layer.insertSublayer(gradient, at: 0)
+//
+    }
+    
+    func setupNavigationBar() {
         self.edgesForExtendedLayout = []
         navigationController?.navigationBar.isTranslucent = false
         
@@ -189,24 +235,18 @@ class LoginController: UIViewController, UITextFieldDelegate {
         // Custom Navigation bar title
         let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32, height: view.frame.height))
         titleLabel.text = "Enter your mobile number"
-        titleLabel.textColor = UIColor.init(rgb: Color.textPrimary.rawValue, alpha: 1)
+        titleLabel.textColor = UIColor.init(rgb: Color.whiteColor.rawValue, alpha: 1)
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
         navigationItem.titleView = titleLabel
-        
-        // add background gradient
-//        let gradient = CAGradientLayer()
-//        gradient.frame = view.bounds
-//        gradient.colors = [UIColor.init(rgb: Color.primaryPurple.rawValue, alpha: 1).cgColor, UIColor.init(rgb: Color.primaryBlue.rawValue, alpha: 1).cgColor]
-//        view.layer.insertSublayer(gradient, at: 0)
-//
-        view.backgroundColor = UIColor.init(rgb: Color.primary.rawValue, alpha: 1)
-        
+    }
+    
+    func addViews() {
         //add Mobile input views
-        phoneNumberTextField.delegate = self
         
         view.addSubview(instructionMobileNumberLabel)
         view.addSubview(phoneNumberTextField)
+        phoneNumberTextField.delegate = self
         view.addSubview(phoneContainerView)
         phoneContainerView.addSubview(phoneNumberTextField)
         phoneContainerView.addSubview(isdCodeLabel)
@@ -216,8 +256,12 @@ class LoginController: UIViewController, UITextFieldDelegate {
         //add OTP views
         view.addSubview(instructionOtpLabel)
         view.addSubview(otpCellsContainerView)
+        view.addSubview(resendOtpButton)
+        view.addSubview(verifyOtpButton)
         setUpOtpCells()
-        // Constraints
+    }
+    
+    func addConstraints() {
         // For Mobile number screen
         instructionMobileNumberLabel.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 24, left: 20, bottom: 0, right: 20), size: .init(width: view.frame.width, height: 48))
         
@@ -242,9 +286,16 @@ class LoginController: UIViewController, UITextFieldDelegate {
         otpCellsContainerView.widthAnchor.constraint(equalToConstant: totalWidthOfOtpCellContainer).isActive = true
         otpCellsContainerView.heightAnchor.constraint(equalToConstant: otpCellHeight).isActive = true
         
+        resendOtpButton.topAnchor.constraint(equalTo: otpCellsContainerView.bottomAnchor, constant: 20).isActive = true
+        resendOtpButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        resendOtpButton.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        resendOtpButton.heightAnchor.constraint(equalToConstant: 32).isActive = true
         
-//        otpCellsContainerView.anchor(top: instructionOtpLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 32, left: 32, bottom: 0, right: 32), size: .init(width: optCellWidth * 6, height: otpCellHeight))
-//
+        verifyOtpButton.topAnchor.constraint(equalTo: resendOtpButton.bottomAnchor, constant: 20).isActive = true
+        verifyOtpButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
+        verifyOtpButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        verifyOtpButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
     func setUpOtpCells() {
@@ -256,13 +307,14 @@ class LoginController: UIViewController, UITextFieldDelegate {
             otpCell.textAlignment = .center
             otpCell.keyboardType = .numberPad
             otpCell.layer.cornerRadius = 8
-            addCellToContaine(otpCell: otpCell, index: index)
+            addCellToContainer(otpCell: otpCell, index: index)
             otpCellFields.append(otpCell)
         }
     }
     
-    func addCellToContaine(otpCell: UITextField, index: Int) {
+    func addCellToContainer(otpCell: UITextField, index: Int) {
         otpCellsContainerView.addSubview(otpCell)
+
         // constraint
         let marginFromLeadingEdge = CGFloat(index) * optCellWidth + CGFloat(index) * otpCellGap
         otpCell.leadingAnchor.constraint(equalTo: otpCellsContainerView.leadingAnchor, constant: marginFromLeadingEdge).isActive = true
@@ -270,13 +322,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
         otpCell.bottomAnchor.constraint(equalTo: otpCellsContainerView.bottomAnchor).isActive = true
         otpCell.widthAnchor.constraint(equalToConstant: optCellWidth).isActive = true
         otpCell.widthAnchor.constraint(equalToConstant: otpCellHeight).isActive = true
-        
-//        if index % 2 == 0 {
-//            otpCell.backgroundColor = .red
-//        }else{
-//            otpCell.backgroundColor = .blue
-//        }
     }
+    
     // changes status bar content in wite color: date, battery etc
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
