@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class LoginController: UIViewController, UITextFieldDelegate {
     
@@ -17,7 +18,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         label.numberOfLines = 2
         label.font = UIFont(name: "Montserrat-Regular", size: 14)
         label.textAlignment = .center
-        label.isHidden = true
+        //label.isHidden = true
         return label
     }()
     
@@ -28,7 +29,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         phoneTextField.textAlignment = .center
         phoneTextField.keyboardType = .numberPad
         phoneTextField.textColor = UIColor.init(rgb: 0xFFFFFF, alpha: 1)
-        phoneTextField.isHidden = true
+        //phoneTextField.isHidden = true
         // edit action
         phoneTextField.addTarget(self, action: #selector(phoneTextfieldDidChange), for: .editingChanged)
         return phoneTextField
@@ -38,20 +39,20 @@ class LoginController: UIViewController, UITextFieldDelegate {
         let label = UILabel()
         label.text = "+1"
         label.font = UIFont(name: "Montserrat-Regular", size: 14)
-        label.isHidden = true
+        //label.isHidden = true
         return label
     }()
     
     let phoneBorderView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.isHidden = true
+        //view.isHidden = true
         return view
     }()
     
     let phoneContainerView: UIView = {
         let containerView = UIView()
-        containerView.isHidden = true
+        //containerView.isHidden = true
         return containerView
     }()
     
@@ -64,9 +65,44 @@ class LoginController: UIViewController, UITextFieldDelegate {
         button.alpha = 0
         button.tintColor = UIColor.init(rgb: Color.primary.rawValue, alpha: 1)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(handleProceed), for: .touchUpInside)
         return button
     }()
     
+    //firebase verification ID
+    var verificationId: String?
+    
+    @objc func handleProceed() {
+        
+        if let phoneNum = phoneNumberTextField.text {
+            // phone has text
+            // create alert
+            let alert = UIAlertController(title: "Phone number", message: "An OTP will be sent to \n \(phoneNum)", preferredStyle: .alert)
+            
+            let actionSendOtp = UIAlertAction(title: "Send OTP", style: .default) { (UIAlertAction) in
+                
+                PhoneAuthProvider.provider().verifyPhoneNumber(String("+1")+phoneNum, uiDelegate: nil, completion: { (verificationId, error) in
+                    if(error != nil){
+                        print("Auth error: \(String(describing: error?.localizedDescription))")
+                    }else{
+                        // Success Scenario, Save the verification code
+                        // this code will be used along with otp verification
+                        self.verificationId = verificationId
+                        
+                        // Jump to the OTP screen
+                        self.changeScene(sceneId: "otp")
+                    }
+                })
+            }
+            
+            let actionCancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            alert.addAction(actionSendOtp)
+            alert.addAction(actionCancel)
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+    }
     
     let instructionOtpLabel: UILabel = {
         let label = UILabel()
@@ -75,6 +111,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         label.numberOfLines = 2
         label.font = UIFont(name: "Montserrat-Regular", size: 14)
         label.textAlignment = .center
+        label.alpha = 0
         return label
     }()
     
@@ -86,13 +123,37 @@ class LoginController: UIViewController, UITextFieldDelegate {
     let otpCellsContainerView: UIView = {
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.alpha = 0
         return containerView
     }()
     
+    func changeScene(sceneId: String) {
+        if sceneId == "phoneNumber"{
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                // show all phone number scene views
+                self.phoneContainerView.alpha = 1
+                self.instructionMobileNumberLabel.alpha = 1
+                self.proceedButton.alpha = 1
+                
+                // hide all otp scene views
+                self.otpCellsContainerView.alpha = 0
+                self.instructionOtpLabel.alpha = 0
+            }, completion: nil)
+        }else if sceneId == "otp"{
+            // hide all phone number scene views
+            self.phoneContainerView.alpha = 0
+            self.instructionMobileNumberLabel.alpha = 0
+            self.proceedButton.alpha = 0
+            
+            // show all otp scene views
+            self.otpCellsContainerView.alpha = 1
+            self.instructionOtpLabel.alpha = 1
+        }
+    }
     
     @objc func phoneTextfieldDidChange(textField: UITextField) {
         // #TODO: Fix this deprecated code
-        if textField.text?.characters.count == 13{
+        if textField.text?.characters.count == 10{
             UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 self.proceedButton.alpha = 1
                 self.proceedButton.transform = CGAffineTransform(scaleX: 1, y: 1)
@@ -113,7 +174,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
         
-        return updatedText.count <= 13
+        return updatedText.count <= 10
     }
     
     override func viewDidLoad() {
