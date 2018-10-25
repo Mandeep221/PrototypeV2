@@ -10,7 +10,9 @@ import UIKit
 import FirebaseAuth
 
 class LoginController: UIViewController, UITextFieldDelegate {
-    
+    var navbarTitleLabel: UILabel?
+    var backBarButtonItem: UIBarButtonItem?
+    var numberOfOtpFieldsEmpty = 6
     let containerForPhoneNumberScene: UIView = {
         let container = UIView()
         return container
@@ -163,6 +165,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         button.tintColor = UIColor.init(rgb: Color.primary.rawValue, alpha: 1)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(handleVerify), for: .touchUpInside)
+        button.alpha = 0
         return button
     }()
     
@@ -172,6 +175,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     func changeScene(sceneId: String) {
         if sceneId == "phoneNumber"{
+            navigationItem.leftBarButtonItem = nil
+            changeNavigationBarTitle(title: "Enter your mobile number")
             phoneNumberTextField.becomeFirstResponder()
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 // show all phone number scene views
@@ -183,6 +188,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 self.containerForOtpScene.transform = self.containerForOtpScene.transform.translatedBy(x: self.containerForOtpScene.frame.width, y: 0)
             }, completion: nil)
         }else if sceneId == "otp"{
+            navigationItem.leftBarButtonItem = backBarButtonItem
+            changeNavigationBarTitle(title: "Verify your mobile number")
             otpCellFields[0].becomeFirstResponder()
             clearAllFields()
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
@@ -221,6 +228,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
             let text = textField.text
             
             if text?.utf16.count == 1 {
+                numberOfOtpFieldsEmpty-=1
                 switch textField{
                 case otpCellFields[0]:
                     otpCellFields[1].becomeFirstResponder()
@@ -237,6 +245,20 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 default:
                     break
                 }
+            }else{
+                numberOfOtpFieldsEmpty+=1
+            }
+            
+            if numberOfOtpFieldsEmpty == 0{
+                UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                    self.verifyOtpButton.alpha = 1
+                    self.verifyOtpButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+                }, completion: nil)
+            }else{
+                UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                    self.verifyOtpButton.alpha = 0
+                    self.verifyOtpButton.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+                }, completion: nil)
             }
         }
     }
@@ -284,13 +306,24 @@ class LoginController: UIViewController, UITextFieldDelegate {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIColor.init(rgb: 0x323260, alpha: 1).as1ptImage()
         
+        // back button
+        let backImage = UIImage(named: "back_button")?.withRenderingMode(.alwaysOriginal)
+        backBarButtonItem = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(handleBackBarButton))
+        
         // Custom Navigation bar title
-        let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32, height: view.frame.height))
-        titleLabel.text = "Enter your mobile number"
-        titleLabel.textColor = UIColor.init(rgb: Color.whiteColor.rawValue, alpha: 1)
-        titleLabel.textAlignment = .center
-        titleLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
-        navigationItem.titleView = titleLabel
+        navbarTitleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32, height: view.frame.height))
+        if let navbarTitleLabel = navbarTitleLabel{
+            navbarTitleLabel.text = "Enter your mobile number"
+            navbarTitleLabel.textColor = UIColor.init(rgb: Color.whiteColor.rawValue, alpha: 1)
+            navbarTitleLabel.textAlignment = .center
+            navbarTitleLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
+            navigationItem.titleView = navbarTitleLabel
+        }
+        
+    }
+    
+    @objc func handleBackBarButton() {
+        
     }
     
     func addViews() {
@@ -397,6 +430,13 @@ class LoginController: UIViewController, UITextFieldDelegate {
         otpCell.bottomAnchor.constraint(equalTo: otpCellsContainerView.bottomAnchor).isActive = true
         otpCell.widthAnchor.constraint(equalToConstant: optCellWidth).isActive = true
         otpCell.widthAnchor.constraint(equalToConstant: otpCellHeight).isActive = true
+    }
+    
+    func changeNavigationBarTitle(title: String){
+        if let navbarTitleLabel =  navbarTitleLabel{
+            navbarTitleLabel.text = title
+            navigationItem.titleView = navbarTitleLabel
+        }
     }
     
     // changes status bar content in wite color: date, battery etc
