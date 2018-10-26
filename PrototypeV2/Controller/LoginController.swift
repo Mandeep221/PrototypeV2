@@ -8,11 +8,15 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseDatabase
 
 class LoginController: UIViewController, UITextFieldDelegate {
     var navbarTitleLabel: UILabel?
     var backBarButtonItem: UIBarButtonItem?
     var numberOfOtpFieldsEmpty = 6
+    
+    // firebase database Ref
+    var ref: DatabaseReference?
     let containerForPhoneNumberScene: UIView = {
         let container = UIView()
         return container
@@ -75,14 +79,20 @@ class LoginController: UIViewController, UITextFieldDelegate {
         button.alpha = 0
         button.tintColor = UIColor.init(rgb: Color.primary.rawValue, alpha: 1)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(handleProceed), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleSubmitPhoneNumber), for: .touchUpInside)
         return button
     }()
     
     //firebase verification ID
     var verificationId: String?
     
-    @objc func handleProceed() {
+    //enum for scene flags
+    enum sceneType: String{
+        case phoneNumber = "phoneNumber"
+        case otp = "Otp"
+    }
+    
+    @objc func handleSubmitPhoneNumber() {
         
         if let phoneNum = phoneNumberTextField.text {
             // phone has text
@@ -90,19 +100,18 @@ class LoginController: UIViewController, UITextFieldDelegate {
             let alert = UIAlertController(title: "Phone number", message: "An OTP will be sent to \n \(phoneNum)", preferredStyle: .alert)
             
             let actionSendOtp = UIAlertAction(title: "Send OTP", style: .default) { (UIAlertAction) in
-                self.changeScene(sceneId: "otp")
-//                PhoneAuthProvider.provider().verifyPhoneNumber(String("+1")+phoneNum, uiDelegate: nil, completion: { (verificationId, error) in
-//                    if(error != nil){
-//                        print("Auth error: \(String(describing: error?.localizedDescription))")
-//                    }else{
-//                        // Success Scenario, Save the verification code
-//                        // this code will be used along with otp verification
-//                        self.verificationId = verificationId
-//
-//                        // Jump to the OTP screen
-//                        self.changeScene(sceneId: "otp")
-//                    }
-//                })
+                PhoneAuthProvider.provider().verifyPhoneNumber(String("+1")+phoneNum, uiDelegate: nil, completion: { (verificationId, error) in
+                    if(error != nil){
+                        print("Auth error: \(String(describing: error?.localizedDescription))")
+                    }else{
+                        // Success Scenario, Save the verification code
+                        // this code will be used along with otp verification
+                        self.verificationId = verificationId
+
+                        // Jump to the OTP screen
+                        self.changeScene(sceneId: sceneType.otp.rawValue)
+                    }
+                })
             }
             
             let actionCancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -164,17 +173,43 @@ class LoginController: UIViewController, UITextFieldDelegate {
         button.setImage(image, for: .normal)
         button.tintColor = UIColor.init(rgb: Color.primary.rawValue, alpha: 1)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(handleVerify), for: .touchUpInside)
-        button.alpha = 0
+        button.addTarget(self, action: #selector(handleVerifyOtp), for: .touchUpInside)
         return button
     }()
     
-    @objc func handleVerify() {
-        changeScene(sceneId: "phoneNumber")
+    @objc func handleVerifyOtp() {
+        let credentials: PhoneAuthCredential = PhoneAuthProvider.provider().credential(withVerificationID: verificationId!, verificationCode: getCode())
+        Auth.auth().signIn(with: credentials) { (user, error) in
+            if let error = error{
+                print("error: \(error.localizedDescription)")
+            }else{
+                // Success Scenario
+                
+                //check if user is returning or new
+                self.ref?.child("users").child((user?.uid)!).child("mobile").observeSingleEvent(of: .value, with: {(snap) in
+                    
+                    if snap.exists(){
+                        
+                        // User mobile number already in DB, So user is returing
+                        print("Returing User")
+                    }else{
+                        //Phone number not available, User is new
+                        print("New User")
+                        self.ref?.child("users").child((user?.uid)!).child("mobile").setValue(user?.phoneNumber)
+                    }
+                })
+                
+                print("sucessfully logged in...")
+            }
+        }
+    }
+    
+    private func getCode() -> String {
+        return otpCellFields[0].text! + otpCellFields[1].text! + otpCellFields[2].text! + otpCellFields[3].text! + otpCellFields[4].text! + otpCellFields[5].text!
     }
     
     func changeScene(sceneId: String) {
-        if sceneId == "phoneNumber"{
+        if sceneId == sceneType.phoneNumber.rawValue{
             navigationItem.leftBarButtonItem = nil
             changeNavigationBarTitle(title: "Enter your mobile number")
             phoneNumberTextField.becomeFirstResponder()
@@ -187,7 +222,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 self.containerForOtpScene.alpha = 0
                 self.containerForOtpScene.transform = self.containerForOtpScene.transform.translatedBy(x: self.containerForOtpScene.frame.width, y: 0)
             }, completion: nil)
-        }else if sceneId == "otp"{
+        }else if sceneId == sceneType.otp.rawValue{
             navigationItem.leftBarButtonItem = backBarButtonItem
             changeNavigationBarTitle(title: "Verify your mobile number")
             otpCellFields[0].becomeFirstResponder()
@@ -208,6 +243,9 @@ class LoginController: UIViewController, UITextFieldDelegate {
         for index in 0..<otpCellFields.count {
             otpCellFields[index].text = ""
         }
+        
+        // hide verify button
+        verifyOtpButton.alpha = 0
     }
     
     @objc func textfieldDidChange(textField: UITextField) {
@@ -226,7 +264,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
             }
         }else{
             let text = textField.text
-            
+            changeOtpTextFieldBorder(currentTextField: textField)
             if text?.utf16.count == 1 {
                 numberOfOtpFieldsEmpty-=1
                 switch textField{
@@ -260,6 +298,16 @@ class LoginController: UIViewController, UITextFieldDelegate {
                     self.verifyOtpButton.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
                 }, completion: nil)
             }
+        }
+    }
+    
+    func changeOtpTextFieldBorder(currentTextField: UITextField) {
+        let text = currentTextField.text
+        if text?.utf16.count == 1{
+            currentTextField.layer.borderWidth = 1
+            currentTextField.layer.borderColor = UIColor(rgb: Color.orange.rawValue, alpha: 1).cgColor
+        }else{
+            currentTextField.layer.borderWidth = 0
         }
     }
     
@@ -323,7 +371,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func handleBackBarButton() {
-        
+        changeScene(sceneId: sceneType.phoneNumber.rawValue)
     }
     
     func addViews() {
