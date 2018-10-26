@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         
         //create a rootviewcontroller, and it to the window created above
-        window?.rootViewController = UINavigationController(rootViewController: LoginController())
+        window?.rootViewController = UINavigationController(rootViewController: HomeController())
         
         // for navigation bar color
         UINavigationBar.appearance().barTintColor = UIColor(rgb: 0x2B2D5C, alpha: 1)

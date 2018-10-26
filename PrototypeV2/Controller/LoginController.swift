@@ -250,7 +250,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     @objc func textfieldDidChange(textField: UITextField) {
         if textField.tag == 0 {
-            // #TODO: Fix this deprecated code
+            // FIXME: Fix this deprecated code
             if textField.text?.characters.count == 10{
                 UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                     self.proceedButton.alpha = 1
