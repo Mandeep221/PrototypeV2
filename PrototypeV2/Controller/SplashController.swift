@@ -16,7 +16,7 @@ class SplashController: UIViewController {
         label.font = UIFont(name: "Montserrat-Bold", size: 18)
         label.textAlignment = .center
         label.text = "Math For Kids"
-        //label.backgroundColor = .yellow
+        label.backgroundColor = .yellow
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -74,6 +74,8 @@ class SplashController: UIViewController {
             let newX = self.overlayView.frame.origin.x + self.overlayView.frame.width
             
             self.overlayView.frame = CGRect(x: newX, y: self.overlayView.frame.origin.y, width: 0, height: 48)
+            
+            self.appTitleLabel.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
         }, completion: nil)
     }
 
