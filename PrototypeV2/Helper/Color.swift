@@ -15,4 +15,8 @@ enum Color: UInt{
     case whiteColor = 0xFFFFFF
     case textPrimary = 0x212121
     case orange = 0xFF7A00
+    case red =  0xFF0000
+    case offWhite = 0xEBE8E8
+    case skyBlue = 0x90C1EC
+    
 }

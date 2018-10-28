@@ -16,6 +16,7 @@
 		A50348EB21697779005BE136 /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50348EA21697779005BE136 /* ContainerView.swift */; };
 		A50B23B4217EC56B00D72B03 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50B23B3217EC56B00D72B03 /* Color.swift */; };
 		A50D9579216E7FAC002F1DC3 /* DesignableOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50D9578216E7FAB002F1DC3 /* DesignableOptionView.swift */; };
+		A51270EB2185696900222E6F /* SplashController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51270EA2185696900222E6F /* SplashController.swift */; };
 		A53393E8217B9E9C00F7C428 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53393E7217B9E9C00F7C428 /* HomeController.swift */; };
 		A53393EA217BD4DC00F7C428 /* InputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53393E9217BD4DC00F7C428 /* InputView.swift */; };
 		A534C0A3216DCF7100FD56D4 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A534C0A1216DCF7100FD56D4 /* Montserrat-Bold.ttf */; };
@@ -41,6 +42,7 @@
 		A50348EA21697779005BE136 /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
 		A50B23B3217EC56B00D72B03 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		A50D9578216E7FAB002F1DC3 /* DesignableOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignableOptionView.swift; sourceTree = "<group>"; };
+		A51270EA2185696900222E6F /* SplashController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashController.swift; sourceTree = "<group>"; };
 		A53393E7217B9E9C00F7C428 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		A53393E9217BD4DC00F7C428 /* InputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
 		A534C0A1216DCF7100FD56D4 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 				A5F08CFC217AB11D00EC9B16 /* LoginController.swift */,
 				A53393E7217B9E9C00F7C428 /* HomeController.swift */,
 				A50348D921693E8E005BE136 /* ViewController.swift */,
+				A51270EA2185696900222E6F /* SplashController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -300,6 +303,7 @@
 				A50D9579216E7FAC002F1DC3 /* DesignableOptionView.swift in Sources */,
 				A50348DA21693E8E005BE136 /* ViewController.swift in Sources */,
 				A50348D821693E8E005BE136 /* AppDelegate.swift in Sources */,
+				A51270EB2185696900222E6F /* SplashController.swift in Sources */,
 				A50348EB21697779005BE136 /* ContainerView.swift in Sources */,
 				A53393EA217BD4DC00F7C428 /* InputView.swift in Sources */,
 				A53393E8217B9E9C00F7C428 /* HomeController.swift in Sources */,
