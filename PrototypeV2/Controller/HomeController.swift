@@ -17,7 +17,7 @@ class HomeController: UIViewController {
     let bottomMargin:CGFloat = 20
     let leftMargin:CGFloat = 20
     let rightMargin:CGFloat = 20
-    var initialFrameValues: [CGRect]?
+    
     var backGroundColors: [UIColor] = [UIColor.init(rgb: Color.red.rawValue, alpha: 1),
                                        UIColor.init(rgb: Color.orange.rawValue, alpha: 1),
                                        UIColor.init(rgb: Color.offWhite.rawValue, alpha: 1),
@@ -56,10 +56,15 @@ class HomeController: UIViewController {
                 view.addSubview(homeViews[index])
                 homeViews[index].addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleExpansion)))
                 
+                homeViews[index].translatesAutoresizingMaskIntoConstraints = false
+                
+                let bottomAnchor = homeViews[index].bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: bottomMargin)
+                bottomAnchor.isActive = false
+                
                 if index == 0 {
-                    
                     homeViews[index].anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: navBarHeight! + statusBarHeight + topMargin, left: leftMargin, bottom: bottomMargin, right: rightMargin), size: .init(width: 0, height: remainingTotalheight/5))
                 }else{
+                    
                     homeViews[index].anchor(top: homeViews[index - 1].bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: topMargin, left: leftMargin, bottom: 0, right: rightMargin), size: .init(width: 0, height: remainingTotalheight/5))
                 }
                 
@@ -67,18 +72,8 @@ class HomeController: UIViewController {
         }
     }
     
-    override func viewDidLayoutSubviews() {
-        // MARK: store all the initial originYValues for unexpanded views so we wont have to calculate them later on
-        
-        //print("before: ", homeViews![1].frame.origin.y)
-        initialFrameValues = [CGRect]()
-        for index in 0..<homeViews!.count{
-            //print("expandingView \(index): ",homeViews![index].frame.height)
-            initialFrameValues?.append(homeViews![index].frame)
-        }
-    }
-    
     @objc func handleLogout(){
+        
         UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: [.curveEaseOut], animations: {
             if let homeViews = self.homeViews{
                 for index in 0..<homeViews.count{
@@ -89,26 +84,44 @@ class HomeController: UIViewController {
             // shrink the expanded view
             if let views = self.homeViews, self.tappedIndex != -1{
                 let tappedView = views[self.tappedIndex]
+                //tappedView.translatesAutoresizingMaskIntoConstraints = false
+                self.tAnchor?.isActive = false
+                if self.tappedIndex == 0{
+                    tappedView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: self.topMargin).isActive = true
+                }else{
+                    tappedView.topAnchor.constraint(equalTo: views[self.tappedIndex - 1].bottomAnchor, constant: self.topMargin).isActive = true
+                }
+                
+                tappedView.heightAnchor.constraint(equalToConstant: self.remainingTotalheight!/5).isActive = true
+               
+                self.bAnchor?.isActive = false
                 self.view.layoutIfNeeded()
-                tappedView.frame = self.initialFrameValues![self.tappedIndex]
             }
            
+            
         
         }, completion: nil)
         
     }
     
+    var bAnchor: NSLayoutConstraint?
+    var tAnchor:NSLayoutConstraint?
+    
     @objc func handleExpansion(gesture: UITapGestureRecognizer){
-        let frame = CGRect(x: leftMargin, y: topMarginForViews! + topMargin, width: view.frame.width - leftMargin - rightMargin, height: view.frame.height - topMarginForViews! - topMargin - bottomMargin)
         
-        if let v = gesture.view{
+        if let v = gesture.view, let totalHeight = self.remainingTotalheight, let homeViews = self.homeViews{
+            self.tappedIndex =  homeViews.index(of: v as! ModuleTypeContainerView)!
+            
+            tAnchor = v.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: self.topMargin)
+            tAnchor?.isActive = true
+            bAnchor = v.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -self.bottomMargin)
+            bAnchor?.isActive = true
+            
             self.view.bringSubview(toFront: v)
-            self.view.layoutIfNeeded()
+            
             UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: [.curveEaseOut], animations: {
-                
-                if let totalHeight = self.remainingTotalheight, let homeViews = self.homeViews{
-                    v.frame = frame
-                    self.tappedIndex =  homeViews.index(of: v as! ModuleTypeContainerView)!
+                self.view.layoutIfNeeded()
+
                     for index in 0..<homeViews.count{
                         if index < self.tappedIndex{
                             // above master view
@@ -119,7 +132,7 @@ class HomeController: UIViewController {
                             homeViews[index].transform = CGAffineTransform(translationX: 0, y: yValue)
                         }
                     }
-                }
+                
             }, completion: { (_) in
                 
             })
