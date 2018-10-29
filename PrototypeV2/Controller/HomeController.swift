@@ -31,15 +31,19 @@ class HomeController: UIViewController {
         //self.edgesForExtendedLayout = []
         view.backgroundColor = .white
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        
+        setupViews()
+    }
     
+    fileprivate func setupViews() {
         let navBarHeight = self.navigationController?.navigationBar.frame.height
         let statusBarHeight = UIApplication.shared.statusBarFrame.height
         topMarginForViews = navBarHeight! + statusBarHeight
         
         // MARK: creating UIView array and mapping them to a background color at the same time
-        homeViews = backGroundColors.map({ (color) -> UIView in
-            let view = UIView()
-            view.backgroundColor = color
+        homeViews = backGroundColors.map({ (color) -> ModuleTypeContainerView in
+            let view = ModuleTypeContainerView()
+            view.accentBorderView.backgroundColor = color
             return view
         })
         
@@ -103,7 +107,7 @@ class HomeController: UIViewController {
                 
                 if let totalHeight = self.remainingTotalheight, let homeViews = self.homeViews{
                     v.frame = frame
-                    self.tappedIndex =  homeViews.index(of: v)!
+                    self.tappedIndex =  homeViews.index(of: v as! ModuleTypeContainerView)!
                     for index in 0..<homeViews.count{
                         if index < self.tappedIndex{
                             // above master view
