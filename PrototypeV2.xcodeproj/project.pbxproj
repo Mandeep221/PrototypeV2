@@ -26,6 +26,7 @@
 		A534C0AA216DCFE800FD56D4 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A534C0A7216DCFE800FD56D4 /* OpenSans-Regular.ttf */; };
 		A56337B6216B775D0081D561 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56337B5216B775D0081D561 /* Extensions.swift */; };
 		A57DDED32180C68100FA15AC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A57DDED22180C68100FA15AC /* GoogleService-Info.plist */; };
+		A5EFD9D9218674BF00A557C7 /* ModuleTypeContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5EFD9D8218674BF00A557C7 /* ModuleTypeContainerView.swift */; };
 		A5F08CFD217AB11D00EC9B16 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F08CFC217AB11D00EC9B16 /* LoginController.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +54,7 @@
 		A550381A2180CD4700BADE6D /* PrototypeV2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PrototypeV2.entitlements; sourceTree = "<group>"; };
 		A56337B5216B775D0081D561 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		A57DDED22180C68100FA15AC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A5EFD9D8218674BF00A557C7 /* ModuleTypeContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleTypeContainerView.swift; sourceTree = "<group>"; };
 		A5F08CFC217AB11D00EC9B16 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		D1ED6231411182698A36C54F /* Pods-PrototypeV2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PrototypeV2.release.xcconfig"; path = "Pods/Target Support Files/Pods-PrototypeV2/Pods-PrototypeV2.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -120,6 +122,7 @@
 				A50348EA21697779005BE136 /* ContainerView.swift */,
 				A50D9578216E7FAB002F1DC3 /* DesignableOptionView.swift */,
 				A53393E9217BD4DC00F7C428 /* InputView.swift */,
+				A5EFD9D8218674BF00A557C7 /* ModuleTypeContainerView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -307,6 +310,7 @@
 				A50348EB21697779005BE136 /* ContainerView.swift in Sources */,
 				A53393EA217BD4DC00F7C428 /* InputView.swift in Sources */,
 				A53393E8217B9E9C00F7C428 /* HomeController.swift in Sources */,
+				A5EFD9D9218674BF00A557C7 /* ModuleTypeContainerView.swift in Sources */,
 				A50B23B4217EC56B00D72B03 /* Color.swift in Sources */,
 				A56337B6216B775D0081D561 /* Extensions.swift in Sources */,
 			);
