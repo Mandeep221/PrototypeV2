@@ -36,13 +36,6 @@ class ModuleTypeContainerView: UIView {
         self.layer.shadowRadius = 2
         self.layer.shadowOpacity = 0.5
         self.layer.shadowOffset = CGSize(width: 0, height: 2)
-        
-//        containerView.layer.cornerRadius = containerView.frame.height / 2
-//
-//        containerView.layer.shadowColor = UIColor(white: 0.4, alpha: 0.4).cgColor
-//        containerView.layer.shadowRadius = 8
-//        containerView.layer.shadowOpacity = 0.5
-//        containerView.layer.shadowOffset = CGSize(width: 0, height: 4)
     }
     
 }

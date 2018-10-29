@@ -23,6 +23,7 @@ extension UIView{
         self.layer.add(shakeAnimation, forKey: "position")
     }
     
+   
     // Autolayout constraints
     func anchor(top: NSLayoutYAxisAnchor?, leading: NSLayoutXAxisAnchor?, bottom: NSLayoutYAxisAnchor?, trailing: NSLayoutXAxisAnchor?, padding: UIEdgeInsets = .zero, size: CGSize = .zero) {
        
@@ -30,6 +31,10 @@ extension UIView{
         
         if let top = top{
             topAnchor.constraint(equalTo: top, constant: padding.top).isActive = true
+            
+//            let constraint = self.constraint(equalTo: anchor, constant:constant)
+//            constraint.identifier = identifier
+            
         }
         if let leading = leading{
             leadingAnchor.constraint(equalTo: leading, constant: padding.left).isActive = true
@@ -131,4 +136,22 @@ extension UIColor {
         return nil
     }
 }
+
+
+extension NSLayoutAnchor {
+    @objc func constraintEqualToAnchor(anchor: NSLayoutAnchor!, constant:CGFloat, identifier:String) -> NSLayoutConstraint! {
+        let constraint = self.constraint(equalTo: anchor, constant:constant)
+        constraint.identifier = identifier
+        return constraint
+    }
+}
+
+
+extension UIView {
+    func constraint(withIdentifier:String) -> NSLayoutConstraint? {
+        return self.constraints.filter{ $0.identifier == withIdentifier }.first
+    }
+}
+
+
 
