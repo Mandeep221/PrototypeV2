@@ -14,6 +14,10 @@
 		A50348DF21693E8F005BE136 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A50348DE21693E8F005BE136 /* Assets.xcassets */; };
 		A50348E221693E8F005BE136 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A50348E021693E8F005BE136 /* LaunchScreen.storyboard */; };
 		A50348EB21697779005BE136 /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50348EA21697779005BE136 /* ContainerView.swift */; };
+		A50455892187EDFF0077CD5F /* ChartController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50455882187EDFF0077CD5F /* ChartController.swift */; };
+		A504558B2187EE120077CD5F /* BasicBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = A504558A2187EE120077CD5F /* BasicBarChart.swift */; };
+		A504558D218882040077CD5F /* BarEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A504558C218882030077CD5F /* BarEntry.swift */; };
+		A504558F218882DB0077CD5F /* BeautifulBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = A504558E218882DB0077CD5F /* BeautifulBarChart.swift */; };
 		A50B23B4217EC56B00D72B03 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50B23B3217EC56B00D72B03 /* Color.swift */; };
 		A50D9579216E7FAC002F1DC3 /* DesignableOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50D9578216E7FAB002F1DC3 /* DesignableOptionView.swift */; };
 		A51270EB2185696900222E6F /* SplashController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51270EA2185696900222E6F /* SplashController.swift */; };
@@ -41,6 +45,10 @@
 		A50348E121693E8F005BE136 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A50348E321693E8F005BE136 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A50348EA21697779005BE136 /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
+		A50455882187EDFF0077CD5F /* ChartController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartController.swift; sourceTree = "<group>"; };
+		A504558A2187EE120077CD5F /* BasicBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicBarChart.swift; sourceTree = "<group>"; };
+		A504558C218882030077CD5F /* BarEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarEntry.swift; sourceTree = "<group>"; };
+		A504558E218882DB0077CD5F /* BeautifulBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeautifulBarChart.swift; sourceTree = "<group>"; };
 		A50B23B3217EC56B00D72B03 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		A50D9578216E7FAB002F1DC3 /* DesignableOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignableOptionView.swift; sourceTree = "<group>"; };
 		A51270EA2185696900222E6F /* SplashController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashController.swift; sourceTree = "<group>"; };
@@ -123,6 +131,9 @@
 				A50D9578216E7FAB002F1DC3 /* DesignableOptionView.swift */,
 				A53393E9217BD4DC00F7C428 /* InputView.swift */,
 				A5EFD9D8218674BF00A557C7 /* ModuleTypeContainerView.swift */,
+				A504558A2187EE120077CD5F /* BasicBarChart.swift */,
+				A504558C218882030077CD5F /* BarEntry.swift */,
+				A504558E218882DB0077CD5F /* BeautifulBarChart.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -155,6 +166,7 @@
 				A53393E7217B9E9C00F7C428 /* HomeController.swift */,
 				A50348D921693E8E005BE136 /* ViewController.swift */,
 				A51270EA2185696900222E6F /* SplashController.swift */,
+				A50455882187EDFF0077CD5F /* ChartController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -306,11 +318,15 @@
 				A50D9579216E7FAC002F1DC3 /* DesignableOptionView.swift in Sources */,
 				A50348DA21693E8E005BE136 /* ViewController.swift in Sources */,
 				A50348D821693E8E005BE136 /* AppDelegate.swift in Sources */,
+				A504558F218882DB0077CD5F /* BeautifulBarChart.swift in Sources */,
 				A51270EB2185696900222E6F /* SplashController.swift in Sources */,
 				A50348EB21697779005BE136 /* ContainerView.swift in Sources */,
+				A50455892187EDFF0077CD5F /* ChartController.swift in Sources */,
 				A53393EA217BD4DC00F7C428 /* InputView.swift in Sources */,
 				A53393E8217B9E9C00F7C428 /* HomeController.swift in Sources */,
 				A5EFD9D9218674BF00A557C7 /* ModuleTypeContainerView.swift in Sources */,
+				A504558D218882040077CD5F /* BarEntry.swift in Sources */,
+				A504558B2187EE120077CD5F /* BasicBarChart.swift in Sources */,
 				A50B23B4217EC56B00D72B03 /* Color.swift in Sources */,
 				A56337B6216B775D0081D561 /* Extensions.swift in Sources */,
 			);

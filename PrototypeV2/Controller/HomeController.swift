@@ -74,7 +74,7 @@ class HomeController: UIViewController {
     
     @objc func handleLogout(){
         
-        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: [.curveEaseOut], animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.55, initialSpringVelocity: 0.5, options: [.curveEaseOut], animations: {
             if let homeViews = self.homeViews{
                 for index in 0..<homeViews.count{
                     homeViews[index].transform = .identity
@@ -119,7 +119,7 @@ class HomeController: UIViewController {
             
             self.view.bringSubview(toFront: v)
             
-            UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: [.curveEaseOut], animations: {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.55, initialSpringVelocity: 0.5, options: [.curveEaseOut], animations: {
                 self.view.layoutIfNeeded()
 
                     for index in 0..<homeViews.count{

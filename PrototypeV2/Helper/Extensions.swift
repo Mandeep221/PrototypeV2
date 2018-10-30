@@ -11,6 +11,18 @@ import UIKit
 
 extension UIView{
     
+    func scale(fromValue: CGFloat, toValue: CGFloat) {
+        let scaleSpringAnimation = CABasicAnimation(keyPath: "transform.scale")
+        scaleSpringAnimation.fromValue = fromValue
+        scaleSpringAnimation.toValue = toValue
+//        scaleSpringAnimation.initialVelocity = 1
+//        scaleSpringAnimation.damping = 2
+        //scaleSpringAnimation.autoreverses = true
+        scaleSpringAnimation.repeatCount = 0
+        scaleSpringAnimation.duration = 1
+        layer.add(scaleSpringAnimation, forKey: "transform.scale")
+    }
+    
     // shake view
     func shake() {
         let shakeAnimation = CABasicAnimation(keyPath: "position")
