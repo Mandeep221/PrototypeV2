@@ -13,6 +13,21 @@ class SplashController: UIViewController {
     var dotOneHeightAnchor: NSLayoutConstraint?
     var dotTwoHeightAnchor: NSLayoutConstraint?
     
+    let backgroundImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "kid")
+        imageView.contentMode = .scaleAspectFill
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    let backgroundImageOverylayView: UIView = {
+        let imageOverlayView = UIView()
+        imageOverlayView.backgroundColor = UIColor.init(rgb: Color.primaryPurple.rawValue, alpha: 0.7)
+        imageOverlayView.translatesAutoresizingMaskIntoConstraints = false
+        return imageOverlayView
+    }()
+    
     lazy var rotatingView: UIView = {
         let rotatingView = UIView()
         //rotatingView.backgroundColor = UIColor.init(rgb: Color.offWhite.rawValue, alpha: 0.4)
@@ -20,7 +35,7 @@ class SplashController: UIViewController {
         
         let viewMinus = UIView()
         viewMinus.layer.cornerRadius = 10
-        viewMinus.backgroundColor = UIColor.init(rgb: Color.orange.rawValue, alpha: 0.6)
+        viewMinus.backgroundColor = UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1)
         viewMinus.translatesAutoresizingMaskIntoConstraints = false
         rotatingView.addSubview(viewMinus)
         
@@ -31,22 +46,19 @@ class SplashController: UIViewController {
         rotatingView.addSubview(viewPlus)
         
         let dotOneView = UIView()
-        dotOneView.backgroundColor = UIColor.init(rgb: Color.red.rawValue, alpha: 0.6)
+        dotOneView.backgroundColor = UIColor.init(rgb: Color.weedGreen.rawValue, alpha: 1)
+        //dotOneView.backgroundColor = UIColor.init(rgb: Color.bananaYellow.rawValue, alpha: 1)
         dotOneView.translatesAutoresizingMaskIntoConstraints = false
         dotOneView.layer.cornerRadius = 10
         dotOneView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         viewPlus.addSubview(dotOneView)
         
         let dotTwoView = UIView()
-        //dotTwoView.backgroundColor = UIColor.init(rgb: Color.primaryBlue.rawValue, alpha: 0.6)
-        dotTwoView.backgroundColor = .green
+        dotTwoView.backgroundColor = UIColor.init(rgb: Color.weedGreen.rawValue, alpha: 1)
         dotTwoView.translatesAutoresizingMaskIntoConstraints = false
         dotTwoView.layer.cornerRadius = 10
         dotTwoView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         viewPlus.addSubview(dotTwoView)
-        
-//        let viewMinus = UIView()
-//        rotatingView.addSubview(viewMinus)
         
         // constraints
         viewMinus.centerXAnchor.constraint(equalTo: rotatingView.centerXAnchor).isActive = true
@@ -81,14 +93,26 @@ class SplashController: UIViewController {
         label.font = UIFont(name: "Montserrat-Regular", size: 24)
         label.textAlignment = .center
         label.text = "Math For Kids"
-        //label.backgroundColor = .yellow
+        
+        // for Stroke
+        let strokeTextAttributes = [
+            NSAttributedStringKey.strokeColor : UIColor.init(rgb: Color.primaryBlue.rawValue, alpha: 1),
+           //NSAttributedStringKey.foregroundColor : UIColor.white,
+           //NSAttributedStringKey.strokeColor [ ]
+            NSAttributedStringKey.strokeWidth : 3.0,
+            NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 30)]
+           // NSAttributedStringKey.font : UIF
+            as [NSAttributedStringKey : Any]
+        
+        label.attributedText = NSMutableAttributedString(string: "Math For Kids", attributes: strokeTextAttributes)
+        
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     let overlayView: UIView = {
        let view = UIView()
-        view.backgroundColor = UIColor.init(rgb: Color.red.rawValue, alpha: 1)
+        view.backgroundColor = UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -98,11 +122,24 @@ class SplashController: UIViewController {
         
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         
-        view.backgroundColor = UIColor.init(rgb: Color.primaryBlue.rawValue, alpha: 1)
+        view.backgroundColor = UIColor.init(rgb: Color.oceanBlue.rawValue, alpha: 1)
         
+//        view.addSubview(backgroundImage)
+//        view.addSubview(backgroundImageOverylayView)
         view.addSubview(rotatingView)
         view.addSubview(appTitleLabel)
         view.addSubview(overlayView)
+        
+//        backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+//        backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+//        backgroundImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+//        backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+//
+//        backgroundImageOverylayView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+//        backgroundImageOverylayView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+//        backgroundImageOverylayView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+//        backgroundImageOverylayView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
         
         rotatingView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         rotatingView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true

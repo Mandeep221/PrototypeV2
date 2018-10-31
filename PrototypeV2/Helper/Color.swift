@@ -19,4 +19,11 @@ enum Color: UInt{
     case offWhite = 0xEBE8E8
     case skyBlue = 0x90C1EC
     
+    case oceanBlue = 0x00C8FF
+    case bananaYellow = 0xF8EC00
+    case weedGreen = 0x00FEAE
+    case wineRed = 0xFF2C6C
+    case peacockPurple = 0xA83FE5
+    case peakcockBlue = 0x11007D
+    
 }
