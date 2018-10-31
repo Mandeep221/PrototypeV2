@@ -95,14 +95,11 @@ class SplashController: UIViewController {
         label.text = "Math For Kids"
         
         // for Stroke
-        let strokeTextAttributes = [
-            NSAttributedStringKey.strokeColor : UIColor.init(rgb: Color.primaryBlue.rawValue, alpha: 1),
-           //NSAttributedStringKey.foregroundColor : UIColor.white,
-           //NSAttributedStringKey.strokeColor [ ]
-            NSAttributedStringKey.strokeWidth : 3.0,
-            NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 30)]
-           // NSAttributedStringKey.font : UIF
-            as [NSAttributedStringKey : Any]
+        let strokeTextAttributes: [NSAttributedStringKey : Any] = [
+            NSAttributedStringKey.strokeColor : UIColor.black,
+            NSAttributedStringKey.foregroundColor : UIColor.white,
+            NSAttributedStringKey.strokeWidth : -2.0,
+            ]
         
         label.attributedText = NSMutableAttributedString(string: "Math For Kids", attributes: strokeTextAttributes)
         
@@ -119,6 +116,7 @@ class SplashController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         

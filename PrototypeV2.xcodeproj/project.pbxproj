@@ -30,6 +30,9 @@
 		A534C0AA216DCFE800FD56D4 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A534C0A7216DCFE800FD56D4 /* OpenSans-Regular.ttf */; };
 		A56337B6216B775D0081D561 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56337B5216B775D0081D561 /* Extensions.swift */; };
 		A57DDED32180C68100FA15AC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A57DDED22180C68100FA15AC /* GoogleService-Info.plist */; };
+		A5C59B272189C60500BABA7B /* Yellowtail-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = A5C59B262189C43300BABA7B /* Yellowtail-Regular.otf */; };
+		A5C59B292189D11500BABA7B /* ModuleDataInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C59B282189D11500BABA7B /* ModuleDataInjector.swift */; };
+		A5C59B2C2189D72F00BABA7B /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C59B2B2189D72F00BABA7B /* Module.swift */; };
 		A5EFD9D9218674BF00A557C7 /* ModuleTypeContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5EFD9D8218674BF00A557C7 /* ModuleTypeContainerView.swift */; };
 		A5F08CFD217AB11D00EC9B16 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F08CFC217AB11D00EC9B16 /* LoginController.swift */; };
 /* End PBXBuildFile section */
@@ -62,6 +65,9 @@
 		A550381A2180CD4700BADE6D /* PrototypeV2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PrototypeV2.entitlements; sourceTree = "<group>"; };
 		A56337B5216B775D0081D561 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		A57DDED22180C68100FA15AC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A5C59B262189C43300BABA7B /* Yellowtail-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Yellowtail-Regular.otf"; sourceTree = "<group>"; };
+		A5C59B282189D11500BABA7B /* ModuleDataInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleDataInjector.swift; sourceTree = "<group>"; };
+		A5C59B2B2189D72F00BABA7B /* Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
 		A5EFD9D8218674BF00A557C7 /* ModuleTypeContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleTypeContainerView.swift; sourceTree = "<group>"; };
 		A5F08CFC217AB11D00EC9B16 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		D1ED6231411182698A36C54F /* Pods-PrototypeV2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PrototypeV2.release.xcconfig"; path = "Pods/Target Support Files/Pods-PrototypeV2/Pods-PrototypeV2.release.xcconfig"; sourceTree = "<group>"; };
@@ -109,6 +115,7 @@
 		A50348D621693E8E005BE136 /* PrototypeV2 */ = {
 			isa = PBXGroup;
 			children = (
+				A5C59B2A2189D71800BABA7B /* Model */,
 				A550381A2180CD4700BADE6D /* PrototypeV2.entitlements */,
 				A5F08CFB217AB0F300EC9B16 /* Controller */,
 				A534C0A0216DCF6300FD56D4 /* Fonts */,
@@ -145,6 +152,7 @@
 				A534C0A7216DCFE800FD56D4 /* OpenSans-Regular.ttf */,
 				A534C0A5216DCFE700FD56D4 /* OpenSans-Semibold.ttf */,
 				A534C0A1216DCF7100FD56D4 /* Montserrat-Bold.ttf */,
+				A5C59B262189C43300BABA7B /* Yellowtail-Regular.otf */,
 				A534C0A2216DCF7100FD56D4 /* Montserrat-Regular.ttf */,
 			);
 			path = Fonts;
@@ -159,6 +167,14 @@
 			path = Helper;
 			sourceTree = "<group>";
 		};
+		A5C59B2A2189D71800BABA7B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A5C59B2B2189D72F00BABA7B /* Module.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		A5F08CFB217AB0F300EC9B16 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -167,6 +183,7 @@
 				A50348D921693E8E005BE136 /* ViewController.swift */,
 				A51270EA2185696900222E6F /* SplashController.swift */,
 				A50455882187EDFF0077CD5F /* ChartController.swift */,
+				A5C59B282189D11500BABA7B /* ModuleDataInjector.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -248,6 +265,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5C59B272189C60500BABA7B /* Yellowtail-Regular.otf in Resources */,
 				A534C0A8216DCFE800FD56D4 /* OpenSans-Semibold.ttf in Resources */,
 				A534C0A9216DCFE800FD56D4 /* OpenSans-Bold.ttf in Resources */,
 				A57DDED32180C68100FA15AC /* GoogleService-Info.plist in Resources */,
@@ -315,6 +333,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5F08CFD217AB11D00EC9B16 /* LoginController.swift in Sources */,
+				A5C59B292189D11500BABA7B /* ModuleDataInjector.swift in Sources */,
+				A5C59B2C2189D72F00BABA7B /* Module.swift in Sources */,
 				A50D9579216E7FAC002F1DC3 /* DesignableOptionView.swift in Sources */,
 				A50348DA21693E8E005BE136 /* ViewController.swift in Sources */,
 				A50348D821693E8E005BE136 /* AppDelegate.swift in Sources */,

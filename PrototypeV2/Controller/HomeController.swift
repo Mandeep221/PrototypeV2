@@ -39,14 +39,20 @@ class HomeController: UIViewController {
         let navBarHeight = self.navigationController?.navigationBar.frame.height
         let statusBarHeight = UIApplication.shared.statusBarFrame.height
         topMarginForViews = navBarHeight! + statusBarHeight
-        
-        // MARK: creating UIView array and mapping them to a background color at the same time
-        homeViews = backGroundColors.map({ (color) -> ModuleTypeContainerView in
+
+        // MARK: map module data
+        homeViews = [ModuleTypeContainerView]()
+        for index in 0..<5 {
+            let module = ModuleDataInjector.getModuleAt(index: index)
             let view = ModuleTypeContainerView()
-            view.accentBorderView.backgroundColor = color
-            return view
-        })
+            view.module = module
+            homeViews?.append(view)
+        }
         
+        
+        
+        
+        // MARK: Constraints
         if let topPaddingForAllViews = topMarginForViews, let moduleViews = homeViews{
             remainingTotalheight = view.frame.height - topPaddingForAllViews - topMargin - CGFloat(moduleViews.count) * bottomMargin
         }
@@ -101,13 +107,18 @@ class HomeController: UIViewController {
             
         
         }, completion: nil)
-        
+        self.tappedIndex =  -1
     }
     
     var bAnchor: NSLayoutConstraint?
     var tAnchor:NSLayoutConstraint?
     
     @objc func handleExpansion(gesture: UITapGestureRecognizer){
+        
+        // If user taps again on the expanded Module container
+        if(self.tappedIndex == homeViews?.index(of: gesture.view!)){
+            return
+        }
         
         if let v = gesture.view, let totalHeight = self.remainingTotalheight, let homeViews = self.homeViews{
             self.tappedIndex =  homeViews.index(of: v as! ModuleTypeContainerView)!
