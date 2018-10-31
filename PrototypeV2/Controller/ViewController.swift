@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import AVFoundation
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, AVSpeechSynthesizerDelegate {
     
     var topMarginForInstructionLabelOne: CGFloat = 20
     
@@ -226,8 +227,12 @@ class ViewController: UIViewController {
         setConstraintsForOptions()
     }
     
+    var synthesizer: AVSpeechSynthesizer?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        synthesizer = AVSpeechSynthesizer()
+        synthesizer?.delegate = self
         
         containerViewOne.handleSwipeDirectionHelp()
         // nav bar
@@ -388,7 +393,9 @@ class ViewController: UIViewController {
         if show {
             UIView.animate(withDuration: 1, delay: 0.5, options: [.curveEaseOut], animations: {
                 label.alpha = 1.0
-            }, completion: nil)
+            }, completion: { (_) in
+                self.textToSpeech(text: label.text!)
+            })
         }else{
             UIView.animate(withDuration: 1, animations: {
                 label.alpha = 0.0
@@ -402,6 +409,22 @@ class ViewController: UIViewController {
                 self.optionButton[index].alpha = 1.0
             }, completion: nil)
         }
+    }
+    
+    func textToSpeech(text: String) {
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.Samantha-compact")  // Samantha, Karen, Tessa
+        synthesizer!.speak(utterance)
+    }
+    
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance) {
+        let mutableAttributedString = NSMutableAttributedString(string: utterance.speechString)
+        mutableAttributedString.addAttribute(.foregroundColor, value: UIColor.red, range: characterRange)
+        instructionOneLabel.attributedText = mutableAttributedString
+    }
+
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        instructionOneLabel.attributedText = NSAttributedString(string: utterance.speechString)
     }
 }
 
