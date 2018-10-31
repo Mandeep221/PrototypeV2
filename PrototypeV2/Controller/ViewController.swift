@@ -10,6 +10,14 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    var topMarginForInstructionLabelOne: CGFloat = 20
+    
+    var moduleType: ModuleType? = nil {
+        didSet{
+           moduleTitleLabel.text = moduleType?.rawValue
+        }
+    }
+    
     var num1 = 0
     var num2 = 0
     var answer = 0
@@ -144,9 +152,6 @@ class ViewController: UIViewController {
             option.alpha = 0.0
             option.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleOptionSelection)))
             
-            // give shadow
-            
-            
             opt.append(option)
         }
         return opt
@@ -166,21 +171,7 @@ class ViewController: UIViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        containerViewOne.handleSwipeDirectionHelp()
-        // nav bar
-        navigationController?.navigationBar.isTranslucent = false
-        
-        edgesForExtendedLayout = []
-        
-        // provide this view controller reference to each container view
-        containerViewOne.viewRef = self
-        containerViewTwo.viewRef = self
-        
-        //#2C163B
-        view.backgroundColor = UIColor(rgb: 0x2C163B, alpha: 1)
-        
+    fileprivate func addViews() {
         view.addSubview(moduleSubTitleLabel)
         view.addSubview(moduleTitleLabel)
         view.addSubview(instructionOneLabel)
@@ -194,38 +185,68 @@ class ViewController: UIViewController {
         view.addSubview(optionThreeButton)
         view.addSubview(optionFourButton)
         view.addSubview(instructionThreeLabel)
-        for index in 0...optionButton.count - 1{
-           view.addSubview(optionButton[index])
-        }
         
+        for index in 0...optionButton.count - 1{
+            view.addSubview(optionButton[index])
+        }
+    }
+    
+    fileprivate func setConstraintsForContainerTwo() {
+        instructionTwoLabel.anchor(top: containerViewOne.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 40))
+        
+        anchorForContainerTwo.anchor(top: containerViewTwo.topAnchor, leading: view.leadingAnchor, bottom: containerViewTwo.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: (containerViewTwo.containerHeight - containerViewTwo.anchorHeight)/2, left: 0, bottom: 24, right: 0), size: .init(width: 0, height: containerViewTwo.anchorHeight))
+        
+        containerViewTwo.anchor(top: instructionTwoLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: containerViewTwo.cellHeight))
+    }
+    
+    fileprivate func setConstraintsForContainerOne() {
+        instructionOneLabel.anchor(top: moduleTitleLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: topMarginForInstructionLabelOne, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 40))
+        
+        anchorForContainerOne.anchor(top: containerViewOne.topAnchor, leading: view.leadingAnchor, bottom: containerViewOne.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: (containerViewOne.containerHeight - containerViewOne.anchorHeight)/2, left: 0, bottom: 24, right: 0), size: .init(width: 0, height: containerViewOne.anchorHeight))
+        
+        containerViewOne.anchor(top: instructionOneLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: containerViewOne.cellHeight))
+    }
+    
+    fileprivate func addConstraints() {
         //Auto layout constraints
         moduleSubTitleLabel.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 20))
         
         moduleTitleLabel.anchor(top: moduleSubTitleLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 40))
         
-        instructionOneLabel.anchor(top: moduleTitleLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 40))
+        // Hide second container view if the module is counting, by not setting its constraints
+        if moduleType == ModuleType.counting {
+            topMarginForInstructionLabelOne = 48
+            instructionTwoLabel.isHidden = true
+            containerViewTwo.isHidden = true
+        }else{
+            setConstraintsForContainerTwo()
+        }
         
-        containerViewOne.anchor(top: instructionOneLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 50))
-        
-        anchorForContainerOne.anchor(top: containerViewOne.topAnchor, leading: view.leadingAnchor, bottom: containerViewOne.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 24, left: 0, bottom: 24, right: 0), size: .init(width: 0, height: 2))
-        
-        anchorForContainerTwo.anchor(top: containerViewTwo.topAnchor, leading: view.leadingAnchor, bottom: containerViewTwo.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 24, left: 0, bottom: 24, right: 0), size: .init(width: 0, height: 2))
-        
-        instructionTwoLabel.anchor(top: containerViewOne.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 40))
-        
-        containerViewTwo.anchor(top: instructionTwoLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 50))
-        
-//        // for the third instruction
-//        instructionThreeLabel.anchor(top: containerViewTwo.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 8, left: 16, bottom: 16, right: 16), size: .init(width: view.frame.width, height: 40))
-        
+        setConstraintsForContainerOne()
         setConstraintsForOptions()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        //
+        containerViewOne.handleSwipeDirectionHelp()
+        // nav bar
+        navigationController?.navigationBar.isTranslucent = false
+        edgesForExtendedLayout = []
+        
+        // provide this view controller reference to each container view
+        containerViewOne.viewRef = self
+        containerViewTwo.viewRef = self
+        
+        //#2C163B
+        view.backgroundColor = UIColor(rgb: 0x2C163B, alpha: 1)
+        
+        addViews()
+        addConstraints()
         generateTwoRandomNumbers()
         setUpFourOptions()
         setSwipableCells()
         handleScene(label: instructionOneLabel, show: true)
-        //containerViewOne.handleSwipeDirectionHelp()
     }
     
     func setUpFourOptions(){
@@ -271,14 +292,16 @@ class ViewController: UIViewController {
         
         // all cells swiped in first container
         if answer == num1{
-            //hide first instruction
-            handleScene(label: instructionOneLabel, show: false)
             
-            //show second instruction
-            handleScene(label: instructionTwoLabel , show: true)
-            
-            // swipe direction help for container two
-            //containerViewTwo.handleSwipeDirectionHelp()
+            if moduleType == ModuleType.counting{
+                showAllOptions()
+            }else{
+                //hide first instruction
+                handleScene(label: instructionOneLabel, show: false)
+                
+                //show second instruction
+                handleScene(label: instructionTwoLabel , show: true)
+            }
         }
         
         // when all the cells have been swiped in both containers, total will be the answer of final count

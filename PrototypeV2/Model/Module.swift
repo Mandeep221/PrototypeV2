@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class Module{
-    var name: String?
+    var name: ModuleType?
     var accentColor: UIColor?
     var image: UIImage?
 }

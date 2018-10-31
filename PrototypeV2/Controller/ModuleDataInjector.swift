@@ -19,7 +19,7 @@ class ModuleDataInjector{
     
     static let moduleImages: [UIImage] = [#imageLiteral(resourceName: "add_icon"), #imageLiteral(resourceName: "add_icon"), #imageLiteral(resourceName: "subtract_icon"), #imageLiteral(resourceName: "add_icon"), #imageLiteral(resourceName: "add_icon")]
     
-    static let moduleNames: [String] = ["Counting", "Addition", "Subtraction", "Multiplication", "Division"]
+    static let moduleNames: [ModuleType] = [.counting, .addition, .subtraction, .multiplication, .division]
     
     
     static func getModuleAt(index: Int) -> Module{

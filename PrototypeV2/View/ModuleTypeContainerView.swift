@@ -64,7 +64,7 @@ class ModuleTypeContainerView: UIView {
         
         addConstraints()
         
-        moduleTitleLabel.text = module.name
+        moduleTitleLabel.text = module.name?.rawValue
         accentBorderView.backgroundColor = module.accentColor
         moduleImageView.image = module.image?.withRenderingMode(.alwaysTemplate)
         moduleImageView.tintColor = module.accentColor

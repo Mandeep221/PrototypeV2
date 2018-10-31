@@ -27,7 +27,6 @@ class HomeController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //self.edgesForExtendedLayout = []
         view.backgroundColor = .white
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
@@ -49,9 +48,6 @@ class HomeController: UIViewController {
             homeViews?.append(view)
         }
         
-        
-        
-        
         // MARK: Constraints
         if let topPaddingForAllViews = topMarginForViews, let moduleViews = homeViews{
             remainingTotalheight = view.frame.height - topPaddingForAllViews - topMargin - CGFloat(moduleViews.count) * bottomMargin
@@ -60,7 +56,7 @@ class HomeController: UIViewController {
         if let remainingTotalheight = remainingTotalheight, let homeViews = homeViews{
             for index in 0..<homeViews.count{
                 view.addSubview(homeViews[index])
-                homeViews[index].addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleExpansion)))
+                homeViews[index].addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(launchModule)))
                 
                 homeViews[index].translatesAutoresizingMaskIntoConstraints = false
                 
@@ -76,6 +72,10 @@ class HomeController: UIViewController {
                 
             }
         }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        print("Module: viewDidLayoutSubviews")
     }
     
     @objc func handleLogout(){
@@ -110,6 +110,15 @@ class HomeController: UIViewController {
         self.tappedIndex =  -1
     }
     
+    @objc func launchModule(gesture: UITapGestureRecognizer) {
+        // MARK: Launch the real deal
+        if let tappedView = gesture.view as! ModuleTypeContainerView?{
+            let nextVc = ViewController()
+            nextVc.moduleType = tappedView.module?.name
+            navigationController?.pushViewController(nextVc, animated: true)
+        }
+    }
+    
     var bAnchor: NSLayoutConstraint?
     var tAnchor:NSLayoutConstraint?
     
@@ -120,9 +129,9 @@ class HomeController: UIViewController {
             return
         }
         
-        if let v = gesture.view, let totalHeight = self.remainingTotalheight, let homeViews = self.homeViews{
-            self.tappedIndex =  homeViews.index(of: v as! ModuleTypeContainerView)!
+        if let v = gesture.view as! ModuleTypeContainerView?, let totalHeight = self.remainingTotalheight, let homeViews = self.homeViews{
             
+            self.tappedIndex =  homeViews.index(of: v)!
             tAnchor = v.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: self.topMargin)
             tAnchor?.isActive = true
             bAnchor = v.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -self.bottomMargin)
