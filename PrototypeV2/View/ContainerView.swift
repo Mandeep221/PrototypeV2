@@ -17,7 +17,7 @@ class ContainerView: UIView {
     let containerHeight:CGFloat = 50
     let anchorHeight: CGFloat = 2
     var viewRef: ViewController?
-    
+    var isLadySpeaking: Bool = true
     // Maximum number of cells that can be swiped
     var swipableCellCount = 0
     
@@ -148,9 +148,9 @@ class ContainerView: UIView {
     /*This method changes the position of the object that is swiped
      and also increses the count for number of objects that has been swiped*/
     @objc func handleSwipeGesture(gesture: UISwipeGestureRecognizer) {
-        if let view = gesture.view {
-            
-            if swipeCounter == swipableCellCount || swipeCounter == (cellViews?.count)!{
+        
+        if let view = gesture.view{
+            if swipeCounter == swipableCellCount || swipeCounter == (cellViews?.count)! || isLadySpeaking{
                 return
             }
             
@@ -169,7 +169,7 @@ class ContainerView: UIView {
                 view.frame = CGRect(x: x, y: view.frame.origin.y, width: self.cellWidth, height: self.cellHeight)
                 self.swipeCounter += 1
                 
-                view.backgroundColor = UIColor.init(rgb: 0xED5169, alpha: 1)
+                view.backgroundColor = UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1)
                 
             }, completion: nil)
             
@@ -199,5 +199,36 @@ class ContainerView: UIView {
                 view.alpha = 1.0
             })
         }
+    }
+    
+    func scaleSwipedCells(){
+        let totalCells = cellViews!.count
+        let abc = totalCells - swipableCellCount
+        
+        let pulse = CABasicAnimation(keyPath: "transform.scale")
+        pulse.duration = 0.5
+        pulse.fromValue = 0.90
+        pulse.toValue = 1.0
+        pulse.repeatCount = 1000
+        pulse.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        pulse.autoreverses = true
+        
+        let flash = CABasicAnimation(keyPath: "opacity")
+        flash.duration = 0.5
+        flash.fromValue = 1
+        flash.toValue = 0.90
+        flash.repeatCount = 1000
+        flash.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        flash.autoreverses = true
+        
+        for index in abc..<totalCells {
+            cellViews?[index].layer.add(pulse, forKey: "scale")
+            cellViews?[index].layer.add(flash, forKey: "flash")
+            
+        }
+    }
+    
+    func ladyDidFinishSpeaking() {
+        isLadySpeaking = false
     }
 }

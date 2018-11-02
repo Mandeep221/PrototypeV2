@@ -167,8 +167,6 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate {
             }else{
                 currentView.handleOptionClickAnimation(isCorrect: false)
             }
-            
-            
         }
     }
     
@@ -227,12 +225,12 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate {
         setConstraintsForOptions()
     }
     
-    var synthesizer: AVSpeechSynthesizer?
+    var speechSynthesizer: AVSpeechSynthesizer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        synthesizer = AVSpeechSynthesizer()
-        synthesizer?.delegate = self
+        speechSynthesizer = AVSpeechSynthesizer()
+        speechSynthesizer?.delegate = self
         
         containerViewOne.handleSwipeDirectionHelp()
         // nav bar
@@ -251,6 +249,7 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate {
         generateTwoRandomNumbers()
         setUpFourOptions()
         setSwipableCells()
+        
         handleScene(label: instructionOneLabel, show: true)
     }
     
@@ -322,53 +321,13 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate {
             handleScene(label: instructionThreeLabel , show: true)
             
             showAllOptions()
-            animateAllSwipedCells()
-            //animate cells
-            //containerViewOne.animateSwipedCells()
-            //containerViewTwo.animateSwipedCells()
+            animateSwipedCells()
         }
     }
     
-    func animateAllSwipedCells() {
-        var indexToStartFrom = 0
-        // Animate in first container
-        indexToStartFrom = containerViewOne.cellCount! - containerViewOne.swipableCellCount
-        for index in indexToStartFrom..<containerViewOne.cellCount!{
-             let targetCell = containerViewOne.cellViews![index]
-            addPulsatingAnimation(viewToAnimate: targetCell, containerView: containerViewOne, delay: 1)
-        }
-        
-        // Animate in Second container
-        indexToStartFrom = containerViewTwo.cellCount! - containerViewTwo.swipableCellCount
-        for index in indexToStartFrom..<containerViewTwo.cellCount!{
-            let targetCell = containerViewTwo.cellViews![index]
-            addPulsatingAnimation(viewToAnimate: targetCell, containerView: containerViewTwo, delay: 1)
-        }
-    }
-    
-    func addPulsatingAnimation(viewToAnimate: UIView, containerView: ContainerView, delay: Double) {
-        let trackLayer = CAShapeLayer()
-        let frame = CGRect(x: getX(slideCounter: 1) - 1 , y: viewToAnimate.frame.minY - 1, width: containerView.cellWidth + 2, height: containerView.cellHeight + 2)
-        let rectPAth = UIBezierPath(rect: frame)
-        
-        trackLayer.path = rectPAth.cgPath
-        
-        trackLayer.strokeColor = UIColor.green.cgColor
-        trackLayer.lineWidth = 2
-        trackLayer.fillColor = UIColor.clear.cgColor
-        
-        containerView.layer.addSublayer(trackLayer)
-        
-        let animation = CABasicAnimation(keyPath: "opacity")
-        
-        animation.fromValue = 0.4
-        animation.toValue = 1.0
-        animation.duration = 1
-        animation.autoreverses = true
-        animation.repeatCount =  3
-        animation.beginTime = CACurrentMediaTime() + delay
-        
-        trackLayer.add(animation, forKey: "pulse")
+    func animateSwipedCells() {
+        containerViewOne.scaleSwipedCells()
+        containerViewTwo.scaleSwipedCells()
     }
     
     func generateTwoRandomNumbers() {
@@ -394,6 +353,7 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate {
             UIView.animate(withDuration: 1, delay: 0.5, options: [.curveEaseOut], animations: {
                 label.alpha = 1.0
             }, completion: { (_) in
+                print("Modulo!!!!")
                 self.textToSpeech(text: label.text!)
             })
         }else{
@@ -412,19 +372,38 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate {
     }
     
     func textToSpeech(text: String) {
+        if speechSynthesizer == nil{
+            speechSynthesizer = AVSpeechSynthesizer()
+            speechSynthesizer?.delegate = self
+        }
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.Samantha-compact")  // Samantha, Karen, Tessa
-        synthesizer!.speak(utterance)
+        speechSynthesizer!.speak(utterance)
     }
     
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance) {
         let mutableAttributedString = NSMutableAttributedString(string: utterance.speechString)
-        mutableAttributedString.addAttribute(.foregroundColor, value: UIColor.red, range: characterRange)
-        instructionOneLabel.attributedText = mutableAttributedString
+        mutableAttributedString.addAttribute(.foregroundColor, value: UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1), range: characterRange)
+        if instructionOneLabel.alpha == 1.0 {
+           instructionOneLabel.attributedText = mutableAttributedString
+        }else if instructionTwoLabel.alpha == 1.0 {
+            instructionTwoLabel.attributedText = mutableAttributedString
+        }else {
+            instructionThreeLabel.attributedText = mutableAttributedString
+        }
     }
 
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        instructionOneLabel.attributedText = NSAttributedString(string: utterance.speechString)
+        if instructionOneLabel.alpha == 1.0 {
+            instructionOneLabel.attributedText = NSAttributedString(string: utterance.speechString)
+            containerViewOne.ladyDidFinishSpeaking()
+        }else if instructionTwoLabel.alpha == 1.0 {
+            instructionTwoLabel.attributedText = NSAttributedString(string: utterance.speechString)
+            containerViewTwo.ladyDidFinishSpeaking()
+        }else {
+           instructionThreeLabel.attributedText = NSAttributedString(string: utterance.speechString)
+        }
+        speechSynthesizer = nil
     }
 }
 

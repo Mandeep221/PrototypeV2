@@ -12,20 +12,13 @@ class SplashController: UIViewController {
     
     var dotOneHeightAnchor: NSLayoutConstraint?
     var dotTwoHeightAnchor: NSLayoutConstraint?
+    var rotatingViewLeadingAnchor: NSLayoutConstraint?
     
-    let backgroundImage: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "kid")
-        imageView.contentMode = .scaleAspectFill
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    
-    let backgroundImageOverylayView: UIView = {
-        let imageOverlayView = UIView()
-        imageOverlayView.backgroundColor = UIColor.init(rgb: Color.primaryPurple.rawValue, alpha: 0.7)
-        imageOverlayView.translatesAutoresizingMaskIntoConstraints = false
-        return imageOverlayView
+    let logoContainerView: UIView = {
+       let containerView = UIView()
+        //containerView.backgroundColor = .yellow
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        return containerView
     }()
     
     lazy var rotatingView: UIView = {
@@ -34,13 +27,13 @@ class SplashController: UIViewController {
         rotatingView.translatesAutoresizingMaskIntoConstraints = false
         
         let viewMinus = UIView()
-        viewMinus.layer.cornerRadius = 10
+        viewMinus.layer.cornerRadius = 3
         viewMinus.backgroundColor = UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1)
         viewMinus.translatesAutoresizingMaskIntoConstraints = false
         rotatingView.addSubview(viewMinus)
         
         let viewPlus = UIView()
-        viewPlus.layer.cornerRadius = 10
+        viewPlus.layer.cornerRadius = 3
         //viewPlus.backgroundColor = UIColor.init(rgb: Color.offWhite.rawValue, alpha: 0.6)
         viewPlus.translatesAutoresizingMaskIntoConstraints = false
         rotatingView.addSubview(viewPlus)
@@ -49,14 +42,14 @@ class SplashController: UIViewController {
         dotOneView.backgroundColor = UIColor.init(rgb: Color.weedGreen.rawValue, alpha: 1)
         //dotOneView.backgroundColor = UIColor.init(rgb: Color.bananaYellow.rawValue, alpha: 1)
         dotOneView.translatesAutoresizingMaskIntoConstraints = false
-        dotOneView.layer.cornerRadius = 10
+        dotOneView.layer.cornerRadius = 3
         dotOneView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         viewPlus.addSubview(dotOneView)
         
         let dotTwoView = UIView()
         dotTwoView.backgroundColor = UIColor.init(rgb: Color.weedGreen.rawValue, alpha: 1)
         dotTwoView.translatesAutoresizingMaskIntoConstraints = false
-        dotTwoView.layer.cornerRadius = 10
+        dotTwoView.layer.cornerRadius = 3
         dotTwoView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         viewPlus.addSubview(dotTwoView)
         
@@ -64,12 +57,12 @@ class SplashController: UIViewController {
         viewMinus.centerXAnchor.constraint(equalTo: rotatingView.centerXAnchor).isActive = true
         viewMinus.centerYAnchor.constraint(equalTo: rotatingView.centerYAnchor).isActive = true
         viewMinus.widthAnchor.constraint(equalTo: rotatingView.widthAnchor).isActive = false
-        viewMinus.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        viewMinus.heightAnchor.constraint(equalToConstant: 6).isActive = true
         
         viewPlus.centerXAnchor.constraint(equalTo: rotatingView.centerXAnchor).isActive = true
         viewPlus.centerYAnchor.constraint(equalTo: rotatingView.centerYAnchor).isActive = true
         viewPlus.heightAnchor.constraint(equalTo: rotatingView.heightAnchor).isActive = false
-        viewPlus.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        viewPlus.widthAnchor.constraint(equalToConstant: 6).isActive = true
         
         dotOneView.topAnchor.constraint(equalTo: viewPlus.topAnchor).isActive = true
         dotOneView.leadingAnchor.constraint(equalTo: viewPlus.leadingAnchor).isActive = true
@@ -90,9 +83,9 @@ class SplashController: UIViewController {
     let appTitleLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.init(rgb: Color.whiteColor.rawValue, alpha: 1)
-        label.font = UIFont(name: "Montserrat-Regular", size: 24)
+        label.font = UIFont(name: "Montserrat-Bold", size: 28)
         label.textAlignment = .center
-        label.text = "Math For Kids"
+        label.text = "MATH 4 KIDS"
         
         // for Stroke
         let strokeTextAttributes: [NSAttributedStringKey : Any] = [
@@ -101,7 +94,7 @@ class SplashController: UIViewController {
             NSAttributedStringKey.strokeWidth : -2.0,
             ]
         
-        label.attributedText = NSMutableAttributedString(string: "Math For Kids", attributes: strokeTextAttributes)
+//        label.attributedText = NSMutableAttributedString(string: "MATH FOR KIDS", attributes: strokeTextAttributes)
         
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -109,7 +102,7 @@ class SplashController: UIViewController {
     
     let overlayView: UIView = {
        let view = UIView()
-        view.backgroundColor = UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1)
+        view.backgroundColor = UIColor.init(rgb: Color.primaryPurple.rawValue, alpha: 1)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -120,41 +113,43 @@ class SplashController: UIViewController {
         
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         
-        view.backgroundColor = UIColor.init(rgb: Color.oceanBlue.rawValue, alpha: 1)
+        view.backgroundColor = UIColor.init(rgb: Color.primaryPurple.rawValue, alpha: 1)
         
 //        view.addSubview(backgroundImage)
 //        view.addSubview(backgroundImageOverylayView)
-        view.addSubview(rotatingView)
-        view.addSubview(appTitleLabel)
+        view.addSubview(logoContainerView)
+        logoContainerView.addSubview(rotatingView)
+        logoContainerView.addSubview(appTitleLabel)
         view.addSubview(overlayView)
         
-//        backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-//        backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-//        backgroundImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-//        backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-//
-//        backgroundImageOverylayView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-//        backgroundImageOverylayView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-//        backgroundImageOverylayView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-//        backgroundImageOverylayView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
+        logoContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        logoContainerView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        logoContainerView.widthAnchor.constraint(greaterThanOrEqualToConstant: 148).isActive = true
+        logoContainerView.heightAnchor.constraint(equalToConstant: 32).isActive = true
         
-        rotatingView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        rotatingView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
-        rotatingView.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        rotatingView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        appTitleLabel.leadingAnchor.constraint(equalTo: logoContainerView.leadingAnchor).isActive = true
+        appTitleLabel.topAnchor.constraint(equalTo: logoContainerView.topAnchor).isActive = true
+        appTitleLabel.bottomAnchor.constraint(equalTo: logoContainerView.bottomAnchor).isActive = true
+        appTitleLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 48).isActive = true
+        appTitleLabel.heightAnchor.constraint(equalToConstant: 32).isActive = true
         
-        appTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        appTitleLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        appTitleLabel.heightAnchor.constraint(equalToConstant: 48).isActive = true
-        appTitleLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 140).isActive = true
+        rotatingView.trailingAnchor.constraint(equalTo: logoContainerView.trailingAnchor).isActive = true
+        rotatingView.topAnchor.constraint(equalTo: logoContainerView.topAnchor).isActive = true
+        
+        rotatingViewLeadingAnchor =  rotatingView.leadingAnchor.constraint(equalTo: appTitleLabel.trailingAnchor, constant: 8)
+        rotatingViewLeadingAnchor?.isActive = true
+        
+       rotatingView.bottomAnchor.constraint(equalTo: logoContainerView.bottomAnchor).isActive = true
+        rotatingView.widthAnchor.constraint(equalToConstant: 32).isActive = true
+        rotatingView.heightAnchor.constraint(equalToConstant: 32).isActive = true
         
         //overlayView.frame = appTitleLabel.frame
         overlayView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         overlayView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         overlayView.heightAnchor.constraint(equalToConstant: 48).isActive = true
-        overlayView.widthAnchor.constraint(equalTo: appTitleLabel.widthAnchor).isActive = true
-        
+        overlayView.widthAnchor.constraint(equalTo: logoContainerView.widthAnchor).isActive = true
+//
         
 
 //        UIView.animate(withDuration: 2, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
@@ -175,14 +170,10 @@ class SplashController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        print(self.overlayView.frame.origin.x)
+        print("Heyy: ",self.overlayView.frame.origin.x)
         print(self.overlayView.frame.origin.y)
         
-//        animateAppTitle()
-//        animateMinus()
-//        animatePlus()
-        
-        UIView.animate(withDuration: 0.75, delay: 0.25, usingSpringWithDamping: 1, initialSpringVelocity: 2, options: [.curveEaseOut], animations: {
+        UIView.animate(withDuration: 1, delay: 0.75, usingSpringWithDamping: 1, initialSpringVelocity: 2, options: [.curveEaseOut], animations: {
             
             let newX = self.overlayView.frame.origin.x + self.overlayView.frame.width
             
@@ -190,10 +181,9 @@ class SplashController: UIViewController {
             
             //self.appTitleLabel.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
         }, completion: { (_) in
-            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 self.rotatingView.subviews.first?.widthAnchor.constraint(equalTo: self.rotatingView.widthAnchor).isActive = true
                 self.view.layoutIfNeeded()
-                    //self.rotatingView.subviews.first?.scale(fromValue: 0.05, toValue: 1.0)
             }, completion: { (_) in
                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                     self.rotatingView.subviews[1].heightAnchor.constraint(equalTo: self.rotatingView.heightAnchor).isActive = true
@@ -210,12 +200,13 @@ class SplashController: UIViewController {
                             UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                                 self.dotOneHeightAnchor?.isActive = false
                                 self.dotTwoHeightAnchor?.isActive = false
-                                self.rotatingView.subviews[1].subviews[0].heightAnchor.constraint(equalToConstant: 20).isActive = true
-                                self.rotatingView.subviews[1].subviews[1].heightAnchor.constraint(equalToConstant: 20).isActive = true
+                                self.rotatingView.subviews[1].subviews[0].heightAnchor.constraint(equalToConstant: 6).isActive = true
+                                self.rotatingView.subviews[1].subviews[1].heightAnchor.constraint(equalToConstant: 6).isActive = true
                                 self.view.layoutIfNeeded()
-                                self.rotatingView.subviews[1].subviews[0].layer.cornerRadius = 10
+                                
+                                self.rotatingView.subviews[1].subviews[0].layer.cornerRadius = 3
                                 self.rotatingView.subviews[1].subviews[0].layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
-                                self.rotatingView.subviews[1].subviews[1].layer.cornerRadius = 10
+                                self.rotatingView.subviews[1].subviews[1].layer.cornerRadius = 3
                                  self.rotatingView.subviews[1].subviews[1].layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
                             }, completion: { (_) in
                                 
@@ -227,36 +218,6 @@ class SplashController: UIViewController {
         })
     
     }
-    
-//    func animateAppTitle() {
-//        UIView.animate(withDuration: 0.75, delay: 0.25, usingSpringWithDamping: 1, initialSpringVelocity: 2, options: [.curveEaseOut], animations: {
-//
-//            let newX = self.overlayView.frame.origin.x + self.overlayView.frame.width
-//
-//            self.overlayView.frame = CGRect(x: newX, y: self.overlayView.frame.origin.y, width: 0, height: 48)
-//
-//            //self.appTitleLabel.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-//        })
-//        animateMinus()
-//    }
-//
-//    func animateMinus() {
-//        UIView.animate(withDuration: 1, delay: 1, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-//            self.rotatingView.subviews.first?.widthAnchor.constraint(equalTo: self.rotatingView.widthAnchor).isActive = true
-//            self.view.layoutIfNeeded()
-//            //self.rotatingView.subviews.first?.scale(fromValue: 0.05, toValue: 1.0)
-//        })
-//        animatePlus()
-//    }
-//
-//    func animatePlus() {
-//        UIView.animate(withDuration: 1, delay: 3, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-//            self.rotatingView.subviews[1].heightAnchor.constraint(equalTo: self.rotatingView.heightAnchor).isActive = true
-//            self.view.layoutIfNeeded()
-//        }, completion: { (_) in
-//
-//        })
-//    }
 
     func degreeToRadians(degrees: Double) -> CGFloat {
         return CGFloat(degrees * .pi / 180)
