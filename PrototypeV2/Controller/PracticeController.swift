@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  PracticeController.swift
 //  PrototypeV2
 //
 //  Created by Mandeep Sarangal on 2018-10-06.
@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-class ViewController: UIViewController, AVSpeechSynthesizerDelegate {
+class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     
     var topMarginForInstructionLabelOne: CGFloat = 20
     
@@ -22,6 +22,7 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate {
     var num1 = 0
     var num2 = 0
     var answer = 0
+    var cellsSwiped = 0
     
     let anchorForContainerOne: UIView = {
         let abchorView = UIView()
@@ -69,7 +70,7 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate {
     let containerViewOne: ContainerView = {
         let cv = ContainerView()
         cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.cellCount = 10
+        cv.cellCount = 7
         return cv
     }()
     
@@ -86,7 +87,7 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate {
     let containerViewTwo: ContainerView = {
         let cv = ContainerView()
         cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.cellCount = 10
+        cv.cellCount = 7
         return cv
     }()
     
@@ -292,10 +293,21 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate {
     // every time the required number of cells are swiped in each container,
     // this method updates the total number of cells swiped and stores it in the answer variable
     func updateTotalCellsSwiped(cellsSwiped: Int) {
-        answer += cellsSwiped
+        
+        if moduleType == ModuleType.addition{
+            answer += cellsSwiped
+        }else if moduleType == ModuleType.subtraction{
+            if answer == 0 {
+                 answer += cellsSwiped
+            }else{
+                 answer -= cellsSwiped
+            }
+        }
+    
+       self.cellsSwiped+=cellsSwiped
         
         // all cells swiped in first container
-        if answer == num1{
+        if self.cellsSwiped == num1{
             
             if moduleType == ModuleType.counting{
                 showAllOptions()
@@ -310,7 +322,7 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate {
         
         // when all the cells have been swiped in both containers, total will be the answer of final count
         // thats when we start pulsating animation
-        if answer == num1 + num2 {
+        if self.cellsSwiped == num1 + num2 {
             //hide first instruction
             handleScene(label: instructionOneLabel, show: false)
             
@@ -333,8 +345,14 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate {
     func generateTwoRandomNumbers() {
         num1 = Int(arc4random_uniform(4) + 1)
         num2 = Int(arc4random_uniform(3) + 1)
-        print(num1)
-        print(num2)
+        
+        // in case of subtraction, num1 always greater than num2
+        if moduleType == ModuleType.subtraction && num2 > num1{
+            let temp = num1
+            num1 = num2
+            num2 = temp
+        }
+        
         //assign values to instructions
         instructionOneLabel.text = self.num1>1 ? "Can you swipe "+String(self.num1) + " cells to the right?" : "Can you swipe 1 cell to the right?"
          instructionTwoLabel.text = self.num2>1 ? "Can you swipe "+String(self.num2) + " cells to the right?" : "Can you swipe 1 cell to the right?"
@@ -353,7 +371,6 @@ class ViewController: UIViewController, AVSpeechSynthesizerDelegate {
             UIView.animate(withDuration: 1, delay: 0.5, options: [.curveEaseOut], animations: {
                 label.alpha = 1.0
             }, completion: { (_) in
-                print("Modulo!!!!")
                 self.textToSpeech(text: label.text!)
             })
         }else{

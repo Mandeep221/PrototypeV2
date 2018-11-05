@@ -29,7 +29,9 @@ class HomeController: UIViewController {
         super.viewDidLoad()
         //self.edgesForExtendedLayout = []
         view.backgroundColor = .white
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        navigationController?.navigationBar.isTranslucent = false
+        //view.backgroundColor = UIColor.init(rgb: Color.primaryPurple.rawValue, alpha: 1)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "x", style: .plain, target: self, action: #selector(handleLogout))
         
         setupViews()
     }
@@ -44,6 +46,7 @@ class HomeController: UIViewController {
         for index in 0..<5 {
             let module = ModuleDataInjector.getModuleAt(index: index)
             let view = ModuleTypeContainerView()
+            view.viewRef = self
             view.module = module
             homeViews?.append(view)
         }
@@ -64,7 +67,7 @@ class HomeController: UIViewController {
                 bottomAnchor.isActive = false
                 
                 if index == 0 {
-                    homeViews[index].anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: navBarHeight! + statusBarHeight + topMargin, left: leftMargin, bottom: bottomMargin, right: rightMargin), size: .init(width: 0, height: remainingTotalheight/5))
+                    homeViews[index].anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: topMargin, left: leftMargin, bottom: bottomMargin, right: rightMargin), size: .init(width: 0, height: remainingTotalheight/5))
                 }else{
                     
                     homeViews[index].anchor(top: homeViews[index - 1].bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: topMargin, left: leftMargin, bottom: 0, right: rightMargin), size: .init(width: 0, height: remainingTotalheight/5))
@@ -89,7 +92,8 @@ class HomeController: UIViewController {
             
             // shrink the expanded view
             if let views = self.homeViews, self.tappedIndex != -1{
-                let tappedView = views[self.tappedIndex]
+                let tappedView = views[self.tappedIndex] as! ModuleTypeContainerView
+                tappedView.showCancelOption(show: false)
                 //tappedView.translatesAutoresizingMaskIntoConstraints = false
                 self.tAnchor?.isActive = false
                 if self.tappedIndex == 0{
@@ -111,9 +115,10 @@ class HomeController: UIViewController {
     }
     
     @objc func launchModule(gesture: UITapGestureRecognizer) {
-        // MARK: Launch the real deal
+        //handleExpansion(gesture: gesture)
+         //MARK: Launch the real deal
         if let tappedView = gesture.view as! ModuleTypeContainerView?{
-            let nextVc = ViewController()
+            let nextVc = PracticeController()
             nextVc.moduleType = tappedView.module?.name
             navigationController?.pushViewController(nextVc, animated: true)
         }
@@ -140,6 +145,9 @@ class HomeController: UIViewController {
             self.view.bringSubview(toFront: v)
             
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.55, initialSpringVelocity: 0.5, options: [.curveEaseOut], animations: {
+                
+                v.showCancelOption(show: true)
+                
                 self.view.layoutIfNeeded()
 
                     for index in 0..<homeViews.count{

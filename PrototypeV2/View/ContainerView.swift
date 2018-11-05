@@ -16,7 +16,7 @@ class ContainerView: UIView {
     let cellGap:CGFloat = 6
     let containerHeight:CGFloat = 50
     let anchorHeight: CGFloat = 2
-    var viewRef: ViewController?
+    var viewRef: PracticeController?
     var isLadySpeaking: Bool = true
     // Maximum number of cells that can be swiped
     var swipableCellCount = 0

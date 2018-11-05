@@ -9,7 +9,7 @@
 import UIKit
 
 class ModuleTypeContainerView: UIView {
-    
+    var viewRef: HomeController?
     var module: Module? {
         didSet{
             if let module = module{
@@ -28,13 +28,15 @@ class ModuleTypeContainerView: UIView {
     
     let accentBorderView: UIView = {
         let borderView = UIView()
+        borderView.clipsToBounds = true
+        borderView.alpha = 0
         return borderView
     }()
     
     let moduleTitleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.font = UIFont(name: "Montserrat-Regular", size: 24)
-        titleLabel.textColor = UIColor.init(rgb: Color.textPrimary.rawValue, alpha: 1)
+        titleLabel.textColor = UIColor.init(rgb: Color.whiteColor.rawValue, alpha: 1)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textAlignment = .center
         return titleLabel
@@ -49,6 +51,19 @@ class ModuleTypeContainerView: UIView {
         return imageView
     }()
     
+    let cancelImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "cancel")?.withRenderingMode(.alwaysTemplate)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.isUserInteractionEnabled = true
+        imageView.tintColor = .white
+        imageView.alpha = 0
+        imageView.clipsToBounds = true
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleCancel)))
+        return imageView
+    }()
+    
     let titleContainerView: UIView = {
         let titleContainerView = UIView()
         titleContainerView.translatesAutoresizingMaskIntoConstraints = false
@@ -56,7 +71,16 @@ class ModuleTypeContainerView: UIView {
     }()
     
     func setupViews(_ module: Module) {
-        backgroundColor = .white
+        backgroundColor = UIColor.init(rgb: Color.whiteColor.rawValue, alpha: 1)
+        
+        //backgroundColor = UIColor.init(rgb: 0x290A35, alpha: 1)
+        self.layer.cornerRadius = 8
+        self.layer.shadowColor = UIColor(white: 0.4, alpha: 0.4).cgColor
+        self.layer.shadowRadius = 2
+        self.layer.shadowOpacity = 0.5
+        self.layer.shadowOffset = CGSize(width: 0, height: 2)
+        
+        addSubview(cancelImageView)
         addSubview(accentBorderView)
         addSubview(titleContainerView)
         titleContainerView.addSubview(moduleTitleLabel)
@@ -74,10 +98,11 @@ class ModuleTypeContainerView: UIView {
         // Auto layout constraints
         accentBorderView.anchor(top: self.topAnchor, leading: self.leadingAnchor, bottom: self.bottomAnchor, trailing: nil, padding: .zero, size: .init(width: 4, height: self.frame.height))
         
-        self.layer.shadowColor = UIColor(white: 0.4, alpha: 0.4).cgColor
-        self.layer.shadowRadius = 2
-        self.layer.shadowOpacity = 0.5
-        self.layer.shadowOffset = CGSize(width: 0, height: 2)
+        cancelImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
+        
+        cancelImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16).isActive = true
+        cancelImageView.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        cancelImageView.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         titleContainerView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         titleContainerView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
@@ -97,6 +122,18 @@ class ModuleTypeContainerView: UIView {
         moduleImageView.widthAnchor.constraint(equalToConstant: 24).isActive = true
         moduleImageView.heightAnchor.constraint(equalToConstant: 24).isActive = true
         
-        
+    }
+    
+    @objc func handleCancel() {
+        viewRef?.handleLogout()
+    }
+    
+    func showCancelOption(show: Bool) {
+        if show{
+            cancelImageView.alpha = 1
+        }else{
+            cancelImageView.alpha = 0
+        }
+
     }
 }

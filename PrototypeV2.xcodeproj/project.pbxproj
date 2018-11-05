@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		9510E3AD338686909FE3C868 /* Pods_PrototypeV2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 142CCA5736AF2C99DF74C4B6 /* Pods_PrototypeV2.framework */; };
 		A50348D821693E8E005BE136 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50348D721693E8E005BE136 /* AppDelegate.swift */; };
-		A50348DA21693E8E005BE136 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50348D921693E8E005BE136 /* ViewController.swift */; };
+		A50348DA21693E8E005BE136 /* PracticeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50348D921693E8E005BE136 /* PracticeController.swift */; };
 		A50348DD21693E8F005BE136 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A50348DB21693E8F005BE136 /* Main.storyboard */; };
 		A50348DF21693E8F005BE136 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A50348DE21693E8F005BE136 /* Assets.xcassets */; };
 		A50348E221693E8F005BE136 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A50348E021693E8F005BE136 /* LaunchScreen.storyboard */; };
@@ -34,6 +34,11 @@
 		A5C59B292189D11500BABA7B /* ModuleDataInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C59B282189D11500BABA7B /* ModuleDataInjector.swift */; };
 		A5C59B2C2189D72F00BABA7B /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C59B2B2189D72F00BABA7B /* Module.swift */; };
 		A5CE7C21218A4AEB00C164A6 /* ModuleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CE7C20218A4AEB00C164A6 /* ModuleType.swift */; };
+		A5CE7C23218C391D00C164A6 /* HeartsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CE7C22218C391D00C164A6 /* HeartsController.swift */; };
+		A5CE7C25218C3C2C00C164A6 /* Emitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CE7C24218C3C2C00C164A6 /* Emitter.swift */; };
+		A5CE7C28218C461200C164A6 /* Too Freakin Cute Demo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5CE7C27218C45BE00C164A6 /* Too Freakin Cute Demo.ttf */; };
+		A5CE7C29218C461200C164A6 /* Christmas.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5CE7C26218C444F00C164A6 /* Christmas.ttf */; };
+		A5CE7C2B218D344100C164A6 /* LoveController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CE7C2A218D344100C164A6 /* LoveController.swift */; };
 		A5EFD9D9218674BF00A557C7 /* ModuleTypeContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5EFD9D8218674BF00A557C7 /* ModuleTypeContainerView.swift */; };
 		A5F08CFD217AB11D00EC9B16 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F08CFC217AB11D00EC9B16 /* LoginController.swift */; };
 /* End PBXBuildFile section */
@@ -43,7 +48,7 @@
 		7A4FF4A4BB7C3FE851C54EBF /* Pods-PrototypeV2.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PrototypeV2.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PrototypeV2/Pods-PrototypeV2.debug.xcconfig"; sourceTree = "<group>"; };
 		A50348D421693E8E005BE136 /* PrototypeV2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrototypeV2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A50348D721693E8E005BE136 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A50348D921693E8E005BE136 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A50348D921693E8E005BE136 /* PracticeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeController.swift; sourceTree = "<group>"; };
 		A50348DC21693E8F005BE136 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A50348DE21693E8F005BE136 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A50348E121693E8F005BE136 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -70,6 +75,11 @@
 		A5C59B282189D11500BABA7B /* ModuleDataInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleDataInjector.swift; sourceTree = "<group>"; };
 		A5C59B2B2189D72F00BABA7B /* Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
 		A5CE7C20218A4AEB00C164A6 /* ModuleType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleType.swift; sourceTree = "<group>"; };
+		A5CE7C22218C391D00C164A6 /* HeartsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartsController.swift; sourceTree = "<group>"; };
+		A5CE7C24218C3C2C00C164A6 /* Emitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emitter.swift; sourceTree = "<group>"; };
+		A5CE7C26218C444F00C164A6 /* Christmas.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Christmas.ttf; sourceTree = "<group>"; };
+		A5CE7C27218C45BE00C164A6 /* Too Freakin Cute Demo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Too Freakin Cute Demo.ttf"; sourceTree = "<group>"; };
+		A5CE7C2A218D344100C164A6 /* LoveController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoveController.swift; sourceTree = "<group>"; };
 		A5EFD9D8218674BF00A557C7 /* ModuleTypeContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleTypeContainerView.swift; sourceTree = "<group>"; };
 		A5F08CFC217AB11D00EC9B16 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		D1ED6231411182698A36C54F /* Pods-PrototypeV2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PrototypeV2.release.xcconfig"; path = "Pods/Target Support Files/Pods-PrototypeV2/Pods-PrototypeV2.release.xcconfig"; sourceTree = "<group>"; };
@@ -143,6 +153,7 @@
 				A504558A2187EE120077CD5F /* BasicBarChart.swift */,
 				A504558C218882030077CD5F /* BarEntry.swift */,
 				A504558E218882DB0077CD5F /* BeautifulBarChart.swift */,
+				A5CE7C24218C3C2C00C164A6 /* Emitter.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -154,7 +165,9 @@
 				A534C0A7216DCFE800FD56D4 /* OpenSans-Regular.ttf */,
 				A534C0A5216DCFE700FD56D4 /* OpenSans-Semibold.ttf */,
 				A534C0A1216DCF7100FD56D4 /* Montserrat-Bold.ttf */,
+				A5CE7C27218C45BE00C164A6 /* Too Freakin Cute Demo.ttf */,
 				A5C59B262189C43300BABA7B /* Yellowtail-Regular.otf */,
+				A5CE7C26218C444F00C164A6 /* Christmas.ttf */,
 				A534C0A2216DCF7100FD56D4 /* Montserrat-Regular.ttf */,
 			);
 			path = Fonts;
@@ -183,10 +196,12 @@
 			children = (
 				A5F08CFC217AB11D00EC9B16 /* LoginController.swift */,
 				A53393E7217B9E9C00F7C428 /* HomeController.swift */,
-				A50348D921693E8E005BE136 /* ViewController.swift */,
+				A50348D921693E8E005BE136 /* PracticeController.swift */,
 				A51270EA2185696900222E6F /* SplashController.swift */,
 				A50455882187EDFF0077CD5F /* ChartController.swift */,
 				A5C59B282189D11500BABA7B /* ModuleDataInjector.swift */,
+				A5CE7C22218C391D00C164A6 /* HeartsController.swift */,
+				A5CE7C2A218D344100C164A6 /* LoveController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -268,6 +283,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5CE7C28218C461200C164A6 /* Too Freakin Cute Demo.ttf in Resources */,
+				A5CE7C29218C461200C164A6 /* Christmas.ttf in Resources */,
 				A5C59B272189C60500BABA7B /* Yellowtail-Regular.otf in Resources */,
 				A534C0A8216DCFE800FD56D4 /* OpenSans-Semibold.ttf in Resources */,
 				A534C0A9216DCFE800FD56D4 /* OpenSans-Bold.ttf in Resources */,
@@ -339,12 +356,14 @@
 				A5C59B292189D11500BABA7B /* ModuleDataInjector.swift in Sources */,
 				A5C59B2C2189D72F00BABA7B /* Module.swift in Sources */,
 				A50D9579216E7FAC002F1DC3 /* DesignableOptionView.swift in Sources */,
-				A50348DA21693E8E005BE136 /* ViewController.swift in Sources */,
+				A50348DA21693E8E005BE136 /* PracticeController.swift in Sources */,
 				A50348D821693E8E005BE136 /* AppDelegate.swift in Sources */,
 				A504558F218882DB0077CD5F /* BeautifulBarChart.swift in Sources */,
 				A51270EB2185696900222E6F /* SplashController.swift in Sources */,
+				A5CE7C2B218D344100C164A6 /* LoveController.swift in Sources */,
 				A50348EB21697779005BE136 /* ContainerView.swift in Sources */,
 				A50455892187EDFF0077CD5F /* ChartController.swift in Sources */,
+				A5CE7C23218C391D00C164A6 /* HeartsController.swift in Sources */,
 				A53393EA217BD4DC00F7C428 /* InputView.swift in Sources */,
 				A5CE7C21218A4AEB00C164A6 /* ModuleType.swift in Sources */,
 				A53393E8217B9E9C00F7C428 /* HomeController.swift in Sources */,
@@ -352,6 +371,7 @@
 				A504558D218882040077CD5F /* BarEntry.swift in Sources */,
 				A504558B2187EE120077CD5F /* BasicBarChart.swift in Sources */,
 				A50B23B4217EC56B00D72B03 /* Color.swift in Sources */,
+				A5CE7C25218C3C2C00C164A6 /* Emitter.swift in Sources */,
 				A56337B6216B775D0081D561 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

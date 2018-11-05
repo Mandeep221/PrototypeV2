@@ -8,7 +8,7 @@
 
 import Foundation
 enum Color: UInt{
-    case primaryPurple = 0x3C0840
+    case primaryPurple = 0x2C163B
     case primaryBlue = 0x1E0D3B
     case primary = 0x2B2D5C
     case secondary = 0xEEEEEE
