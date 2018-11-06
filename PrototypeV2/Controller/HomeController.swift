@@ -142,7 +142,7 @@ class HomeController: UIViewController {
             bAnchor = v.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -self.bottomMargin)
             bAnchor?.isActive = true
             
-            self.view.bringSubview(toFront: v)
+            self.view.bringSubviewToFront(v)
             
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.55, initialSpringVelocity: 0.5, options: [.curveEaseOut], animations: {
                 

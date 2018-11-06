@@ -168,7 +168,7 @@ class BeautifulBarChart: UIView {
         textLayer.frame = CGRect(x: xPos, y: yPos, width: topBubbleRadius*2, height: 22)
         textLayer.foregroundColor = UIColor.white.cgColor
         textLayer.backgroundColor = UIColor.clear.cgColor
-        textLayer.alignmentMode = kCAAlignmentCenter
+        textLayer.alignmentMode = CATextLayerAlignmentMode.center
         textLayer.contentsScale = UIScreen.main.scale
         textLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
         textLayer.fontSize = 14
@@ -181,7 +181,7 @@ class BeautifulBarChart: UIView {
         textLayer.frame = CGRect(x: xPos, y: yPos, width: barWidth, height: 22)
         textLayer.foregroundColor = color.cgColor
         textLayer.backgroundColor = UIColor.clear.cgColor
-        textLayer.alignmentMode = kCAAlignmentCenter
+        textLayer.alignmentMode = CATextLayerAlignmentMode.center
         textLayer.contentsScale = UIScreen.main.scale
         textLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
         textLayer.fontSize = 14

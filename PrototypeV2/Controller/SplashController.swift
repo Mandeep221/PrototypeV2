@@ -88,10 +88,10 @@ class SplashController: UIViewController {
         label.text = "MATH 4 KIDS"
         
         // for Stroke
-        let strokeTextAttributes: [NSAttributedStringKey : Any] = [
-            NSAttributedStringKey.strokeColor : UIColor.black,
-            NSAttributedStringKey.foregroundColor : UIColor.white,
-            NSAttributedStringKey.strokeWidth : -2.0,
+        let strokeTextAttributes: [NSAttributedString.Key : Any] = [
+            NSAttributedString.Key.strokeColor : UIColor.black,
+            NSAttributedString.Key.foregroundColor : UIColor.white,
+            NSAttributedString.Key.strokeWidth : -2.0,
             ]
         
 //        label.attributedText = NSMutableAttributedString(string: "MATH FOR KIDS", attributes: strokeTextAttributes)

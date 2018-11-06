@@ -84,11 +84,11 @@ class ContainerView: UIView {
 
                 cellView.backgroundColor = UIColor.init(rgb: 0xF6B691, alpha: 1)
                 let leftMargin = index * Int(cellWidth + cellGap)
-                addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(leftMargin)-[v0(\(Int(cellWidth)))]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : cellView]))
+                addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(leftMargin)-[v0(\(Int(cellWidth)))]", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : cellView]))
                 //let containerHeight = self.frame.height
                 let letLeftMargin = containerHeight - cellHeight - ((containerHeight - cellHeight)/2)
                 
-                addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-\(Int(letLeftMargin))-[v0(\(Int(cellHeight)))]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : cellView]))
+                addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-\(Int(letLeftMargin))-[v0(\(Int(cellHeight)))]", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : cellView]))
                 cellViews?.append(cellView)
             }
         }
@@ -126,9 +126,9 @@ class ContainerView: UIView {
         // slideCounter will change on every swipe, hence left margin value will also change
         let leftMargin = (numberOfCells * cellWidth) + (numberOfCells - 1 - CGFloat(swipeCounter)) * cellGap - cellWidth/2
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(leftMargin)-[v0(24)]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : swipeDirectionArrowImageView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(leftMargin)-[v0(24)]", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : swipeDirectionArrowImageView]))
         
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0(24)]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0" : swipeDirectionArrowImageView]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0(24)]", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : swipeDirectionArrowImageView]))
         
         
         let cellToSlide = cellViews![swipeCounter]
@@ -210,7 +210,7 @@ class ContainerView: UIView {
         pulse.fromValue = 0.90
         pulse.toValue = 1.0
         pulse.repeatCount = 1000
-        pulse.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        pulse.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
         pulse.autoreverses = true
         
         let flash = CABasicAnimation(keyPath: "opacity")
@@ -218,7 +218,7 @@ class ContainerView: UIView {
         flash.fromValue = 1
         flash.toValue = 0.90
         flash.repeatCount = 1000
-        flash.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        flash.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
         flash.autoreverses = true
         
         for index in abc..<totalCells {

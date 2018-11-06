@@ -12,7 +12,7 @@ class Emitter {
     
     static func getEmitter(with image: UIImage, flag: String) -> CAEmitterLayer{
         let emitter = CAEmitterLayer()
-        emitter.emitterShape = kCAEmitterLayerLine
+        emitter.emitterShape = CAEmitterLayerEmitterShape.line
         emitter.emitterCells = generateEmitterCells(with: image, flag: flag)
         return emitter
     }
