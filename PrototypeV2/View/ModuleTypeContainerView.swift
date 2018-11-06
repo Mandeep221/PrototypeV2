@@ -36,7 +36,7 @@ class ModuleTypeContainerView: UIView {
     let moduleTitleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.font = UIFont(name: "Montserrat-Regular", size: 24)
-        titleLabel.textColor = UIColor.init(rgb: Color.whiteColor.rawValue, alpha: 1)
+        titleLabel.textColor = UIColor.init(rgb: Color.textPrimary.rawValue, alpha: 1)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textAlignment = .center
         return titleLabel

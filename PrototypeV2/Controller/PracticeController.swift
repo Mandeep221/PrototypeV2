@@ -101,50 +101,6 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         return label
     }()
     
-    let optionOneButton: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.backgroundColor = UIColor.init(rgb: 0x332042, alpha: 1)
-        btn.setTitle("12", for: UIControlState.normal)
-        btn.setTitleColor(.white, for: UIControlState.normal)
-        btn.titleLabel?.font = UIFont(name: "Montserrat-Bold", size: 24)
-        btn.layer.cornerRadius = 10;
-        btn.clipsToBounds = true
-        return btn
-    }()
-    
-    let optionTwoButton: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.backgroundColor = UIColor.init(rgb: 0x332042, alpha: 1)
-        btn.setTitle("5", for: UIControlState.normal)
-        btn.setTitleColor(.white, for: UIControlState.normal)
-        btn.titleLabel?.font = UIFont(name: "Montserrat-Bold", size: 24)
-        btn.layer.cornerRadius = 10;
-        btn.clipsToBounds = true
-        return btn
-    }()
-    
-    let optionThreeButton: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.backgroundColor = UIColor.init(rgb: 0x332042, alpha: 1)
-        btn.setTitle("9", for: UIControlState.normal)
-        btn.setTitleColor(.white, for: UIControlState.normal)
-        btn.titleLabel?.font = UIFont(name: "Montserrat-Bold", size: 24)
-        btn.layer.cornerRadius = 10;
-        btn.clipsToBounds = true
-        return btn
-    }()
-    
-    let optionFourButton: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.backgroundColor = UIColor.init(rgb: 0x332042, alpha: 1)
-        btn.setTitle("7", for: UIControlState.normal)
-        btn.setTitleColor(.white, for: UIControlState.normal)
-        btn.titleLabel?.font = UIFont(name: "Montserrat-Bold", size: 24)
-        btn.layer.cornerRadius = 10;
-        btn.clipsToBounds = true
-        return btn
-    }()
-    
     lazy var optionButton: [DesignableOptionView] = {
         var opt = [DesignableOptionView]()
         
@@ -180,10 +136,6 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         view.addSubview(instructionTwoLabel)
         view.addSubview(anchorForContainerTwo)
         view.addSubview(containerViewTwo)
-        view.addSubview(optionOneButton)
-        view.addSubview(optionTwoButton)
-        view.addSubview(optionThreeButton)
-        view.addSubview(optionFourButton)
         view.addSubview(instructionThreeLabel)
         
         for index in 0...optionButton.count - 1{
@@ -248,17 +200,24 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         addViews()
         addConstraints()
         generateTwoRandomNumbers()
-        setUpFourOptions()
         setSwipableCells()
-        
         handleScene(label: instructionOneLabel, show: true)
     }
     
     func setUpFourOptions(){
-        optionButton[0].setNumberOptionLabel(text: String(num2))
-        optionButton[1].setNumberOptionLabel(text: String(num1))
-        optionButton[2].setNumberOptionLabel(text: String(num1 + num2))
-        optionButton[3].setNumberOptionLabel(text: String(num1 > num2 ? (num1 - num2) : (num2 - num1)))
+        
+        var requiredNumbers = generateOptions()
+        print(requiredNumbers)
+        print(answer)
+        if !requiredNumbers.contains(answer){
+            requiredNumbers[0] = answer
+            requiredNumbers.shuffle()
+        }
+        
+        for index in 0..<requiredNumbers.count{
+           optionButton[index].setNumberOptionLabel(text: String(requiredNumbers[index]))
+           optionButton[index].setTextOptionLabel(text: requiredNumbers[index].asWord)
+        }
     }
     
     func setConstraintsForOptions() {
@@ -293,8 +252,7 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     // every time the required number of cells are swiped in each container,
     // this method updates the total number of cells swiped and stores it in the answer variable
     func updateTotalCellsSwiped(cellsSwiped: Int) {
-        
-        if moduleType == ModuleType.addition{
+        if moduleType == ModuleType.addition || moduleType == ModuleType.counting{
             answer += cellsSwiped
         }else if moduleType == ModuleType.subtraction{
             if answer == 0 {
@@ -308,9 +266,14 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         
         // all cells swiped in first container
         if self.cellsSwiped == num1{
-            
             if moduleType == ModuleType.counting{
                 showAllOptions()
+                
+                //hide first instruction
+                handleScene(label: instructionOneLabel, show: false)
+                
+                //show third instruction
+                handleScene(label: instructionThreeLabel , show: true)
             }else{
                 //hide first instruction
                 handleScene(label: instructionOneLabel, show: false)
@@ -343,11 +306,13 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     }
     
     func generateTwoRandomNumbers() {
-        num1 = Int(arc4random_uniform(4) + 1)
-        num2 = Int(arc4random_uniform(3) + 1)
+        num1 = Int(arc4random_uniform(6) + 1)
+        num2 = Int(arc4random_uniform(5) + 1)
         
-        // in case of subtraction, num1 always greater than num2
-        if moduleType == ModuleType.subtraction && num2 > num1{
+        // both numbers should be different and in case of subtraction, num1 always greater than num2
+        if num1 == num2{
+            num1 = num1 + 1
+        }else if moduleType == ModuleType.subtraction && num2 > num1{
             let temp = num1
             num1 = num2
             num2 = temp
@@ -381,6 +346,8 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     }
     
     func showAllOptions() {
+        setUpFourOptions()
+        
         for index in 0..<optionButton.count{
             UIView.animate(withDuration: 0.25, delay: 0.5, options: [.curveEaseOut], animations:{
                 self.optionButton[index].alpha = 1.0
@@ -421,6 +388,25 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
            instructionThreeLabel.attributedText = NSAttributedString(string: utterance.speechString)
         }
         speechSynthesizer = nil
+    }
+    
+    func generateOptions() -> [Int] {
+        let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        var requiredNumbers = [Int]()
+        while true{
+            
+            if let randomNum = numbers.randomElement(){
+                if !requiredNumbers.contains(randomNum){
+                    requiredNumbers.append(randomNum)
+                }
+            }
+            
+            if requiredNumbers.count == 4{
+                break
+            }
+            
+        }
+        return requiredNumbers
     }
 }
 
