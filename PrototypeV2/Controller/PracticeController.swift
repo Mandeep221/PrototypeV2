@@ -12,7 +12,7 @@ import AVFoundation
 class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     
     var topMarginForInstructionLabelOne: CGFloat = 20
-    
+    let cellCount: Int = 7
     var moduleType: ModuleType? = nil {
         didSet{
            moduleTitleLabel.text = moduleType?.rawValue
@@ -67,13 +67,21 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         return label
     }()
     
-    let containerViewOne: ContainerView = {
-        let cv = ContainerView()
+    lazy var containerViewOne: CellsContainerView = {
+        let cv = CellsContainerView()
         cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.cellCount = 7
+        cv.cellCount = self.cellCount
         return cv
     }()
     
+    
+    lazy var arrowsContainerView: ArrowsContainerView = {
+       let arrowsContainerView = ArrowsContainerView()
+       arrowsContainerView.alpha = 0
+        arrowsContainerView.translatesAutoresizingMaskIntoConstraints = false
+        return arrowsContainerView
+    }()
+
     let instructionTwoLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
@@ -84,10 +92,10 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         return label
     }()
     
-    let containerViewTwo: ContainerView = {
-        let cv = ContainerView()
+    lazy var containerViewTwo: CellsContainerView = {
+        let cv = CellsContainerView()
         cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.cellCount = 7
+        cv.cellCount = self.cellCount
         return cv
     }()
     
@@ -101,7 +109,7 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         return label
     }()
     
-    lazy var optionButton: [DesignableOptionView] = {
+    lazy var optionButtons: [DesignableOptionView] = {
         var opt = [DesignableOptionView]()
         
         for index in 0...3 {
@@ -117,10 +125,11 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     
     @objc func handleOptionSelection(gesture: UITapGestureRecognizer) {
         let currentView = gesture.view as! DesignableOptionView
-        if optionButton.contains(currentView){
+        if optionButtons.contains(currentView){
             
             if Int(currentView.numberOptionLabel.text!) == answer{
                 currentView.handleOptionClickAnimation(isCorrect: true)
+                reset()
             }else{
                 currentView.handleOptionClickAnimation(isCorrect: false)
             }
@@ -133,13 +142,18 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         view.addSubview(instructionOneLabel)
         view.addSubview(anchorForContainerOne)
         view.addSubview(containerViewOne)
+        view.addSubview(arrowsContainerView)
         view.addSubview(instructionTwoLabel)
         view.addSubview(anchorForContainerTwo)
         view.addSubview(containerViewTwo)
         view.addSubview(instructionThreeLabel)
         
-        for index in 0...optionButton.count - 1{
-            view.addSubview(optionButton[index])
+        for index in 0...optionButtons.count - 1{
+            view.addSubview(optionButtons[index])
+        }
+        
+        if moduleType == ModuleType.subtraction {
+            instructionThreeLabel.text = "Can you count the DIFFERENCE between cells you swiped?"
         }
     }
     
@@ -149,6 +163,10 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         anchorForContainerTwo.anchor(top: containerViewTwo.topAnchor, leading: view.leadingAnchor, bottom: containerViewTwo.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: (containerViewTwo.containerHeight - containerViewTwo.anchorHeight)/2, left: 0, bottom: 24, right: 0), size: .init(width: 0, height: containerViewTwo.anchorHeight))
         
         containerViewTwo.anchor(top: instructionTwoLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: containerViewTwo.cellHeight))
+    }
+    
+    fileprivate func setConstraintsForArrowsContainer() {
+        arrowsContainerView.anchor(top: containerViewOne.bottomAnchor, leading: containerViewOne.leadingAnchor, bottom: containerViewTwo.topAnchor, trailing: containerViewOne.trailingAnchor, padding: .zero, size: .zero)
     }
     
     fileprivate func setConstraintsForContainerOne() {
@@ -171,6 +189,7 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
             instructionTwoLabel.isHidden = true
             containerViewTwo.isHidden = true
         }else{
+            setConstraintsForArrowsContainer()
             setConstraintsForContainerTwo()
         }
         
@@ -179,6 +198,7 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     }
     
     var speechSynthesizer: AVSpeechSynthesizer?
+    var requiredNumbersForOptions: [Int]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -187,6 +207,7 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         
         containerViewOne.handleSwipeDirectionHelp()
         // nav bar
+        navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isTranslucent = false
         edgesForExtendedLayout = []
         
@@ -202,29 +223,14 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         generateTwoRandomNumbers()
         setSwipableCells()
         handleScene(label: instructionOneLabel, show: true)
-    }
-    
-    func setUpFourOptions(){
-        
-        var requiredNumbers = generateOptions()
-        print(requiredNumbers)
-        print(answer)
-        if !requiredNumbers.contains(answer){
-            requiredNumbers[0] = answer
-            requiredNumbers.shuffle()
-        }
-        
-        for index in 0..<requiredNumbers.count{
-           optionButton[index].setNumberOptionLabel(text: String(requiredNumbers[index]))
-           optionButton[index].setTextOptionLabel(text: requiredNumbers[index].asWord)
-        }
+        requiredNumbersForOptions = [Int]()
     }
     
     func setConstraintsForOptions() {
-        let optionOneButton = optionButton[0]
-        let optionTwoButton = optionButton[1]
-        let optionThreeButton = optionButton[2]
-        let optionFourButton = optionButton[3]
+        let optionOneButton = optionButtons[0]
+        let optionTwoButton = optionButtons[1]
+        let optionThreeButton = optionButtons[2]
+        let optionFourButton = optionButtons[3]
         
        
         //#TODO: width does not make sense, but somehow works
@@ -267,7 +273,7 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         // all cells swiped in first container
         if self.cellsSwiped == num1{
             if moduleType == ModuleType.counting{
-                showAllOptions()
+                handleAllOptions(visible: true)
                 
                 //hide first instruction
                 handleScene(label: instructionOneLabel, show: false)
@@ -295,9 +301,23 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
             //show third instruction
             handleScene(label: instructionThreeLabel , show: true)
             
-            showAllOptions()
+            handleAllOptions(visible: true)
             animateSwipedCells()
+            if moduleType == ModuleType.subtraction {
+                handleArrows(visible: true)
+            }
         }
+    }
+    
+    func handleArrows(visible: Bool) {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            if visible{
+                self.arrowsContainerView.cellCount = self.num1 < self.num2 ? self.num1 : self.num2
+                self.arrowsContainerView.alpha = 1
+            }else{
+                self.arrowsContainerView.alpha = 0
+            }
+        }, completion: nil)
     }
     
     func animateSwipedCells() {
@@ -321,6 +341,10 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         //assign values to instructions
         instructionOneLabel.text = self.num1>1 ? "Can you swipe "+String(self.num1) + " cells to the right?" : "Can you swipe 1 cell to the right?"
          instructionTwoLabel.text = self.num2>1 ? "Can you swipe "+String(self.num2) + " cells to the right?" : "Can you swipe 1 cell to the right?"
+        
+        //re-initialise
+        answer = 0
+        cellsSwiped = 0
     }
     
     // This method caps the number of cells that can be swiped in each container
@@ -333,7 +357,7 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     // modifies the scene by hiding and showing the instruction labels
     func handleScene(label: UILabel, show: Bool) {
         if show {
-            UIView.animate(withDuration: 1, delay: 0.5, options: [.curveEaseOut], animations: {
+            UIView.animate(withDuration: 0.5, delay: 0.5, options: [.curveEaseOut], animations: {
                 label.alpha = 1.0
             }, completion: { (_) in
                 self.textToSpeech(text: label.text!)
@@ -345,13 +369,32 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         }
     }
     
-    func showAllOptions() {
-        setUpFourOptions()
+    func handleAllOptions(visible: Bool) {
+        self.setUpFourOptions()
+        for index in 0..<optionButtons.count{
+            UIView.animate(withDuration: 0.5, delay: 0.5, options: [.curveEaseOut], animations:{
+                if visible{
+                    self.optionButtons[index].alpha = 1.0
+                     self.optionButtons[index].numberOptionLabel.text = String(self.requiredNumbersForOptions![index])
+                    self.optionButtons[index].textOptionLabel.text = self.requiredNumbersForOptions![index].asWord
+                }else{
+                    self.optionButtons[index].alpha = 0.0
+                }
+            }, completion: {(_) in
+               
+            })
+        }
+    }
+    
+    func setUpFourOptions(){
+        if !requiredNumbersForOptions!.isEmpty{
+            requiredNumbersForOptions?.removeAll()
+        }
+        requiredNumbersForOptions = generateOptions()
         
-        for index in 0..<optionButton.count{
-            UIView.animate(withDuration: 0.25, delay: 0.5, options: [.curveEaseOut], animations:{
-                self.optionButton[index].alpha = 1.0
-            }, completion: nil)
+        if !requiredNumbersForOptions!.contains(answer){
+            requiredNumbersForOptions?[0] = answer
+            requiredNumbersForOptions?.shuffle()
         }
     }
     
@@ -407,6 +450,27 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
             
         }
         return requiredNumbers
+    }
+    
+    func reset() {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+            self.handleAllOptions(visible: false)
+            self.handleScene(label: self.instructionThreeLabel, show: false)
+            self.containerViewOne.cellCount = self.cellCount
+            self.containerViewTwo.cellCount = self.cellCount
+            self.generateTwoRandomNumbers()
+            self.setSwipableCells()
+            self.handleScene(label: self.instructionOneLabel, show: true)
+            
+            // set default appearance for all options
+            for option in self.optionButtons{
+                option.setDefaultAppearance()
+            }
+            
+            if self.moduleType == ModuleType.subtraction{
+                self.handleArrows(visible: false)
+            }
+        }
     }
 }
 

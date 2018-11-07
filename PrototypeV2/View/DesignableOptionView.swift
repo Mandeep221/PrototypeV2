@@ -17,7 +17,6 @@ class DesignableOptionView: UIView{
         label.textColor = UIColor.init(rgb: 0xFFFFFF, alpha: 1)
         label.font = UIFont(name: "Montserrat-Bold", size: 20)
         label.textAlignment = .center
-        label.text = "34"
         return label
     }()
     
@@ -27,7 +26,6 @@ class DesignableOptionView: UIView{
         //label.textColor = UIColor.init(rgb: 0x908FAA, alpha: 1)
         label.font = UIFont(name: "Montserrat-Regular", size: 12)
         label.textAlignment = .center
-        label.text = "text"
         return label
     }()
     
@@ -86,5 +84,11 @@ class DesignableOptionView: UIView{
     }
     func setTextOptionLabel(text: String) {
         textOptionLabel.text = text
+    }
+    
+    func setDefaultAppearance() {
+        UIView.animate(withDuration: 1, delay: 0.5, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+             self.backgroundColor = UIColor.init(rgb: 0xFFFFFF, alpha: 0.1)
+        }, completion: nil)
     }
 }

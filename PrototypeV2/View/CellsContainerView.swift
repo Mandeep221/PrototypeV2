@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class ContainerView: UIView {
+class CellsContainerView: UIView {
     
     let cellWidth:CGFloat = 25
     let cellHeight:CGFloat = 25
@@ -60,14 +60,18 @@ class ContainerView: UIView {
     
     func setSwipableCells(count: Int) {
         swipableCellCount = count
+        swipeCounter = 0
     }
     
     func setUpCells() {
         
-        cellViews?.append(cellView)
-        // add cells
-        cellViews = [UIView]()
+       // if containerView not empty already, remove all cell views
+        if !self.subviews.isEmpty{
+            self.subviews.forEach { $0.removeFromSuperview() }
+        }
         
+        // start creating new cells
+        cellViews = [UIView]()
         if let count = cellCount {
             for index in 0...count - 1 {
 

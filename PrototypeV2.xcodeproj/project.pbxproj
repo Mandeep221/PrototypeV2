@@ -13,7 +13,7 @@
 		A50348DD21693E8F005BE136 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A50348DB21693E8F005BE136 /* Main.storyboard */; };
 		A50348DF21693E8F005BE136 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A50348DE21693E8F005BE136 /* Assets.xcassets */; };
 		A50348E221693E8F005BE136 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A50348E021693E8F005BE136 /* LaunchScreen.storyboard */; };
-		A50348EB21697779005BE136 /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50348EA21697779005BE136 /* ContainerView.swift */; };
+		A50348EB21697779005BE136 /* CellsContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50348EA21697779005BE136 /* CellsContainerView.swift */; };
 		A50455892187EDFF0077CD5F /* ChartController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50455882187EDFF0077CD5F /* ChartController.swift */; };
 		A504558B2187EE120077CD5F /* BasicBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = A504558A2187EE120077CD5F /* BasicBarChart.swift */; };
 		A504558D218882040077CD5F /* BarEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = A504558C218882030077CD5F /* BarEntry.swift */; };
@@ -28,6 +28,7 @@
 		A534C0A8216DCFE800FD56D4 /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A534C0A5216DCFE700FD56D4 /* OpenSans-Semibold.ttf */; };
 		A534C0A9216DCFE800FD56D4 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A534C0A6216DCFE800FD56D4 /* OpenSans-Bold.ttf */; };
 		A534C0AA216DCFE800FD56D4 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A534C0A7216DCFE800FD56D4 /* OpenSans-Regular.ttf */; };
+		A5492C312191FD86003C46DC /* ArrowsContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5492C302191FD86003C46DC /* ArrowsContainerView.swift */; };
 		A56337B6216B775D0081D561 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56337B5216B775D0081D561 /* Extensions.swift */; };
 		A57DDED32180C68100FA15AC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A57DDED22180C68100FA15AC /* GoogleService-Info.plist */; };
 		A5C59B272189C60500BABA7B /* Yellowtail-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = A5C59B262189C43300BABA7B /* Yellowtail-Regular.otf */; };
@@ -53,7 +54,7 @@
 		A50348DE21693E8F005BE136 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A50348E121693E8F005BE136 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A50348E321693E8F005BE136 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A50348EA21697779005BE136 /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
+		A50348EA21697779005BE136 /* CellsContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellsContainerView.swift; sourceTree = "<group>"; };
 		A50455882187EDFF0077CD5F /* ChartController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartController.swift; sourceTree = "<group>"; };
 		A504558A2187EE120077CD5F /* BasicBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicBarChart.swift; sourceTree = "<group>"; };
 		A504558C218882030077CD5F /* BarEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarEntry.swift; sourceTree = "<group>"; };
@@ -68,6 +69,7 @@
 		A534C0A5216DCFE700FD56D4 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		A534C0A6216DCFE800FD56D4 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		A534C0A7216DCFE800FD56D4 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
+		A5492C302191FD86003C46DC /* ArrowsContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowsContainerView.swift; sourceTree = "<group>"; };
 		A550381A2180CD4700BADE6D /* PrototypeV2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PrototypeV2.entitlements; sourceTree = "<group>"; };
 		A56337B5216B775D0081D561 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		A57DDED22180C68100FA15AC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -146,7 +148,8 @@
 		A50348E921697740005BE136 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				A50348EA21697779005BE136 /* ContainerView.swift */,
+				A50348EA21697779005BE136 /* CellsContainerView.swift */,
+				A5492C302191FD86003C46DC /* ArrowsContainerView.swift */,
 				A50D9578216E7FAB002F1DC3 /* DesignableOptionView.swift */,
 				A53393E9217BD4DC00F7C428 /* InputView.swift */,
 				A5EFD9D8218674BF00A557C7 /* ModuleTypeContainerView.swift */,
@@ -362,9 +365,10 @@
 				A504558F218882DB0077CD5F /* BeautifulBarChart.swift in Sources */,
 				A51270EB2185696900222E6F /* SplashController.swift in Sources */,
 				A5CE7C2B218D344100C164A6 /* LoveController.swift in Sources */,
-				A50348EB21697779005BE136 /* ContainerView.swift in Sources */,
+				A50348EB21697779005BE136 /* CellsContainerView.swift in Sources */,
 				A50455892187EDFF0077CD5F /* ChartController.swift in Sources */,
 				A5CE7C23218C391D00C164A6 /* HeartsController.swift in Sources */,
+				A5492C312191FD86003C46DC /* ArrowsContainerView.swift in Sources */,
 				A53393EA217BD4DC00F7C428 /* InputView.swift in Sources */,
 				A5CE7C21218A4AEB00C164A6 /* ModuleType.swift in Sources */,
 				A53393E8217B9E9C00F7C428 /* HomeController.swift in Sources */,
