@@ -31,6 +31,7 @@
 		A5492C312191FD86003C46DC /* ArrowsContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5492C302191FD86003C46DC /* ArrowsContainerView.swift */; };
 		A56337B6216B775D0081D561 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56337B5216B775D0081D561 /* Extensions.swift */; };
 		A57DDED32180C68100FA15AC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A57DDED22180C68100FA15AC /* GoogleService-Info.plist */; };
+		A5A968212197CB9200FDC941 /* PracticeAdvanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A968202197CB9200FDC941 /* PracticeAdvanceController.swift */; };
 		A5C59B272189C60500BABA7B /* Yellowtail-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = A5C59B262189C43300BABA7B /* Yellowtail-Regular.otf */; };
 		A5C59B292189D11500BABA7B /* ModuleDataInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C59B282189D11500BABA7B /* ModuleDataInjector.swift */; };
 		A5C59B2C2189D72F00BABA7B /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C59B2B2189D72F00BABA7B /* Module.swift */; };
@@ -73,6 +74,7 @@
 		A550381A2180CD4700BADE6D /* PrototypeV2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PrototypeV2.entitlements; sourceTree = "<group>"; };
 		A56337B5216B775D0081D561 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		A57DDED22180C68100FA15AC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A5A968202197CB9200FDC941 /* PracticeAdvanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeAdvanceController.swift; sourceTree = "<group>"; };
 		A5C59B262189C43300BABA7B /* Yellowtail-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Yellowtail-Regular.otf"; sourceTree = "<group>"; };
 		A5C59B282189D11500BABA7B /* ModuleDataInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleDataInjector.swift; sourceTree = "<group>"; };
 		A5C59B2B2189D72F00BABA7B /* Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
@@ -200,6 +202,7 @@
 				A5F08CFC217AB11D00EC9B16 /* LoginController.swift */,
 				A53393E7217B9E9C00F7C428 /* HomeController.swift */,
 				A50348D921693E8E005BE136 /* PracticeController.swift */,
+				A5A968202197CB9200FDC941 /* PracticeAdvanceController.swift */,
 				A51270EA2185696900222E6F /* SplashController.swift */,
 				A50455882187EDFF0077CD5F /* ChartController.swift */,
 				A5C59B282189D11500BABA7B /* ModuleDataInjector.swift */,
@@ -360,6 +363,7 @@
 				A5C59B292189D11500BABA7B /* ModuleDataInjector.swift in Sources */,
 				A5C59B2C2189D72F00BABA7B /* Module.swift in Sources */,
 				A50D9579216E7FAC002F1DC3 /* DesignableOptionView.swift in Sources */,
+				A5A968212197CB9200FDC941 /* PracticeAdvanceController.swift in Sources */,
 				A50348DA21693E8E005BE136 /* PracticeController.swift in Sources */,
 				A50348D821693E8E005BE136 /* AppDelegate.swift in Sources */,
 				A504558F218882DB0077CD5F /* BeautifulBarChart.swift in Sources */,

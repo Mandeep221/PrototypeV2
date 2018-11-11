@@ -14,7 +14,7 @@ class CellsContainerView: UIView {
     let cellWidth:CGFloat = 25
     let cellHeight:CGFloat = 25
     let cellGap:CGFloat = 6
-    let containerHeight:CGFloat = 50
+    let containerHeight:CGFloat = 0
     let anchorHeight: CGFloat = 2
     var viewRef: PracticeController?
     var isLadySpeaking: Bool = true
@@ -89,10 +89,19 @@ class CellsContainerView: UIView {
                 cellView.backgroundColor = UIColor.init(rgb: 0xF6B691, alpha: 1)
                 let leftMargin = index * Int(cellWidth + cellGap)
                 addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(leftMargin)-[v0(\(Int(cellWidth)))]", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : cellView]))
-                //let containerHeight = self.frame.height
-                let letLeftMargin = containerHeight - cellHeight - ((containerHeight - cellHeight)/2)
                 
-                addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-\(Int(letLeftMargin))-[v0(\(Int(cellHeight)))]", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : cellView]))
+                //let containerHeight = self.frame.height
+                var letLeftMargin = 0
+                
+                if containerHeight != cellHeight {
+                    letLeftMargin = Int(containerHeight - cellHeight - ((containerHeight - cellHeight)/2))
+                }
+                
+//                addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-\(Int(letLeftMargin))-[v0(\(Int(cellHeight)))]", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : cellView]))
+                
+                addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[v0(\(Int(cellHeight)))]-0-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : cellView]))
+
+                
                 cellViews?.append(cellView)
             }
         }
@@ -184,7 +193,7 @@ class CellsContainerView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        //backgroundColor = .white
     }
     
     required init?(coder aDecoder: NSCoder) {

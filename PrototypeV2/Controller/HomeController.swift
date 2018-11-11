@@ -118,9 +118,16 @@ class HomeController: UIViewController {
         //handleExpansion(gesture: gesture)
          //MARK: Launch the real deal
         if let tappedView = gesture.view as! ModuleTypeContainerView?{
-            let nextVc = PracticeController()
-            nextVc.moduleType = tappedView.module?.name
-            navigationController?.pushViewController(nextVc, animated: true)
+            let moduleName = tappedView.module?.name
+            if moduleName == ModuleType.multiplication{
+                let nextVc = PracticeAdvanceController()
+                nextVc.moduleType = tappedView.module?.name
+                navigationController?.pushViewController(nextVc, animated: true)
+            }else{
+                let nextVc = PracticeController()
+                nextVc.moduleType = tappedView.module?.name
+                navigationController?.pushViewController(nextVc, animated: true)
+            }
         }
     }
     

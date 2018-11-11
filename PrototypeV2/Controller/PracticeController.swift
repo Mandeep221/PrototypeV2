@@ -160,9 +160,9 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     fileprivate func setConstraintsForContainerTwo() {
         instructionTwoLabel.anchor(top: containerViewOne.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 40))
         
-        anchorForContainerTwo.anchor(top: containerViewTwo.topAnchor, leading: view.leadingAnchor, bottom: containerViewTwo.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: (containerViewTwo.containerHeight - containerViewTwo.anchorHeight)/2, left: 0, bottom: 24, right: 0), size: .init(width: 0, height: containerViewTwo.anchorHeight))
+        anchorForContainerTwo.anchor(top: containerViewTwo.topAnchor, leading: view.leadingAnchor, bottom: containerViewTwo.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: (containerViewTwo.cellHeight - containerViewTwo.anchorHeight)/2, left: 0, bottom: (containerViewTwo.cellHeight - containerViewTwo.anchorHeight)/2, right: 0), size: .init(width: 0, height: containerViewTwo.anchorHeight))
         
-        containerViewTwo.anchor(top: instructionTwoLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: containerViewTwo.cellHeight))
+        containerViewTwo.anchor(top: instructionTwoLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 0))
     }
     
     fileprivate func setConstraintsForArrowsContainer() {
@@ -172,9 +172,9 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     fileprivate func setConstraintsForContainerOne() {
         instructionOneLabel.anchor(top: moduleTitleLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: topMarginForInstructionLabelOne, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 40))
         
-        anchorForContainerOne.anchor(top: containerViewOne.topAnchor, leading: view.leadingAnchor, bottom: containerViewOne.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: (containerViewOne.containerHeight - containerViewOne.anchorHeight)/2, left: 0, bottom: 24, right: 0), size: .init(width: 0, height: containerViewOne.anchorHeight))
+        anchorForContainerOne.anchor(top: containerViewOne.topAnchor, leading: view.leadingAnchor, bottom: containerViewOne.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: (containerViewOne.cellHeight - containerViewOne.anchorHeight)/2, left: 0, bottom: (containerViewOne.cellHeight - containerViewOne.anchorHeight)/2, right: 0), size: .init(width: 0, height: containerViewOne.anchorHeight))
         
-        containerViewOne.anchor(top: instructionOneLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: containerViewOne.cellHeight))
+        containerViewOne.anchor(top: instructionOneLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 0))
     }
     
     fileprivate func addConstraints() {
