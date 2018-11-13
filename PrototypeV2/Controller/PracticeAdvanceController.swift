@@ -11,6 +11,9 @@ import CoreData
 import AVFoundation
 
 class InstructionCellContainerView: UIView {
+    
+    var topAnchorForCells: NSLayoutConstraint?
+    
     let anchorForContainer: UIView = {
         let abchorView = UIView()
         //abchorView.backgroundColor = UIColor.init(rgb: 0xF7CE3E)
@@ -48,7 +51,10 @@ class InstructionCellContainerView: UIView {
         instructionLabel.anchor(top: self.topAnchor, leading: self.leadingAnchor, bottom: nil, trailing: self.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 40))
         
         
-        cellsContainerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 40).isActive = true
+        
+        topAnchorForCells = cellsContainerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 40)
+        topAnchorForCells?.isActive = true
+        
         cellsContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
         cellsContainerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16).isActive = true
         cellsContainerView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
@@ -64,11 +70,12 @@ class InstructionCellContainerView: UIView {
 
 class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
     var speechSynthesizer: AVSpeechSynthesizer?
+    var requiredNumbersForOptions: [Int]?
     var possibleRowValues: [NSNumber]?
     var possibleColumnValues: [NSNumber]?
     var numData: NumberData?
     var rowsDone = 0
-    
+    var answer: Int = 0
     var moduleType: ModuleType? = nil {
         didSet{
             moduleTitleLabel.text = moduleType?.rawValue
@@ -102,7 +109,46 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
         return instructionCellContainerView
     }()
     
+    let finalInstructionLabel: UILabel = {
+        let instructionLabel = UILabel()
+        instructionLabel.numberOfLines = 2
+        instructionLabel.textColor = .white
+        instructionLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
+        instructionLabel.text = "Can you swipe two cells to the right?"
+        instructionLabel.translatesAutoresizingMaskIntoConstraints = false
+        instructionLabel.alpha = 0
+        return instructionLabel
+    }()
+    
     var rows: [InstructionCellContainerView]?
+    
+    lazy var optionButtons: [DesignableOptionView] = {
+        var opt = [DesignableOptionView]()
+        
+        for index in 0...3 {
+            let option = DesignableOptionView()
+            option.isUserInteractionEnabled = true
+            option.alpha = 0.0
+            option.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleOptionSelection)))
+            
+            opt.append(option)
+        }
+        return opt
+    }()
+    
+    @objc func handleOptionSelection(gesture: UITapGestureRecognizer) {
+        let currentView = gesture.view as! DesignableOptionView
+        if optionButtons.contains(currentView){
+            
+            if Int(currentView.numberOptionLabel.text!) == answer{
+                currentView.handleOptionClickAnimation(isCorrect: true)
+                //reset()
+            }else{
+                currentView.handleOptionClickAnimation(isCorrect: false)
+            }
+        }
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -124,6 +170,11 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
         
         view.addSubview(moduleSubTitleLabel)
         view.addSubview(moduleTitleLabel)
+        for index in 0...optionButtons.count - 1{
+            view.addSubview(optionButtons[index])
+        }
+        view.addSubview(finalInstructionLabel)
+        setConstraintsForOptions()
         
         // constraints
         moduleSubTitleLabel.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 20))
@@ -160,7 +211,7 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
             iCellContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
             iCellContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
             if index == 0{
-                iCellContainerView.topAnchor.constraint(equalTo: moduleTitleLabel.bottomAnchor).isActive = true
+                iCellContainerView.topAnchor.constraint(equalTo: moduleTitleLabel.bottomAnchor, constant: 20).isActive = true
             }else{
                 iCellContainerView.topAnchor.constraint(equalTo: rows![index-1].bottomAnchor).isActive = true
             }
@@ -170,8 +221,32 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
         
         // initiate scene
         handleScene(label: rows![0].instructionLabel, show: true)
+        requiredNumbersForOptions = [Int]()
     }
 
+    
+    func setConstraintsForOptions() {
+        let optionOneButton = optionButtons[0]
+        let optionTwoButton = optionButtons[1]
+        let optionThreeButton = optionButtons[2]
+        let optionFourButton = optionButtons[3]
+        
+        
+        //#TODO: width does not make sense, but somehow works
+        optionThreeButton.anchor(top: nil, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: nil, padding: .init(top: 0, left: 16, bottom: 20, right: 16), size: .init(width: view.frame.width / 2 - 16 - 8, height: 64))
+        
+        // #TODO: width does not make sense, but somehow works
+        optionFourButton.anchor(top: nil, leading: optionThreeButton.trailingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 20, right: 16), size: .init(width: view.frame.width / 2 - 16 - 8, height: 64))
+        
+        optionOneButton.anchor(top: nil, leading: view.leadingAnchor, bottom: optionThreeButton.topAnchor, trailing: nil, padding: .init(top: 20, left: 16, bottom: 16, right: 16), size: .init(width: view.frame.width / 2 - 16 - 8, height: 64))
+        
+        optionTwoButton.anchor(top: nil, leading: nil, bottom: optionFourButton.topAnchor, trailing: view.trailingAnchor, padding: .init(top: 20, left: 16, bottom: 16, right: 16), size: .init(width: view.frame.width / 2 - 16 - 8, height: 64))
+        
+        // for the third instruction
+        finalInstructionLabel.anchor(top: nil, leading: view.leadingAnchor, bottom: optionOneButton.topAnchor, trailing: view.trailingAnchor, padding: .init(top: 8, left: 16, bottom: 16, right: 16), size: .init(width: view.frame.width, height: 40))
+        
+    }
+    
     // modifies the scene by hiding and showing the instruction labels
     func handleScene(label: UILabel, show: Bool) {
         if show {
@@ -187,6 +262,54 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
         }
     }
     
+    func handleAllOptions(visible: Bool) {
+        self.setUpFourOptions()
+        for index in 0..<optionButtons.count{
+            UIView.animate(withDuration: 0.5, delay: 0.5, options: [.curveEaseOut], animations:{
+                if visible{
+                    self.optionButtons[index].alpha = 1.0
+                    self.optionButtons[index].numberOptionLabel.text = String(self.requiredNumbersForOptions![index])
+                    self.optionButtons[index].textOptionLabel.text = self.requiredNumbersForOptions![index].asWord
+                }else{
+                    self.optionButtons[index].alpha = 0.0
+                }
+            }, completion: {(_) in
+                
+            })
+        }
+    }
+    
+    func setUpFourOptions(){
+        if !requiredNumbersForOptions!.isEmpty{
+            requiredNumbersForOptions?.removeAll()
+        }
+        requiredNumbersForOptions = generateOptions()
+        
+        if !requiredNumbersForOptions!.contains(answer){
+            requiredNumbersForOptions?[0] = answer
+            requiredNumbersForOptions?.shuffle()
+        }
+    }
+    
+    func generateOptions() -> [Int] {
+        let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+        var requiredNumbers = [Int]()
+        while true{
+            
+            if let randomNum = numbers.randomElement(){
+                if !requiredNumbers.contains(randomNum){
+                    requiredNumbers.append(randomNum)
+                }
+            }
+            
+            if requiredNumbers.count == 4{
+                break
+            }
+            
+        }
+        return requiredNumbers
+    }
+    
     // every time the required number of cells are swiped in each container,
     // this method updates the total number of cells swiped and stores it in the answer variable
     func updateTotalCellsSwiped(cellsSwiped: Int) {
@@ -195,8 +318,23 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
             let nextRowIndex = rowsDone
             handleScene(label: rows![nextRowIndex].instructionLabel, show: true)
             handleScene(label: rows![nextRowIndex - 1].instructionLabel, show: false)
+        }else if rowsDone == numRow{
+            removeGapBetweenBars()
+            answer = numRow * numColumn
+            handleScene(label: rows![numRow-1].instructionLabel, show: false)
+            handleScene(label: finalInstructionLabel, show: true)
+            handleAllOptions(visible: true)
         }
         
+    }
+    
+    func removeGapBetweenBars() {
+        for index in 0..<rows!.count{
+            //row.topAnchorForCells?.constant = 0
+            UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+                self.rows![index].transform = CGAffineTransform(translationX: 0, y: CGFloat(index * -30))
+            }, completion: nil)
+        }
     }
     
     func setUpCoreData() {
