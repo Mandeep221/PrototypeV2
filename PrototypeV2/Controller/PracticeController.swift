@@ -212,8 +212,8 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         edgesForExtendedLayout = []
         
         // provide this view controller reference to each container view
-        containerViewOne.viewRef = self
-        containerViewTwo.viewRef = self
+        containerViewOne.viewPracRef = self
+        containerViewTwo.viewPracRef = self
         
         //#2C163B
         view.backgroundColor = UIColor(rgb: 0x2C163B, alpha: 1)

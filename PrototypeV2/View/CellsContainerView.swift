@@ -16,7 +16,8 @@ class CellsContainerView: UIView {
     let cellGap:CGFloat = 6
     let containerHeight:CGFloat = 0
     let anchorHeight: CGFloat = 2
-    var viewRef: PracticeController?
+    var viewPracRef: PracticeController?
+    var viewPracAdvRef: PracticeAdvanceController?
     var isLadySpeaking: Bool = true
     // Maximum number of cells that can be swiped
     var swipableCellCount = 0
@@ -25,8 +26,12 @@ class CellsContainerView: UIView {
     var swipeCounter = 0 {
         didSet{
             if swipeCounter == swipableCellCount{
-                if let view = viewRef{
-                    view.updateTotalCellsSwiped(cellsSwiped: swipableCellCount)
+                if let viewPracRef = viewPracRef{
+                    viewPracRef.updateTotalCellsSwiped(cellsSwiped: swipableCellCount)
+                }
+                
+                if let viewPracAdvRef = viewPracAdvRef{
+                    viewPracAdvRef.updateTotalCellsSwiped(cellsSwiped: swipableCellCount)
                 }
             }
         }
@@ -82,7 +87,6 @@ class CellsContainerView: UIView {
                 let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture))
                 swipeRight.direction = .right
                 cellView.addGestureRecognizer(swipeRight)
-
                 
                 addSubview(cellView)
 
@@ -127,7 +131,7 @@ class CellsContainerView: UIView {
         rectLayer.position = targetCell.center
         rectLayer.bounds = CGRect(x: targetCell.frame.origin.x - 4, y: targetCell.frame.origin.y - 4, width: targetCell.frame.width + 4, height: targetCell.frame.height + 4)
         
-        viewRef?.view.layer.addSublayer(rectLayer)
+        viewPracRef?.view.layer.addSublayer(rectLayer)
         
     }
     
@@ -162,6 +166,7 @@ class CellsContainerView: UIView {
      and also increses the count for number of objects that has been swiped*/
     @objc func handleSwipeGesture(gesture: UISwipeGestureRecognizer) {
         
+        print("handleSwipeGesture!")
         if let view = gesture.view{
             if swipeCounter == swipableCellCount || swipeCounter == (cellViews?.count)! || isLadySpeaking{
                 return

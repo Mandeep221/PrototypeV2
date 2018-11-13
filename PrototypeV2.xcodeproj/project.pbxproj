@@ -32,6 +32,10 @@
 		A56337B6216B775D0081D561 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56337B5216B775D0081D561 /* Extensions.swift */; };
 		A57DDED32180C68100FA15AC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A57DDED22180C68100FA15AC /* GoogleService-Info.plist */; };
 		A5A968212197CB9200FDC941 /* PracticeAdvanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A968202197CB9200FDC941 /* PracticeAdvanceController.swift */; };
+		A5A96845219A187E00FDC941 /* NumbersData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A5A96843219A187E00FDC941 /* NumbersData.xcdatamodeld */; };
+		A5A96847219A3FCB00FDC941 /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A96846219A3FCB00FDC941 /* PersistenceService.swift */; };
+		A5A96850219A511600FDC941 /* NumberData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A9684E219A511600FDC941 /* NumberData+CoreDataClass.swift */; };
+		A5A96851219A511600FDC941 /* NumberData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A9684F219A511600FDC941 /* NumberData+CoreDataProperties.swift */; };
 		A5C59B272189C60500BABA7B /* Yellowtail-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = A5C59B262189C43300BABA7B /* Yellowtail-Regular.otf */; };
 		A5C59B292189D11500BABA7B /* ModuleDataInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C59B282189D11500BABA7B /* ModuleDataInjector.swift */; };
 		A5C59B2C2189D72F00BABA7B /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C59B2B2189D72F00BABA7B /* Module.swift */; };
@@ -75,6 +79,10 @@
 		A56337B5216B775D0081D561 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		A57DDED22180C68100FA15AC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A5A968202197CB9200FDC941 /* PracticeAdvanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeAdvanceController.swift; sourceTree = "<group>"; };
+		A5A96844219A187E00FDC941 /* NumbersData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NumbersData.xcdatamodel; sourceTree = "<group>"; };
+		A5A96846219A3FCB00FDC941 /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
+		A5A9684E219A511600FDC941 /* NumberData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberData+CoreDataClass.swift"; sourceTree = "<group>"; };
+		A5A9684F219A511600FDC941 /* NumberData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberData+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A5C59B262189C43300BABA7B /* Yellowtail-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Yellowtail-Regular.otf"; sourceTree = "<group>"; };
 		A5C59B282189D11500BABA7B /* ModuleDataInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleDataInjector.swift; sourceTree = "<group>"; };
 		A5C59B2B2189D72F00BABA7B /* Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
@@ -131,8 +139,10 @@
 		A50348D621693E8E005BE136 /* PrototypeV2 */ = {
 			isa = PBXGroup;
 			children = (
-				A5C59B2A2189D71800BABA7B /* Model */,
+				A5A9684E219A511600FDC941 /* NumberData+CoreDataClass.swift */,
+				A5A9684F219A511600FDC941 /* NumberData+CoreDataProperties.swift */,
 				A550381A2180CD4700BADE6D /* PrototypeV2.entitlements */,
+				A5C59B2A2189D71800BABA7B /* Model */,
 				A5F08CFB217AB0F300EC9B16 /* Controller */,
 				A534C0A0216DCF6300FD56D4 /* Fonts */,
 				A56337B4216B77230081D561 /* Helper */,
@@ -143,6 +153,7 @@
 				A50348E021693E8F005BE136 /* LaunchScreen.storyboard */,
 				A50348E321693E8F005BE136 /* Info.plist */,
 				A57DDED22180C68100FA15AC /* GoogleService-Info.plist */,
+				A5A96843219A187E00FDC941 /* NumbersData.xcdatamodeld */,
 			);
 			path = PrototypeV2;
 			sourceTree = "<group>";
@@ -183,6 +194,7 @@
 			children = (
 				A56337B5216B775D0081D561 /* Extensions.swift */,
 				A50B23B3217EC56B00D72B03 /* Color.swift */,
+				A5A96846219A3FCB00FDC941 /* PersistenceService.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -359,6 +371,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5A96847219A3FCB00FDC941 /* PersistenceService.swift in Sources */,
 				A5F08CFD217AB11D00EC9B16 /* LoginController.swift in Sources */,
 				A5C59B292189D11500BABA7B /* ModuleDataInjector.swift in Sources */,
 				A5C59B2C2189D72F00BABA7B /* Module.swift in Sources */,
@@ -372,6 +385,7 @@
 				A50348EB21697779005BE136 /* CellsContainerView.swift in Sources */,
 				A50455892187EDFF0077CD5F /* ChartController.swift in Sources */,
 				A5CE7C23218C391D00C164A6 /* HeartsController.swift in Sources */,
+				A5A96850219A511600FDC941 /* NumberData+CoreDataClass.swift in Sources */,
 				A5492C312191FD86003C46DC /* ArrowsContainerView.swift in Sources */,
 				A53393EA217BD4DC00F7C428 /* InputView.swift in Sources */,
 				A5CE7C21218A4AEB00C164A6 /* ModuleType.swift in Sources */,
@@ -380,7 +394,9 @@
 				A504558D218882040077CD5F /* BarEntry.swift in Sources */,
 				A504558B2187EE120077CD5F /* BasicBarChart.swift in Sources */,
 				A50B23B4217EC56B00D72B03 /* Color.swift in Sources */,
+				A5A96851219A511600FDC941 /* NumberData+CoreDataProperties.swift in Sources */,
 				A5CE7C25218C3C2C00C164A6 /* Emitter.swift in Sources */,
+				A5A96845219A187E00FDC941 /* NumbersData.xcdatamodeld in Sources */,
 				A56337B6216B775D0081D561 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -574,6 +590,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		A5A96843219A187E00FDC941 /* NumbersData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A5A96844219A187E00FDC941 /* NumbersData.xcdatamodel */,
+			);
+			currentVersion = A5A96844219A187E00FDC941 /* NumbersData.xcdatamodel */;
+			name = NumbersData.xcdatamodeld;
+			path = Model/NumbersData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = A50348CC21693E8E005BE136 /* Project object */;
 }
