@@ -82,7 +82,6 @@ class HomeController: UIViewController {
     }
     
     @objc func handleLogout(){
-        
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.55, initialSpringVelocity: 0.5, options: [.curveEaseOut], animations: {
             if let homeViews = self.homeViews{
                 for index in 0..<homeViews.count{
@@ -94,6 +93,7 @@ class HomeController: UIViewController {
             if let views = self.homeViews, self.tappedIndex != -1{
                 let tappedView = views[self.tappedIndex] as! ModuleTypeContainerView
                 tappedView.showCancelOption(show: false)
+                tappedView.handleOptionsContainerVisiblity(visible: false)
                 //tappedView.translatesAutoresizingMaskIntoConstraints = false
                 self.tAnchor?.isActive = false
                 if self.tappedIndex == 0{
@@ -115,20 +115,20 @@ class HomeController: UIViewController {
     }
     
     @objc func launchModule(gesture: UITapGestureRecognizer) {
-        //handleExpansion(gesture: gesture)
-         //MARK: Launch the real deal
-        if let tappedView = gesture.view as! ModuleTypeContainerView?{
-            let moduleName = tappedView.module?.name
-            if moduleName == ModuleType.multiplication{
-                let nextVc = PracticeAdvanceController()
-                nextVc.moduleType = tappedView.module?.name
-                navigationController?.pushViewController(nextVc, animated: true)
-            }else{
-                let nextVc = PracticeController()
-                nextVc.moduleType = tappedView.module?.name
-                navigationController?.pushViewController(nextVc, animated: true)
-            }
-        }
+        handleExpansion(gesture: gesture)
+//         //MARK: Launch the real deal
+//        if let tappedView = gesture.view as! ModuleTypeContainerView?{
+//            let moduleName = tappedView.module?.name
+//            if moduleName == ModuleType.multiplication{
+//                let nextVc = PracticeAdvanceController()
+//                nextVc.moduleType = tappedView.module?.name
+//                navigationController?.pushViewController(nextVc, animated: true)
+//            }else{
+//                let nextVc = PracticeController()
+//                nextVc.moduleType = tappedView.module?.name
+//                navigationController?.pushViewController(nextVc, animated: true)
+//            }
+//        }
     }
     
     var bAnchor: NSLayoutConstraint?
@@ -142,7 +142,7 @@ class HomeController: UIViewController {
         }
         
         if let v = gesture.view as! ModuleTypeContainerView?, let totalHeight = self.remainingTotalheight, let homeViews = self.homeViews{
-            
+            v.handleOptionsContainerVisiblity(visible: true)
             self.tappedIndex =  homeViews.index(of: v)!
             tAnchor = v.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: self.topMargin)
             tAnchor?.isActive = true
