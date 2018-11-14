@@ -321,8 +321,8 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     }
     
     func animateSwipedCells() {
-        containerViewOne.scaleSwipedCells()
-        containerViewTwo.scaleSwipedCells()
+        containerViewOne.scaleSwipedCells(repeatCount: 1000)
+        containerViewTwo.scaleSwipedCells(repeatCount: 1000)
     }
     
     func generateTwoRandomNumbers() {

@@ -183,7 +183,7 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
     
         numRow = Int(truncating: numData!.arrNumRows[0])
         numColumn = Int(truncating: numData!.arrNumColumns[0])
-        
+        //finalInstructionLabel.text =
         adjustArray()
         
         //print(numRow, numColumn)
@@ -194,6 +194,8 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
     }
 
     func generateSwipeBars() {
+        print("Rows: ", numRow)
+        print("Columns: ", numColumn)
         // generate number of cell containers required based of number of rows,
         // number of cells in each cell container would be the numColumn generated
         for index in 0..<numRow {
@@ -201,7 +203,8 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
             iCellContainerView.translatesAutoresizingMaskIntoConstraints = false
             iCellContainerView.cellsContainerView.viewPracAdvRef = self
             iCellContainerView.cellsContainerView.cellCount = 7
-            iCellContainerView.cellsContainerView.swipableCellCount = numColumn
+            iCellContainerView.cellsContainerView.setSwipableCells(count: numColumn)
+            iCellContainerView.instructionLabel.text = self.numColumn>1 ? "Can you swipe "+String(self.numColumn) + " cells to the right?" : "Can you swipe 1 cell to the right?"
             iCellContainerView.instructionLabel.alpha = 0
             // add views
             view.addSubview(iCellContainerView)
@@ -335,6 +338,7 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
             handleScene(label: rows![numRow-1].instructionLabel, show: false)
             handleScene(label: finalInstructionLabel, show: true)
             handleAllOptions(visible: true)
+            animateSwipedCells(index: 0)
         }
         
     }
@@ -424,9 +428,65 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
             for option in self.optionButtons{
                 option.setDefaultAppearance()
             }
+            //re-initialise
+            self.answer = 0
+            self.rowsDone = 0
         }
     }
     
+    func animateSwipedCells(index: Int) {
+        var nextIndex = index
+        // level 0
+        UIView.animate(withDuration: 2, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveLinear, animations: {
+            self.rows![nextIndex].cellsContainerView.scaleSwipedCells(repeatCount: 1)
+        }) { (bool) in
+//            if index == self.numRow - 1{
+//                nextIndex = -1
+//            }
+//            self.animateSwipedCells(index: nextIndex+1)
+//            if bool {
+//              self.rows![index+1].cellsContainerView.scaleSwipedCells(repeatCount: 2)
+//            }
+            // level 1
+            nextIndex+=1
+            UIView.animate(withDuration: 2, delay: 2, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveLinear, animations: {
+                self.rows![nextIndex].cellsContainerView.scaleSwipedCells(repeatCount: 1)
+            }) { (bool) in
+                
+                nextIndex+=1
+                if (nextIndex == self.numRow){
+                    return
+                }
+                
+                // level 2
+                UIView.animate(withDuration: 2, delay: 4, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveLinear, animations: {
+                    self.rows![nextIndex].cellsContainerView.scaleSwipedCells(repeatCount: 1)
+                }) { (bool) in
+                    nextIndex+=1
+                    if (nextIndex == self.numRow){
+                        return
+                    }
+                    
+                    // level 3
+                    UIView.animate(withDuration: 2, delay: 6, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveLinear, animations: {
+                        self.rows![nextIndex].cellsContainerView.scaleSwipedCells(repeatCount: 1)
+                    }) { (bool) in
+                        nextIndex+=1
+                        if (nextIndex == self.numRow){
+                            return
+                        }
+                        
+                        // level 4
+                        UIView.animate(withDuration: 2, delay: 8, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveLinear, animations: {
+                            self.rows![nextIndex].cellsContainerView.scaleSwipedCells(repeatCount: 1)
+                        }) { (bool) in
+                            
+                        }
+                    }
+                }
+            }
+        }
+    }
     func textToSpeech(text: String) {
         if speechSynthesizer == nil{
             speechSynthesizer = AVSpeechSynthesizer()

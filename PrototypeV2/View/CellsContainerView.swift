@@ -219,7 +219,7 @@ class CellsContainerView: UIView {
         }
     }
     
-    func scaleSwipedCells(){
+    func scaleSwipedCells(repeatCount: Float){
         let totalCells = cellViews!.count
         let abc = totalCells - swipableCellCount
         
@@ -227,7 +227,7 @@ class CellsContainerView: UIView {
         pulse.duration = 0.5
         pulse.fromValue = 0.90
         pulse.toValue = 1.0
-        pulse.repeatCount = 1000
+        pulse.repeatCount = repeatCount
         pulse.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
         pulse.autoreverses = true
         
@@ -235,7 +235,7 @@ class CellsContainerView: UIView {
         flash.duration = 0.5
         flash.fromValue = 1
         flash.toValue = 0.90
-        flash.repeatCount = 1000
+        flash.repeatCount = repeatCount
         flash.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
         flash.autoreverses = true
         
