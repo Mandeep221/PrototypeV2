@@ -142,7 +142,7 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
             
             if Int(currentView.numberOptionLabel.text!) == answer{
                 currentView.handleOptionClickAnimation(isCorrect: true)
-                //reset()
+                reset()
             }else{
                 currentView.handleOptionClickAnimation(isCorrect: false)
             }
@@ -181,11 +181,6 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
         
         moduleTitleLabel.anchor(top: moduleSubTitleLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 40))
     
-        // Generate 2 randome numbers, for rows and colums
-//        numRow = Int(arc4random_uniform(4) + 1)
-//        numColumn = Int(arc4random_uniform(2) + 1)
-//        numColumn = numColumn==1 ? 2:numColumn
-        
         numRow = Int(truncating: numData!.arrNumRows[0])
         numColumn = Int(truncating: numData!.arrNumColumns[0])
         
@@ -194,7 +189,11 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
         //print(numRow, numColumn)
         
         rows = [InstructionCellContainerView]()
+        generateSwipeBars()
+        requiredNumbersForOptions = [Int]()
+    }
 
+    func generateSwipeBars() {
         // generate number of cell containers required based of number of rows,
         // number of cells in each cell container would be the numColumn generated
         for index in 0..<numRow {
@@ -218,12 +217,24 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
             iCellContainerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
             rows?.append(iCellContainerView)
         }
-        
         // initiate scene
         handleScene(label: rows![0].instructionLabel, show: true)
-        requiredNumbersForOptions = [Int]()
     }
+    
+    // remove all the swipe bars
+    func removeSwipeBars() {
+//        // if containerView not empty already, remove all cell views
+//        if !self.rows!.isEmpty{
+//            self.rows!.forEach { $0.removeFromSuperview() }
+//        }
+        
+        
+        for row in rows!{
+            row.removeFromSuperview()
+        }
 
+        rows!.removeAll()
+    }
     
     func setConstraintsForOptions() {
         let optionOneButton = optionButtons[0]
@@ -398,6 +409,22 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
         // save changes
         PersistenceService.saveContext()
         //fetch()
+    }
+    
+    func reset() {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+            self.handleAllOptions(visible: false)
+            self.numRow = Int(truncating: self.numData!.arrNumRows[0])
+            self.numColumn = Int(truncating: self.numData!.arrNumColumns[0])
+            self.adjustArray()
+            self.removeSwipeBars()
+            self.generateSwipeBars()
+            self.handleScene(label: self.finalInstructionLabel, show: false)
+            // set default appearance for all options
+            for option in self.optionButtons{
+                option.setDefaultAppearance()
+            }
+        }
     }
     
     func textToSpeech(text: String) {
