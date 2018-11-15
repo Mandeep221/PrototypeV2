@@ -18,7 +18,11 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
            moduleTitleLabel.text = moduleType?.rawValue
         }
     }
-    
+    var level: Int = 2 {
+        didSet{
+            moduleLevelLabel.text = "Level \(level)"
+        }
+    }
     var num1 = 0
     var num2 = 0
     var answer = 0
@@ -57,6 +61,16 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         return titleLabel
     }()
     
+    let moduleLevelLabel: UILabel = {
+        let levelLabel = UILabel()
+        levelLabel.numberOfLines = 2
+        levelLabel.textColor = .white
+        levelLabel.font = UIFont(name: "Montserrat-Bold", size: 24)
+        levelLabel.textAlignment = .right
+        levelLabel.text = "Level"
+        return levelLabel
+    }()
+    
     let instructionOneLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
@@ -70,7 +84,15 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     lazy var containerViewOne: CellsContainerView = {
         let cv = CellsContainerView()
         cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.cellCount = self.cellCount
+    
+        if moduleType == ModuleType.counting{
+            if self.level == 1 {
+                cv.setCellConfig(cellCount: self.cellCount, cellChildCount: 1)}
+            else if self.level == 2{
+                cv.setCellConfig(cellCount: self.cellCount/2 + 1, cellChildCount: 2)}
+        }else{
+             cv.setCellConfig(cellCount: self.cellCount, cellChildCount: 1)
+        }
         return cv
     }()
     
@@ -95,7 +117,7 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     lazy var containerViewTwo: CellsContainerView = {
         let cv = CellsContainerView()
         cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.cellCount = self.cellCount
+        cv.setCellConfig(cellCount: self.cellCount, cellChildCount: 1)
         return cv
     }()
     
@@ -139,6 +161,7 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     fileprivate func addViews() {
         view.addSubview(moduleSubTitleLabel)
         view.addSubview(moduleTitleLabel)
+        view.addSubview(moduleLevelLabel)
         view.addSubview(instructionOneLabel)
         view.addSubview(anchorForContainerOne)
         view.addSubview(containerViewOne)
@@ -181,7 +204,10 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         //Auto layout constraints
         moduleSubTitleLabel.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 20))
         
-        moduleTitleLabel.anchor(top: moduleSubTitleLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 40))
+        moduleTitleLabel.anchor(top: moduleSubTitleLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: view.frame.width * 0.66, height: 40))
+        
+        moduleLevelLabel.anchor(top: nil, leading: nil, bottom: moduleTitleLabel.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: view.frame.width * 0.34, height: 40))
+        
         
         // Hide second container view if the module is counting, by not setting its constraints
         if moduleType == ModuleType.counting {
@@ -326,8 +352,22 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     }
     
     func generateTwoRandomNumbers() {
-        num1 = Int(arc4random_uniform(6) + 1)
-        num2 = Int(arc4random_uniform(5) + 1)
+        
+        let num1UpperCap = 6
+        let num2UpperCap = 5
+        
+        if moduleType == ModuleType.counting{
+            if level == 2 {
+                num1 = Int(arc4random_uniform(UInt32(num1UpperCap/2)) + 1)
+                num2 = Int(arc4random_uniform(UInt32(num2UpperCap/2)) + 1)
+            }else{
+                num1 = Int(arc4random_uniform(UInt32(num1UpperCap)) + 1)
+                num2 = Int(arc4random_uniform(UInt32(num2UpperCap)) + 1)
+            }
+        }else{
+            num1 = Int(arc4random_uniform(UInt32(num1UpperCap)) + 1)
+            num2 = Int(arc4random_uniform(UInt32(num2UpperCap)) + 1)
+        }
         
         // both numbers should be different and in case of subtraction, num1 always greater than num2
         if num1 == num2{
@@ -360,7 +400,7 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
             UIView.animate(withDuration: 0.5, delay: 0.5, options: [.curveEaseOut], animations: {
                 label.alpha = 1.0
             }, completion: { (_) in
-                self.textToSpeech(text: label.text!)
+               // self.textToSpeech(text: label.text!)
             })
         }else{
             UIView.animate(withDuration: 1, animations: {
@@ -456,8 +496,16 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
             self.handleAllOptions(visible: false)
             self.handleScene(label: self.instructionThreeLabel, show: false)
-            self.containerViewOne.cellCount = self.cellCount
-            self.containerViewTwo.cellCount = self.cellCount
+            
+            if self.moduleType == ModuleType.counting{
+                if self.level == 1 {
+                    self.containerViewOne.setCellConfig(cellCount: self.cellCount, cellChildCount: 1)}
+                else if self.level == 2{
+                    self.containerViewOne.setCellConfig(cellCount: self.cellCount/2 + 1, cellChildCount: 2)}
+            }else{
+                self.containerViewOne.setCellConfig(cellCount: self.cellCount, cellChildCount: 1)
+            }
+            self.containerViewTwo.setCellConfig(cellCount: self.cellCount, cellChildCount: 1)
             self.generateTwoRandomNumbers()
             self.setSwipableCells()
             self.handleScene(label: self.instructionOneLabel, show: true)

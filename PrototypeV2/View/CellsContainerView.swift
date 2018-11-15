@@ -9,16 +9,56 @@
 import Foundation
 import UIKit
 
+class ChildCellView: UIView {
+    
+    let cellWidth: CGFloat = 25
+    let cellHeight: CGFloat = 25
+    let cellInternalGap: CGFloat = 3
+    
+    var cellChildCount = 1 {
+        didSet{
+             setup()
+        }
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setup() {
+        for index in 0..<cellChildCount{
+            let cell = UIView()
+            cell.backgroundColor = UIColor.init(rgb: 0xF6B691, alpha: 1)
+            cell.translatesAutoresizingMaskIntoConstraints = false
+            
+            //add views
+            self.addSubview(cell)
+            
+            let leftMargin = cellWidth * CGFloat(index) + cellInternalGap * CGFloat(index)
+            
+            //constraints
+            cell.anchor(top: self.topAnchor, leading: self.leadingAnchor, bottom: self.bottomAnchor, trailing: nil, padding: .init(top:0 , left: leftMargin, bottom: 0, right: 0), size: .init(width: cellWidth, height:cellHeight))
+        }
+    }
+    
+}
+
 class CellsContainerView: UIView {
     
-    let cellWidth:CGFloat = 25
+    var cellWidth:CGFloat = 25
     let cellHeight:CGFloat = 25
     let cellGap:CGFloat = 6
     let containerHeight:CGFloat = 0
     let anchorHeight: CGFloat = 2
     var viewPracRef: PracticeController?
     var viewPracAdvRef: PracticeAdvanceController?
-    var isLadySpeaking: Bool = true
+    var isLadySpeaking: Bool = false
+    var cellChildCount = 1
+    
     // Maximum number of cells that can be swiped
     var swipableCellCount = 0
     
@@ -59,8 +99,18 @@ class CellsContainerView: UIView {
     var cellCount: Int? {
         didSet{
             // set up cells
-            setUpCells()
+            //setUpCells()
         }
+    }
+    
+    func setCellConfig(cellCount: Int, cellChildCount: Int) {
+        self.cellCount = cellCount
+        self.cellChildCount = cellChildCount
+        
+        let childCell = ChildCellView()
+        // cell width
+        cellWidth = childCell.cellWidth * CGFloat(cellChildCount) + CGFloat(cellChildCount - 1) * CGFloat(childCell.cellInternalGap)
+        setUpCells()
     }
     
     func setSwipableCells(count: Int) {
@@ -76,11 +126,14 @@ class CellsContainerView: UIView {
         }
         
         // start creating new cells
+        //cellViews = [UIView]()
         cellViews = [UIView]()
         if let count = cellCount {
             for index in 0...count - 1 {
 
-                let cellView = UIView()
+                let cellView = ChildCellView()
+                cellView.cellChildCount = self.cellChildCount
+                
                 cellView.translatesAutoresizingMaskIntoConstraints = false
                 
                 // add right swipe gesture to the current cellView
@@ -90,9 +143,9 @@ class CellsContainerView: UIView {
                 
                 addSubview(cellView)
 
-                cellView.backgroundColor = UIColor.init(rgb: 0xF6B691, alpha: 1)
-                let leftMargin = index * Int(cellWidth + cellGap)
-                addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(leftMargin)-[v0(\(Int(cellWidth)))]", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : cellView]))
+                 let leftMargin = index * Int(cellWidth + cellGap)
+                
+                addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(leftMargin)-[v0(\(Int(cellWidth * CGFloat(cellChildCount) + CGFloat(cellChildCount - 1) * CGFloat(3))))]", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : cellView]))
                 
                 //let containerHeight = self.frame.height
                 var letLeftMargin = 0
@@ -187,7 +240,10 @@ class CellsContainerView: UIView {
                 view.frame = CGRect(x: x, y: view.frame.origin.y, width: self.cellWidth, height: self.cellHeight)
                 self.swipeCounter += 1
                 
-                view.backgroundColor = UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1)
+                for subview in view.subviews {
+                    // Manipulate the view
+                    subview.backgroundColor = UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1)
+                }
                 
             }, completion: nil)
             
