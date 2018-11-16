@@ -76,12 +76,18 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
     var numData: NumberData?
     var rowsDone = 0
     var answer: Int = 0
+    var toyImage: UIImage? 
     var moduleType: ModuleType? = nil {
         didSet{
             moduleTitleLabel.text = moduleType?.rawValue
         }
     }
     
+    var level: Int = 2 {
+        didSet{
+            moduleLevelLabel.text = "Level \(level)"
+        }
+    }
     var numRow: Int = 0
     var numColumn: Int = 0
     
@@ -103,18 +109,28 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
         return titleLabel
     }()
     
+    let moduleLevelLabel: UILabel = {
+        let levelLabel = UILabel()
+        levelLabel.numberOfLines = 2
+        levelLabel.textColor = .white
+        levelLabel.font = UIFont(name: "Montserrat-Bold", size: 24)
+        levelLabel.textAlignment = .right
+        levelLabel.text = "Level"
+        return levelLabel
+    }()
+    
     lazy var instructionCellContainerView: UIView = {
         
        let instructionCellContainerView = UIView()
         return instructionCellContainerView
     }()
     
-    let finalInstructionLabel: UILabel = {
+    lazy var finalInstructionLabel: UILabel = {
         let instructionLabel = UILabel()
         instructionLabel.numberOfLines = 2
         instructionLabel.textColor = .white
         instructionLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
-        instructionLabel.text = "Can you swipe two cells to the right?"
+        instructionLabel.text = "Can you count the BUTTERFLIES in this rectangle?"
         instructionLabel.translatesAutoresizingMaskIntoConstraints = false
         instructionLabel.alpha = 0
         return instructionLabel
@@ -169,6 +185,7 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
         view.backgroundColor = UIColor(rgb: 0x2C163B, alpha: 1)
         
         view.addSubview(moduleSubTitleLabel)
+         view.addSubview(moduleLevelLabel)
         view.addSubview(moduleTitleLabel)
         for index in 0...optionButtons.count - 1{
             view.addSubview(optionButtons[index])
@@ -179,8 +196,10 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
         // constraints
         moduleSubTitleLabel.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 20, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 20))
         
-        moduleTitleLabel.anchor(top: moduleSubTitleLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: 0, height: 40))
-    
+        moduleTitleLabel.anchor(top: moduleSubTitleLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: view.frame.width * 0.66, height: 40))
+        
+        moduleLevelLabel.anchor(top: nil, leading: nil, bottom: moduleTitleLabel.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: view.frame.width * 0.34, height: 40))
+        
         numRow = Int(truncating: numData!.arrNumRows[0])
         numColumn = Int(truncating: numData!.arrNumColumns[0])
         //finalInstructionLabel.text =
@@ -198,13 +217,16 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
         print("Columns: ", numColumn)
         // generate number of cell containers required based of number of rows,
         // number of cells in each cell container would be the numColumn generated
+        let toy = "BUTTERFLY"
+        let toys = "BUTTERFLIES"
         for index in 0..<numRow {
             let iCellContainerView = InstructionCellContainerView()
             iCellContainerView.translatesAutoresizingMaskIntoConstraints = false
             iCellContainerView.cellsContainerView.viewPracAdvRef = self
-            iCellContainerView.cellsContainerView.cellCount = 7
+            //iCellContainerView.cellsContainerView.cellCount = 7
+            iCellContainerView.cellsContainerView.setCellConfig(cellCount: 7, cellChildCount: 1, toyImage: toyImage!)
             iCellContainerView.cellsContainerView.setSwipableCells(count: numColumn)
-            iCellContainerView.instructionLabel.text = self.numColumn>1 ? "Can you swipe "+String(self.numColumn) + " cells to the right?" : "Can you swipe 1 cell to the right?"
+            iCellContainerView.instructionLabel.text = self.numColumn>1 ? "Can you tap "+String(self.numColumn) + " \(toys)?" : "Can you swipe 1 \(toy)?"
             iCellContainerView.instructionLabel.alpha = 0
             // add views
             view.addSubview(iCellContainerView)
@@ -517,5 +539,14 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
             }
         }
         speechSynthesizer = nil
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
 }

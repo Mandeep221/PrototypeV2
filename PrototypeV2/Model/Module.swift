@@ -13,4 +13,11 @@ class Module{
     var name: ModuleType?
     var accentColor: UIColor?
     var image: UIImage?
+    
+    let images: [UIImage] = [
+        UIImage(named: "icon_strawberry")!,
+        UIImage(named: "icon_snake")!,
+        UIImage(named: "icon_rainbow")!,
+        UIImage(named: "icon_butterfly")!
+    ]
 }

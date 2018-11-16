@@ -10,6 +10,8 @@ import UIKit
 
 class ModuleTypeContainerView: UIView, UIGestureRecognizerDelegate {
     var viewRef: HomeController?
+    var moduleType: ModuleType?
+    var toyImage: UIImage?
     var module: Module? {
         didSet{
             if let module = module{
@@ -25,6 +27,7 @@ class ModuleTypeContainerView: UIView, UIGestureRecognizerDelegate {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     
     lazy var accentBorderView: UIView = {
         let borderView = UIView()
@@ -65,7 +68,7 @@ class ModuleTypeContainerView: UIView, UIGestureRecognizerDelegate {
         imageView.tintColor = .black
         imageView.alpha = 0
         imageView.clipsToBounds = true
-        imageView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(handleCancel)))
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleCancel)))
         return imageView
     }()
     
@@ -78,6 +81,9 @@ class ModuleTypeContainerView: UIView, UIGestureRecognizerDelegate {
         button.layer.cornerRadius = 8
         button.layer.borderColor = UIColor.black.cgColor
         button.layer.borderWidth = 1
+        button.alpha = 0
+        button.tag = 1
+        button.addTarget(self, action: #selector(launchModule), for: .touchUpInside)
         return button
     }()
     
@@ -91,10 +97,15 @@ class ModuleTypeContainerView: UIView, UIGestureRecognizerDelegate {
         button.layer.borderColor = UIColor.black.cgColor
         button.layer.borderWidth = 1
         button.tintColor = .black
-        button.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(handleCancel)))
-//        button.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress)))
+        button.alpha = 0
+        button.tag = 2
+        button.addTarget(self, action: #selector(launchModule), for: .touchUpInside)
         return button
     }()
+    
+    @objc func launchModule(button: UIButton) {
+        viewRef?.launchModule(level: button.tag, moduleType: module!.name!, toyImage: selectToyButton.image(for: .normal)!)
+    }
     
     lazy var selectToyButton: UIButton = {
         let button = UIButton(type: .system)
@@ -104,22 +115,41 @@ class ModuleTypeContainerView: UIView, UIGestureRecognizerDelegate {
         button.layer.cornerRadius = 24
         button.layer.borderColor = UIColor.black.cgColor
         button.layer.borderWidth = 1
-        button.tintColor = .black
-        button.addTarget(self, action: #selector(handleCancel), for: .touchUpInside)
+        //button.tintColor = .black
+        button.alpha = 0
+        button.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress)))
         return button
     }()
     
-    let iconsContainerView: UIView = {
+    lazy var chooseToyLabel: UILabel = {
+        let chooseToyLabel = UILabel()
+        chooseToyLabel.font = UIFont(name: "Montserrat-Regular", size: 14)
+        chooseToyLabel.textColor = UIColor.init(rgb: Color.textPrimary.rawValue, alpha: 1)
+        chooseToyLabel.translatesAutoresizingMaskIntoConstraints = false
+        chooseToyLabel.text = "Choose toy"
+        chooseToyLabel.isUserInteractionEnabled = true
+        chooseToyLabel.alpha = 0
+        return chooseToyLabel
+    }()
+    
+    lazy var iconsContainerView: UIView = {
         let containerView = UIView()
         
         //configuration options
-        let iconHeight:CGFloat = 38
-        let padding:CGFloat = 6
+        let iconHeight:CGFloat = 48
+        let padding:CGFloat = 12
         
-        let images = [#imageLiteral(resourceName: "blue_like"), #imageLiteral(resourceName: "red_heart"), #imageLiteral(resourceName: "surprised"), #imageLiteral(resourceName: "cry_laugh"), #imageLiteral(resourceName: "cry"), #imageLiteral(resourceName: "angry")]
+        //let images = [#imageLiteral(resourceName: "blue_like"), #imageLiteral(resourceName: "red_heart"), #imageLiteral(resourceName: "surprised"), #imageLiteral(resourceName: "cry_laugh"), #imageLiteral(resourceName: "cry"), #imageLiteral(resourceName: "angry")]
+       
+//         let images: [UIImage] = [
+//            UIImage(named: "icon_strawberry")!,
+//            UIImage(named: "icon_snake")!,
+//            UIImage(named: "icon_rainbow")!,
+//            UIImage(named: "icon_butterfly")!
+//        ]
         
         //#TODO: This is very important short cut, it returns an array of UIViews with different colors
-        let arrangedSubviews = images.map({ (image) -> UIView in
+        let arrangedSubviews = module!.images.map({ (image) -> UIView in
             let imageView = UIImageView(image: image)
             // required for hit testing
             imageView.isUserInteractionEnabled = true
@@ -180,14 +210,18 @@ class ModuleTypeContainerView: UIView, UIGestureRecognizerDelegate {
         self.layer.shadowOffset = CGSize(width: 0, height: 2)
         
         addSubview(cancelImageView)
+        //addSubview(dummyButton)
         addSubview(accentBorderView)
         addSubview(titleContainerView)
         titleContainerView.addSubview(moduleTitleLabel)
         titleContainerView.addSubview(moduleImageView)
-        titleContainerView.addSubview(optionsContainerView)
-        optionsContainerView.addSubview(levelOneButton)
-        optionsContainerView.addSubview(levelTwoButton)
-        optionsContainerView.addSubview(selectToyButton)
+        //titleContainerView.addSubview(dummyButton)
+        //titleContainerView.addSubview(optionsContainerView)
+        //optionsContainerView.addSubview(dummyButton)
+        addSubview(levelOneButton)
+        addSubview(levelTwoButton)
+        addSubview(selectToyButton)
+        addSubview(chooseToyLabel)
         
         addConstraints()
         
@@ -203,8 +237,13 @@ class ModuleTypeContainerView: UIView, UIGestureRecognizerDelegate {
         // Auto layout constraints
         accentBorderView.anchor(top: self.topAnchor, leading: self.leadingAnchor, bottom: self.bottomAnchor, trailing: nil, padding: .zero, size: .init(width: 4, height: self.frame.height))
         
-        cancelImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
+//
+//        dummyButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 80).isActive = true
+//        dummyButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 48).isActive = true
+//        dummyButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
+//        dummyButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
+        cancelImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
         cancelImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16).isActive = true
         cancelImageView.widthAnchor.constraint(equalToConstant: 20).isActive = true
         cancelImageView.heightAnchor.constraint(equalToConstant: 20).isActive = true
@@ -228,22 +267,33 @@ class ModuleTypeContainerView: UIView, UIGestureRecognizerDelegate {
         moduleImageView.widthAnchor.constraint(equalToConstant: 24).isActive = true
         moduleImageView.heightAnchor.constraint(equalToConstant: 24).isActive = true
         
-        optionsContainerView.leadingAnchor.constraint(equalTo: titleContainerView.leadingAnchor).isActive = true
-        optionsContainerView.trailingAnchor.constraint(equalTo: titleContainerView.trailingAnchor).isActive = true
-        optionsContainerView.topAnchor.constraint(equalTo: moduleTitleLabel.bottomAnchor).isActive = true
-        optionsContainerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 100).isActive = true
+//        dummyButton.leadingAnchor.constraint(equalTo: titleContainerView.leadingAnchor).isActive = true
+//        dummyButton.trailingAnchor.constraint(equalTo: titleContainerView.trailingAnchor).isActive = true
+//        dummyButton.topAnchor.constraint(equalTo: moduleTitleLabel.bottomAnchor, constant: 16).isActive = true
+//        dummyButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+//
+        
+//        optionsContainerView.leadingAnchor.constraint(equalTo: titleContainerView.leadingAnchor).isActive = true
+//        optionsContainerView.trailingAnchor.constraint(equalTo: titleContainerView.trailingAnchor).isActive = true
+//        optionsContainerView.topAnchor.constraint(equalTo: moduleTitleLabel.bottomAnchor).isActive = true
+//        optionsContainerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 100).isActive = true
 
-        levelOneButton.leadingAnchor.constraint(equalTo: optionsContainerView.leadingAnchor).isActive = true
-        levelOneButton.trailingAnchor.constraint(equalTo: optionsContainerView.trailingAnchor).isActive = true
-        levelOneButton.topAnchor.constraint(equalTo: optionsContainerView.topAnchor, constant: 16).isActive = true
+        levelOneButton.leadingAnchor.constraint(equalTo: titleContainerView.leadingAnchor).isActive = true
+        levelOneButton.trailingAnchor.constraint(equalTo: titleContainerView.trailingAnchor).isActive = true
+        levelOneButton.topAnchor.constraint(equalTo: titleContainerView.bottomAnchor, constant: 16).isActive = true
         levelOneButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
-        levelTwoButton.leadingAnchor.constraint(equalTo: optionsContainerView.leadingAnchor).isActive = true
-        levelTwoButton.trailingAnchor.constraint(equalTo: optionsContainerView.trailingAnchor).isActive = true
-        levelTwoButton.topAnchor.constraint(equalTo: optionsContainerView.topAnchor, constant: 68).isActive = true
-      levelTwoButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        levelTwoButton.leadingAnchor.constraint(equalTo: titleContainerView.leadingAnchor).isActive = true
+        levelTwoButton.trailingAnchor.constraint(equalTo: titleContainerView.trailingAnchor).isActive = true
+        levelTwoButton.topAnchor.constraint(equalTo: levelOneButton.bottomAnchor, constant: 12).isActive = true
+        levelTwoButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
-        selectToyButton.centerXAnchor.constraint(equalTo: optionsContainerView.centerXAnchor).isActive = true
+        chooseToyLabel.leadingAnchor.constraint(equalTo: levelTwoButton.leadingAnchor).isActive = true
+        chooseToyLabel.topAnchor.constraint(equalTo: levelTwoButton.bottomAnchor, constant: 16).isActive = true
+        chooseToyLabel.widthAnchor.constraint(equalTo: levelTwoButton.widthAnchor, multiplier: 0.6).isActive = true
+        chooseToyLabel.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        
+        selectToyButton.trailingAnchor.constraint(equalTo: levelTwoButton.trailingAnchor).isActive = true
         selectToyButton.widthAnchor.constraint(equalToConstant: 48).isActive = true
         selectToyButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
         selectToyButton.topAnchor.constraint(equalTo: levelTwoButton.bottomAnchor, constant: 16).isActive = true
@@ -298,13 +348,20 @@ class ModuleTypeContainerView: UIView, UIGestureRecognizerDelegate {
                 
                 
                 hitTestView?.transform = CGAffineTransform(translationX: 0, y: -50)
+            }, completion: { (_) in
+                let imageView =  hitTestView as! UIImageView
+                self.toyImage = imageView.image?.withRenderingMode(.alwaysOriginal)
+                self.selectToyButton.setImage(self.toyImage, for: .normal)
+                self.selectToyButton.setTitle("", for: .normal)
             })
         }
     }
     
     func handleGestureBegan(gesture: UILongPressGestureRecognizer) {
         self.addSubview(iconsContainerView)
-        let pressedLocation = gesture.location(in: self.selectToyButton)
+        let pressedLocation = gesture.location(in: self)
+        
+        print("Location: ",pressedLocation)
         
         // transformation of the red box
         let centeredX = (self.frame.width - iconsContainerView.frame.width)/2
@@ -316,20 +373,27 @@ class ModuleTypeContainerView: UIView, UIGestureRecognizerDelegate {
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
             self.iconsContainerView.alpha = 1.0
-            self.iconsContainerView.transform = CGAffineTransform(translationX: centeredX, y: pressedLocation.y - self.iconsContainerView.frame.height)
+            self.iconsContainerView.transform = CGAffineTransform(translationX: centeredX, y: pressedLocation.y - self.iconsContainerView.frame.height - 40)
         })
     }
     
     @objc func handleCancel() {
-        //viewRef?.handleLogout()
-        print("Cancelled")
+        viewRef?.handleCancelModule()
     }
     
     func showCancelOption(show: Bool) {
         if show{
             cancelImageView.alpha = 1
+            levelOneButton.alpha = 1
+            levelTwoButton.alpha = 1
+            selectToyButton.alpha = 1
+            chooseToyLabel.alpha = 1
         }else{
             cancelImageView.alpha = 0
+            levelOneButton.alpha = 0
+            levelTwoButton.alpha = 0
+            selectToyButton.alpha = 0
+            chooseToyLabel.alpha = 0
         }
 
     }

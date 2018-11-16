@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseDatabase
 
 class HomeController: UIViewController {
     var tappedIndex = -1
@@ -27,11 +29,12 @@ class HomeController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.edgesForExtendedLayout = []
+        self.edgesForExtendedLayout = []
         view.backgroundColor = .white
+        navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isTranslucent = false
         //view.backgroundColor = UIColor.init(rgb: Color.primaryPurple.rawValue, alpha: 1)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "x", style: .plain, target: self, action: #selector(handleLogout))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         
         setupViews()
     }
@@ -48,6 +51,7 @@ class HomeController: UIViewController {
             let view = ModuleTypeContainerView()
             view.viewRef = self
             view.module = module
+            
             homeViews?.append(view)
         }
         
@@ -59,7 +63,7 @@ class HomeController: UIViewController {
         if let remainingTotalheight = remainingTotalheight, let homeViews = homeViews{
             for index in 0..<homeViews.count{
                 view.addSubview(homeViews[index])
-                homeViews[index].addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(launchModule)))
+                homeViews[index].addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleExpansion)))
                 
                 homeViews[index].translatesAutoresizingMaskIntoConstraints = false
                 
@@ -81,7 +85,28 @@ class HomeController: UIViewController {
         print("Module: viewDidLayoutSubviews")
     }
     
-    @objc func handleLogout(){
+    @objc func handleLogout() {
+        if let _ = Auth.auth().currentUser{
+            let firebaseAuth = Auth.auth()
+            do {
+                try firebaseAuth.signOut()
+            } catch let signOutError as NSError {
+                print ("Error signing out: %@", signOutError)
+            }
+            
+//            let kAppDelegate = UIApplication.shared.delegate as! AppDelegate
+//            kAppDelegate.showLoginViewController()
+            let nextVc = LoginController()
+            navigationController?.pushViewController(nextVc, animated: true)
+            print("Logged out")
+        }else{
+            let nextVc = LoginController()
+            navigationController?.pushViewController(nextVc, animated: true)
+            print("User was not logged in")
+        }
+    }
+    
+    func handleCancelModule(){
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.55, initialSpringVelocity: 0.5, options: [.curveEaseOut], animations: {
             if let homeViews = self.homeViews{
                 for index in 0..<homeViews.count{
@@ -107,28 +132,39 @@ class HomeController: UIViewController {
                 self.bAnchor?.isActive = false
                 self.view.layoutIfNeeded()
             }
-           
-            
-        
         }, completion: nil)
         self.tappedIndex =  -1
     }
     
-    @objc func launchModule(gesture: UITapGestureRecognizer) {
-        //handleExpansion(gesture: gesture)
-         //MARK: Launch the real deal
-        if let tappedView = gesture.view as! ModuleTypeContainerView?{
-            let moduleName = tappedView.module?.name
-            if moduleName == ModuleType.multiplication{
-                let nextVc = PracticeAdvanceController()
-                nextVc.moduleType = tappedView.module?.name
-                navigationController?.pushViewController(nextVc, animated: true)
-            }else{
-                let nextVc = PracticeController()
-                nextVc.moduleType = tappedView.module?.name
-                navigationController?.pushViewController(nextVc, animated: true)
-            }
+    func launchModule(level: Int, moduleType: ModuleType, toyImage: UIImage) {
+        
+        if moduleType == ModuleType.multiplication{
+            let nextVc = PracticeAdvanceController()
+            nextVc.toyImage = toyImage
+            nextVc.level = level
+            nextVc.moduleType = moduleType
+            navigationController?.pushViewController(nextVc, animated: true)
+        }else{
+            let nextVc = PracticeController()
+            nextVc.moduleType = moduleType
+            nextVc.toyImage = toyImage
+            nextVc.level = level
+            navigationController?.pushViewController(nextVc, animated: true)
         }
+        
+         //MARK: Launch the real deal
+//        if let tappedView = gesture.view as! ModuleTypeContainerView?{
+//            let moduleName = tappedView.module?.name
+//            if moduleName == ModuleType.multiplication{
+//                let nextVc = PracticeAdvanceController()
+//                nextVc.moduleType = tappedView.module?.name
+//                navigationController?.pushViewController(nextVc, animated: true)
+//            }else{
+//                let nextVc = PracticeController()
+//                nextVc.moduleType = tappedView.module?.name
+//                navigationController?.pushViewController(nextVc, animated: true)
+//            }
+//        }
     }
     
     var bAnchor: NSLayoutConstraint?
@@ -142,7 +178,7 @@ class HomeController: UIViewController {
         }
         
         if let v = gesture.view as! ModuleTypeContainerView?, let totalHeight = self.remainingTotalheight, let homeViews = self.homeViews{
-            v.handleOptionsContainerVisiblity(visible: true)
+            //v.handleOptionsContainerVisiblity(visible: true)
             self.tappedIndex =  homeViews.index(of: v)!
             tAnchor = v.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: self.topMargin)
             tAnchor?.isActive = true
@@ -176,4 +212,12 @@ class HomeController: UIViewController {
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+    }
 }

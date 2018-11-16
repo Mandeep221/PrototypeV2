@@ -13,6 +13,7 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     
     var topMarginForInstructionLabelOne: CGFloat = 20
     let cellCount: Int = 7
+    var toyImage: UIImage? 
     var moduleType: ModuleType? = nil {
         didSet{
            moduleTitleLabel.text = moduleType?.rawValue
@@ -87,11 +88,12 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     
         if moduleType == ModuleType.counting{
             if self.level == 1 {
-                cv.setCellConfig(cellCount: self.cellCount, cellChildCount: 1)}
+                cv.setCellConfig(cellCount: self.cellCount, cellChildCount: 1, toyImage: toyImage!)
+            }
             else if self.level == 2{
-                cv.setCellConfig(cellCount: self.cellCount/2 + 1, cellChildCount: 2)}
+                cv.setCellConfig(cellCount: self.cellCount/2 + 1, cellChildCount: 2, toyImage: toyImage!)}
         }else{
-             cv.setCellConfig(cellCount: self.cellCount, cellChildCount: 1)
+            cv.setCellConfig(cellCount: self.cellCount, cellChildCount: 1, toyImage: toyImage!)
         }
         return cv
     }()
@@ -109,7 +111,7 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         label.numberOfLines = 2
         label.textColor = .white
         label.font = UIFont(name: "Montserrat-Regular", size: 16)
-        label.text = "Can you swipe two cells to the right?"
+        label.text = "Can you tap two cells to the right?"
         label.alpha = 0
         return label
     }()
@@ -117,23 +119,26 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     lazy var containerViewTwo: CellsContainerView = {
         let cv = CellsContainerView()
         cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.setCellConfig(cellCount: self.cellCount, cellChildCount: 1)
+        cv.setCellConfig(cellCount: self.cellCount, cellChildCount: 1, toyImage: toyImage!)
         return cv
     }()
     
-    let instructionThreeLabel: UILabel = {
+    lazy var instructionThreeLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
         label.textColor = .white
         label.font = UIFont(name: "Montserrat-Bold", size: 16)
-        label.text = "Can you count the RED cells you swiped?"
+        if moduleType == ModuleType.counting || moduleType == ModuleType.subtraction{
+             label.text = "Can you count the STRAWBERRIES you tapped?"
+        }else{
+            label.text = "Can you count the SNAKES you tapped?"
+        }
         label.alpha = 0
         return label
     }()
     
     lazy var optionButtons: [DesignableOptionView] = {
         var opt = [DesignableOptionView]()
-        
         for index in 0...3 {
             let option = DesignableOptionView()
             option.isUserInteractionEnabled = true
@@ -176,7 +181,7 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         }
         
         if moduleType == ModuleType.subtraction {
-            instructionThreeLabel.text = "Can you count the DIFFERENCE between cells you swiped?"
+            instructionThreeLabel.text = "Can you count the DIFFERENCE in STRAWBERRIES in above two lines?"
         }
     }
     
@@ -379,8 +384,17 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         }
         
         //assign values to instructions
-        instructionOneLabel.text = self.num1>1 ? "Can you swipe "+String(self.num1) + " cells to the right?" : "Can you swipe 1 cell to the right?"
-         instructionTwoLabel.text = self.num2>1 ? "Can you swipe "+String(self.num2) + " cells to the right?" : "Can you swipe 1 cell to the right?"
+        var toy = ""
+        var toys = ""
+        if moduleType == ModuleType.counting || moduleType == ModuleType.subtraction{
+            toys = "STRAWBERRIES"
+            toy = "STRAWBERRY"
+        }else{
+            toys = "SNAKES"
+            toy = "SNAKE"
+        }
+        instructionOneLabel.text = self.num1>1 ? "Can you tap on "+String(self.num1) + " \(toys)?" : "Can you tap on 1 \(toy)?"
+        instructionTwoLabel.text = self.num2>1 ? "Can you tap on "+String(self.num2) + " \(toys)?" : "Can you tap on 1 \(toy)?"
         
         //re-initialise
         answer = 0
@@ -400,7 +414,7 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
             UIView.animate(withDuration: 0.5, delay: 0.5, options: [.curveEaseOut], animations: {
                 label.alpha = 1.0
             }, completion: { (_) in
-               // self.textToSpeech(text: label.text!)
+                self.textToSpeech(text: label.text!)
             })
         }else{
             UIView.animate(withDuration: 1, animations: {
@@ -499,13 +513,13 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
             
             if self.moduleType == ModuleType.counting{
                 if self.level == 1 {
-                    self.containerViewOne.setCellConfig(cellCount: self.cellCount, cellChildCount: 1)}
+                    self.containerViewOne.setCellConfig(cellCount: self.cellCount, cellChildCount: 1, toyImage: self.toyImage!)}
                 else if self.level == 2{
-                    self.containerViewOne.setCellConfig(cellCount: self.cellCount/2 + 1, cellChildCount: 2)}
+                    self.containerViewOne.setCellConfig(cellCount: self.cellCount/2 + 1, cellChildCount: 2, toyImage: self.toyImage!)}
             }else{
-                self.containerViewOne.setCellConfig(cellCount: self.cellCount, cellChildCount: 1)
+                self.containerViewOne.setCellConfig(cellCount: self.cellCount, cellChildCount: 1, toyImage: self.toyImage!)
             }
-            self.containerViewTwo.setCellConfig(cellCount: self.cellCount, cellChildCount: 1)
+            self.containerViewTwo.setCellConfig(cellCount: self.cellCount, cellChildCount: 1, toyImage: self.toyImage!)
             self.generateTwoRandomNumbers()
             self.setSwipableCells()
             self.handleScene(label: self.instructionOneLabel, show: true)
@@ -519,6 +533,15 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
                 self.handleArrows(visible: false)
             }
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
 }
 

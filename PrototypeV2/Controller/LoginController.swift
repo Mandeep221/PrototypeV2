@@ -200,6 +200,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 })
                 
                 print("sucessfully logged in...")
+                let nextVc = HomeController()
+                self.navigationController?.pushViewController(nextVc, animated: true)
             }
         }
     }
@@ -333,8 +335,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor.init(rgb: Color.primary.rawValue, alpha: 1)
-        
+        //view.backgroundColor = UIColor.init(rgb: Color.primary.rawValue, alpha: 1)
+        view.backgroundColor = UIColor.init(rgb: Color.primaryPurple.rawValue, alpha: 1)
         setupNavigationBar()
         addViews()
         addConstraints()
@@ -348,8 +350,10 @@ class LoginController: UIViewController, UITextFieldDelegate {
     }
     
     func setupNavigationBar() {
-        self.edgesForExtendedLayout = []
+        edgesForExtendedLayout = []
         navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.tintColor = .white
+        self.navigationItem.setHidesBackButton(true, animated:true);
         
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIColor.init(rgb: 0x323260, alpha: 1).as1ptImage()
@@ -399,7 +403,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     func addConstraints() {
         // For Mobile number screen
         
-        containerForPhoneNumberScene.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .zero, size: .init(width: view.frame.width, height: view.frame.height))
+        containerForPhoneNumberScene.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .zero, size: .init(width: view.frame.width, height: view.safeAreaLayoutGuide.layoutFrame.height))
         
         instructionMobileNumberLabel.anchor(top: containerForPhoneNumberScene.topAnchor, leading: containerForPhoneNumberScene.leadingAnchor, bottom: nil, trailing: containerForPhoneNumberScene.trailingAnchor, padding: .init(top: 24, left: 20, bottom: 0, right: 20), size: .init(width: view.frame.width, height: 48))
         
@@ -422,7 +426,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
         // For OTP screen
         
         // set containerForOtpScene's leading anchor to view's trailing anchor so it can be animated from right to left, when moving from phone no. scene to otp scene
-        containerForOtpScene.anchor(top: view.topAnchor, leading: view.trailingAnchor, bottom: nil, trailing: nil, padding: .zero, size: .init(width: view.frame.width, height: view.frame.height))
+        containerForOtpScene.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.trailingAnchor, bottom: nil, trailing: nil, padding: .zero, size: .init(width: view.frame.width, height: view.safeAreaLayoutGuide.layoutFrame.height))
         
         instructionOtpLabel.anchor(top: containerForOtpScene.topAnchor, leading: containerForOtpScene.leadingAnchor, bottom: nil, trailing: containerForOtpScene.trailingAnchor, padding: .init(top: 24, left: 20, bottom: 0, right: 20), size: .init(width: containerForOtpScene.frame.width, height: 48))
         
@@ -490,5 +494,14 @@ class LoginController: UIViewController, UITextFieldDelegate {
     // changes status bar content in wite color: date, battery etc
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
 }

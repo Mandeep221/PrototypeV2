@@ -149,6 +149,8 @@ class SplashController: UIViewController {
         overlayView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         overlayView.heightAnchor.constraint(equalToConstant: 48).isActive = true
         overlayView.widthAnchor.constraint(equalTo: logoContainerView.widthAnchor).isActive = true
+        
+        
 //
         
 
@@ -209,7 +211,10 @@ class SplashController: UIViewController {
                                 self.rotatingView.subviews[1].subviews[1].layer.cornerRadius = 3
                                  self.rotatingView.subviews[1].subviews[1].layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
                             }, completion: { (_) in
-                                
+                                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                                    let nextVc = LoginController()
+                                    self.navigationController?.pushViewController(nextVc, animated: true)
+                                }
                             })
                         })
                     })

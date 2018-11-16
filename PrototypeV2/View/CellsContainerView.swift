@@ -14,12 +14,14 @@ class ChildCellView: UIView {
     let cellWidth: CGFloat = 25
     let cellHeight: CGFloat = 25
     let cellInternalGap: CGFloat = 3
+    var childCellImage: UIImage?
     
-    var cellChildCount = 1 {
-        didSet{
-             setup()
-        }
+    func configureChildCell(cellChildCount: Int, childCellImage: UIImage) {
+        self.childCellImage = childCellImage
+        self.cellChildCount = cellChildCount
+        setup()
     }
+    var cellChildCount: Int = 1
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,8 +33,15 @@ class ChildCellView: UIView {
     
     func setup() {
         for index in 0..<cellChildCount{
-            let cell = UIView()
-            cell.backgroundColor = UIColor.init(rgb: 0xF6B691, alpha: 1)
+            let cell = UIImageView()
+            //let image = UIImage(named: "icon_strawberry")
+            cell.image = self.childCellImage
+            cell.contentMode = .scaleAspectFill
+            //b.imageEdgeInsets = UIEdgeInsetsMake(20, 20, 20, 20);
+            cell.layer.borderWidth = 1
+            cell.layer.borderColor = UIColor.init(rgb: 0xF6B691, alpha: 1).cgColor
+            cell.layer.cornerRadius = cellHeight/2
+            //cell.backgroundColor = UIColor.init(rgb: 0xF6B691, alpha: 1)
             cell.translatesAutoresizingMaskIntoConstraints = false
             
             //add views
@@ -56,9 +65,9 @@ class CellsContainerView: UIView {
     let anchorHeight: CGFloat = 2
     var viewPracRef: PracticeController?
     var viewPracAdvRef: PracticeAdvanceController?
-    var isLadySpeaking: Bool = false
+    var isLadySpeaking: Bool = true
     var cellChildCount = 1
-    
+    var toyImage: UIImage?
     // Maximum number of cells that can be swiped
     var swipableCellCount = 0
     
@@ -103,10 +112,10 @@ class CellsContainerView: UIView {
         }
     }
     
-    func setCellConfig(cellCount: Int, cellChildCount: Int) {
+    func setCellConfig(cellCount: Int, cellChildCount: Int, toyImage: UIImage) {
         self.cellCount = cellCount
         self.cellChildCount = cellChildCount
-        
+        self.toyImage = toyImage
         let childCell = ChildCellView()
         // cell width
         cellWidth = childCell.cellWidth * CGFloat(cellChildCount) + CGFloat(cellChildCount - 1) * CGFloat(childCell.cellInternalGap)
@@ -132,8 +141,7 @@ class CellsContainerView: UIView {
             for index in 0...count - 1 {
 
                 let cellView = ChildCellView()
-                cellView.cellChildCount = self.cellChildCount
-                
+                cellView.configureChildCell(cellChildCount: self.cellChildCount, childCellImage: self.toyImage!)
                 cellView.translatesAutoresizingMaskIntoConstraints = false
                 
                 // add right swipe gesture to the current cellView
@@ -242,7 +250,8 @@ class CellsContainerView: UIView {
                 
                 for subview in view.subviews {
                     // Manipulate the view
-                    subview.backgroundColor = UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1)
+                    //subview.backgroundColor = UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1)
+                     subview.layer.borderColor = UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1).cgColor
                 }
                 
             }, completion: nil)
