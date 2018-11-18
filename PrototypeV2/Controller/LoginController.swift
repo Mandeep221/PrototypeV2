@@ -191,10 +191,10 @@ class LoginController: UIViewController, UITextFieldDelegate {
                     if snap.exists(){
                         
                         // User mobile number already in DB, So user is returing
-                        print("Returing User")
+                        print("User: Returing User")
                     }else{
                         //Phone number not available, User is new
-                        print("New User")
+                        print("User: New User")
                         self.ref?.child("users").child((user?.uid)!).child("mobile").setValue(user?.phoneNumber)
                     }
                 })
@@ -334,6 +334,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Reference to Firebase database
+        self.ref = Database.database().reference()
         
         //view.backgroundColor = UIColor.init(rgb: Color.primary.rawValue, alpha: 1)
         view.backgroundColor = UIColor.init(rgb: Color.primaryPurple.rawValue, alpha: 1)
