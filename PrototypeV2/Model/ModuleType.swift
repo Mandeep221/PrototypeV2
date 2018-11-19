@@ -14,4 +14,6 @@ enum ModuleType: String {
     case subtraction = "Subtraction"
     case multiplication = "Multiplication"
     case division = "Division"
+    
+     static let allValues = [counting, addition, subtraction, multiplication, division]
 }

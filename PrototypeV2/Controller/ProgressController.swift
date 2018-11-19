@@ -66,12 +66,20 @@ class ProgressDataView: UIView {
         return timeSpentLabels
     }()
     
+    let dividerLineView: UIView = {
+        let lineView = UIView()
+        lineView.backgroundColor = UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1)
+        lineView.translatesAutoresizingMaskIntoConstraints = false
+        return lineView
+    }()
+    
     func setupViews() {
         addSubview(moduleTitleLabel)
         for index in 0..<3{
             addSubview(dateLabels[index])
             addSubview(timeSpentLabels[index])
         }
+        addSubview(dividerLineView)
         
         // add constraints
         moduleTitleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
@@ -91,18 +99,26 @@ class ProgressDataView: UIView {
                 timeSpentLabels[index].anchor(top: timeSpentLabels[index - 1].bottomAnchor, leading: dateLabels[index].trailingAnchor, bottom: nil, trailing: nil, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: self.frame.width/2, height: dataLabelHeight))
             }
         }
+        
+        dividerLineView.anchor(top: moduleTitleLabel.bottomAnchor, leading: moduleTitleLabel.leadingAnchor, bottom: self.bottomAnchor, trailing: nil, padding: .init(top: 3 * dataLabelHeight + 8, left: 0, bottom: 8, right: 0), size: .init(width: 60, height: 2))
     }
     
 }
 
 class ProgressController: UIViewController {
-//    let scrollView: UIScrollView = {
-//        let scrollView = UIScrollView()
-//        scrollView.translatesAutoresizingMaskIntoConstraints = false
-//        scrollView.backgroundColor = .red
-//        return scrollView
-//
-//    }()
+    let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        //scrollView.backgroundColor = .lightGray
+        return scrollView
+
+    }()
+    
+    let contentView: UIView = {
+        let contentView = UIView()
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        return contentView
+    }()
     
     let progressDataView: ProgressDataView = {
         let dataView = ProgressDataView()
@@ -113,7 +129,7 @@ class ProgressController: UIViewController {
     
     let moduleProgressDataViews: [ProgressDataView] = {
        var arr = [ProgressDataView]()
-        for index in 0..<4{
+        for index in 0..<ModuleType.allValues.count{
             let dff = ProgressDataView()
             dff.translatesAutoresizingMaskIntoConstraints = false
             arr.append(dff)
@@ -134,41 +150,55 @@ class ProgressController: UIViewController {
     func fetchDataFromFirebase() {
         ref = Database.database().reference()
         if let user = Auth.auth().currentUser{
-            mapCounting(user: user)
-            //mapAddSub(user: user)
+            
+            for index in 0..<ModuleType.allValues.count {
+                mapProgressData(user: user,
+                                moduleName: ModuleType.allValues[index].rawValue,
+                                index: index)
+            }
         }
         
     }
     
     func setupViews() {
-        //var progressDataViewHeight = 0
-        //view.addSubview(scrollView)
-        //view.addSubview(progressDataView)
+        // scrollview setup
+        view.addSubview(scrollView)
+        view.addSubview(contentView)
         
-//        progressDataView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .zero, size: .init(width: 0, height: 300))
-//
-        // add constraints
-//        scrollView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, padding: .zero, size: .zero)
+        scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+//        scrollView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 2).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
-        for index in 0..<4{
+        contentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+        contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
+        //        scrollView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 2).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+        
+        
+        // progress data views setup
+        for index in 0..<ModuleType.allValues.count{
 
-            view.addSubview(moduleProgressDataViews[index])
-
+            contentView.addSubview(moduleProgressDataViews[index])
+            moduleProgressDataViews[index].moduleTitleLabel.text = ModuleType.allValues[index].rawValue
+    
             if index == 0{
-                moduleProgressDataViews[index].topAnchor.constraint(equalTo: view.topAnchor, constant: 8).isActive = true
+                moduleProgressDataViews[index].topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8).isActive = true
 
             }else{
                 moduleProgressDataViews[index].topAnchor.constraint(equalTo: moduleProgressDataViews[index - 1].bottomAnchor, constant: 8).isActive = true
 
             }
-            moduleProgressDataViews[index].leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            moduleProgressDataViews[index].trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+            moduleProgressDataViews[index].leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+            moduleProgressDataViews[index].trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
             moduleProgressDataViews[index].heightAnchor.constraint(greaterThanOrEqualToConstant: moduleProgressDataViews[index].totalHeight).isActive = true
         }
     }
     
-    func mapCounting(user : User) {
-        ref?.child("users").child(user.uid).child("modules").child(ModuleType.counting.rawValue).child("progress").observeSingleEvent(of: .value, with: { (snapshot) in
+    func mapProgressData(user : User, moduleName: String, index: Int) {
+        ref?.child("users").child(user.uid).child("modules").child(moduleName).child("progress").observeSingleEvent(of: .value, with: { (snapshot) in
             
             let value = snapshot.value as? NSDictionary
             if value == nil{
@@ -180,7 +210,7 @@ class ProgressController: UIViewController {
                 let duration1 = (timeStamp1["duration"] as? Int)!
                 
                 if date1 != 0{
-                    self.moduleProgressDataViews[0].dateLabels[0].text = Utility.getReadableDate(timeInMillis: date1)
+                    self.moduleProgressDataViews[index].dateLabels[0].text = Utility.getReadableDate(timeInMillis: date1)
                 }else
                 {
                     self.moduleProgressDataViews[0].dateLabels[0].text = "No date"
@@ -189,7 +219,7 @@ class ProgressController: UIViewController {
                 
                 if duration1 != 0{
                     
-                    self.moduleProgressDataViews[0].timeSpentLabels[0].text = Utility.secondsToHoursMinutesSeconds(seconds: duration1)
+                    self.moduleProgressDataViews[index].timeSpentLabels[0].text = Utility.secondsToHoursMinutesSeconds(seconds: duration1)
                 }else
                 {
                     self.moduleProgressDataViews[0].timeSpentLabels[0].text = "No time"
@@ -203,18 +233,18 @@ class ProgressController: UIViewController {
                 let duration2 = (timeStamp2["duration"] as? Int)!
                 
                 if date2 != 0{
-                    self.moduleProgressDataViews[1].dateLabels[1].text = Utility.getReadableDate(timeInMillis: date2)
+                    self.moduleProgressDataViews[index].dateLabels[1].text = Utility.getReadableDate(timeInMillis: date2)
                 }else{
-                    self.moduleProgressDataViews[1].dateLabels[1].text = "No date"
+                    self.moduleProgressDataViews[index].dateLabels[1].text = "No date"
                     //self.countingDateTwo.isHidden = true
                 }
                 
                 if duration2 != 0{
                     
-                    self.moduleProgressDataViews[1].timeSpentLabels[1].text = Utility.secondsToHoursMinutesSeconds(seconds: duration2)
+                    self.moduleProgressDataViews[index].timeSpentLabels[1].text = Utility.secondsToHoursMinutesSeconds(seconds: duration2)
                 }else
                 {
-                     self.moduleProgressDataViews[1].timeSpentLabels[1].text = "No time"
+                     self.moduleProgressDataViews[index].timeSpentLabels[1].text = "No time"
                     //self.countingDurationTwo.isHidden = true
                 }
                 
@@ -225,17 +255,17 @@ class ProgressController: UIViewController {
                 let duration3 = (timeStamp3["duration"] as? Int)!
                 
                 if date3 != 0{
-                    self.moduleProgressDataViews[2].dateLabels[2].text = Utility.getReadableDate(timeInMillis: date3)
+                    self.moduleProgressDataViews[index].dateLabels[2].text = Utility.getReadableDate(timeInMillis: date3)
                 }else{
-                    self.moduleProgressDataViews[2].dateLabels[2].text = "No time"
+                    self.moduleProgressDataViews[index].dateLabels[2].text = "No time"
                     
                 }
                 
                 if duration3 != 0{
                     
-                    self.moduleProgressDataViews[2].timeSpentLabels[2].text = Utility.secondsToHoursMinutesSeconds(seconds: duration3)
+                    self.moduleProgressDataViews[index].timeSpentLabels[2].text = Utility.secondsToHoursMinutesSeconds(seconds: duration3)
                 }else{
-                    self.moduleProgressDataViews[2].timeSpentLabels[2].text = "No time"
+                    self.moduleProgressDataViews[index].timeSpentLabels[2].text = "No time"
                 }
                 
             }
