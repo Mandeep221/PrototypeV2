@@ -163,4 +163,15 @@ class Utility{
         
     }
     
+    static func getReadableDate(timeInMillis: Int64) -> String{
+        // convert millis into a Date object
+        let date = Date(timeIntervalSince1970: (TimeInterval(timeInMillis / 1000)))
+        //var futureDate = Date(timeIntervalSince1970: (TimeInterval(1637470576795 / 1000)))
+        // Format the Date object and get only the date out of it without time component
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM dd, yyyy"
+        let requiredDate = formatter.string(from: date)
+        
+        return requiredDate
+    }
 }

@@ -11,7 +11,6 @@
 		A50348D821693E8E005BE136 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50348D721693E8E005BE136 /* AppDelegate.swift */; };
 		A50348DA21693E8E005BE136 /* PracticeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50348D921693E8E005BE136 /* PracticeController.swift */; };
 		A50348DD21693E8F005BE136 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A50348DB21693E8F005BE136 /* Main.storyboard */; };
-		A50348DF21693E8F005BE136 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A50348DE21693E8F005BE136 /* Assets.xcassets */; };
 		A50348E221693E8F005BE136 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A50348E021693E8F005BE136 /* LaunchScreen.storyboard */; };
 		A50348EB21697779005BE136 /* CellsContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50348EA21697779005BE136 /* CellsContainerView.swift */; };
 		A50455892187EDFF0077CD5F /* ChartController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50455882187EDFF0077CD5F /* ChartController.swift */; };
@@ -31,6 +30,7 @@
 		A5492C312191FD86003C46DC /* ArrowsContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5492C302191FD86003C46DC /* ArrowsContainerView.swift */; };
 		A56337B6216B775D0081D561 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56337B5216B775D0081D561 /* Extensions.swift */; };
 		A57DDED32180C68100FA15AC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A57DDED22180C68100FA15AC /* GoogleService-Info.plist */; };
+		A5A4973321A28849000B0E4D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5A4973221A28849000B0E4D /* Assets.xcassets */; };
 		A5A968212197CB9200FDC941 /* PracticeAdvanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A968202197CB9200FDC941 /* PracticeAdvanceController.swift */; };
 		A5A96845219A187E00FDC941 /* NumbersData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A5A96843219A187E00FDC941 /* NumbersData.xcdatamodeld */; };
 		A5A96847219A3FCB00FDC941 /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A96846219A3FCB00FDC941 /* PersistenceService.swift */; };
@@ -58,7 +58,6 @@
 		A50348D721693E8E005BE136 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A50348D921693E8E005BE136 /* PracticeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeController.swift; sourceTree = "<group>"; };
 		A50348DC21693E8F005BE136 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		A50348DE21693E8F005BE136 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A50348E121693E8F005BE136 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A50348E321693E8F005BE136 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A50348EA21697779005BE136 /* CellsContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellsContainerView.swift; sourceTree = "<group>"; };
@@ -80,6 +79,7 @@
 		A550381A2180CD4700BADE6D /* PrototypeV2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PrototypeV2.entitlements; sourceTree = "<group>"; };
 		A56337B5216B775D0081D561 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		A57DDED22180C68100FA15AC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A5A4973221A28849000B0E4D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../Assets.xcassets; sourceTree = "<group>"; };
 		A5A968202197CB9200FDC941 /* PracticeAdvanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeAdvanceController.swift; sourceTree = "<group>"; };
 		A5A96844219A187E00FDC941 /* NumbersData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NumbersData.xcdatamodel; sourceTree = "<group>"; };
 		A5A96846219A3FCB00FDC941 /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
@@ -153,11 +153,11 @@
 				A50348E921697740005BE136 /* View */,
 				A50348D721693E8E005BE136 /* AppDelegate.swift */,
 				A50348DB21693E8F005BE136 /* Main.storyboard */,
-				A50348DE21693E8F005BE136 /* Assets.xcassets */,
 				A50348E021693E8F005BE136 /* LaunchScreen.storyboard */,
 				A50348E321693E8F005BE136 /* Info.plist */,
 				A57DDED22180C68100FA15AC /* GoogleService-Info.plist */,
 				A5A96843219A187E00FDC941 /* NumbersData.xcdatamodeld */,
+				A5A4973221A28849000B0E4D /* Assets.xcassets */,
 			);
 			path = PrototypeV2;
 			sourceTree = "<group>";
@@ -316,9 +316,9 @@
 				A57DDED32180C68100FA15AC /* GoogleService-Info.plist in Resources */,
 				A534C0A3216DCF7100FD56D4 /* Montserrat-Bold.ttf in Resources */,
 				A50348E221693E8F005BE136 /* LaunchScreen.storyboard in Resources */,
-				A50348DF21693E8F005BE136 /* Assets.xcassets in Resources */,
 				A534C0A4216DCF7100FD56D4 /* Montserrat-Regular.ttf in Resources */,
 				A534C0AA216DCFE800FD56D4 /* OpenSans-Regular.ttf in Resources */,
+				A5A4973321A28849000B0E4D /* Assets.xcassets in Resources */,
 				A50348DD21693E8F005BE136 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

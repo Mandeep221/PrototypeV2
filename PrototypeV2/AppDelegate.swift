@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         
         //create a rootviewcontroller, and it to the window created above
-        window?.rootViewController = UINavigationController(rootViewController: ProgressController())
+        window?.rootViewController = UINavigationController(rootViewController: SplashController())
         
         // for navigation bar color
         UINavigationBar.appearance().barTintColor = UIColor(rgb: Color.primaryPurple.rawValue, alpha: 1)

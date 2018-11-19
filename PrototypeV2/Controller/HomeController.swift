@@ -27,14 +27,22 @@ class HomeController: UIViewController {
                                        UIColor.init(rgb: Color.primary.rawValue, alpha: 1)
                                        ]
     
+    fileprivate func setNavbar() {
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.isTranslucent = false
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        // search
+        let timerImage = UIImage(named: "icon_timer")?.withRenderingMode(.alwaysTemplate)
+        let progressButtonItem = UIBarButtonItem(image: timerImage, style: .plain, target: self, action: #selector(launchProgressController))
+        navigationItem.rightBarButtonItem = progressButtonItem
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.edgesForExtendedLayout = []
         view.backgroundColor = .white
-        navigationController?.navigationBar.tintColor = .white
-        navigationController?.navigationBar.isTranslucent = false
-        //view.backgroundColor = UIColor.init(rgb: Color.primaryPurple.rawValue, alpha: 1)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        
+        setNavbar()
         
         setupViews()
     }
@@ -81,8 +89,9 @@ class HomeController: UIViewController {
         }
     }
     
-    override func viewDidLayoutSubviews() {
-        print("Module: viewDidLayoutSubviews")
+    @objc func launchProgressController() {
+        let vc = ProgressController()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func handleLogout() {

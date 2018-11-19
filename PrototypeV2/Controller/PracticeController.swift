@@ -11,6 +11,8 @@ import AVFoundation
 
 class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     
+    var startTime = 0.0
+    
     var topMarginForInstructionLabelOne: CGFloat = 20
     let cellCount: Int = 7
     var toyImage: UIImage? 
@@ -233,6 +235,9 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // set the start time of the use of this module
+        startTime = CACurrentMediaTime()
+        
         speechSynthesizer = AVSpeechSynthesizer()
         speechSynthesizer?.delegate = self
         
@@ -542,6 +547,14 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         self.navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        // calculate elapsed time
+        let elapsed = CACurrentMediaTime() - startTime
+        
+        // push the time of use of this module into Firebase
+        Utility.updateProgressTimestamp((moduleType!.rawValue), Int(elapsed))
     }
 }
 
