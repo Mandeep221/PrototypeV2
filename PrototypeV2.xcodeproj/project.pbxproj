@@ -36,6 +36,7 @@
 		A5A96847219A3FCB00FDC941 /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A96846219A3FCB00FDC941 /* PersistenceService.swift */; };
 		A5A96850219A511600FDC941 /* NumberData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A9684E219A511600FDC941 /* NumberData+CoreDataClass.swift */; };
 		A5A96851219A511600FDC941 /* NumberData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A9684F219A511600FDC941 /* NumberData+CoreDataProperties.swift */; };
+		A5B181B121A6124A0081347E /* ChallengeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B181B021A6124A0081347E /* ChallengeController.swift */; };
 		A5BC16F621A0CCE900592A98 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BC16F521A0CCE900592A98 /* Utility.swift */; };
 		A5BC16F821A0D16600592A98 /* ProgressController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BC16F721A0D16600592A98 /* ProgressController.swift */; };
 		A5C59B272189C60500BABA7B /* Yellowtail-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = A5C59B262189C43300BABA7B /* Yellowtail-Regular.otf */; };
@@ -50,7 +51,7 @@
 		A5EFD9D9218674BF00A557C7 /* ModuleTypeContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5EFD9D8218674BF00A557C7 /* ModuleTypeContainerView.swift */; };
 		A5F046C021A4C01F0023B3D0 /* DropDownButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F046BF21A4C01F0023B3D0 /* DropDownButton.swift */; };
 		A5F046C221A4C2B10023B3D0 /* DropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F046C121A4C2B10023B3D0 /* DropDownView.swift */; };
-		A5F046C421A4C3560023B3D0 /* ChallengeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F046C321A4C3560023B3D0 /* ChallengeController.swift */; };
+		A5F046C421A4C3560023B3D0 /* SetChallengeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F046C321A4C3560023B3D0 /* SetChallengeController.swift */; };
 		A5F08CFD217AB11D00EC9B16 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F08CFC217AB11D00EC9B16 /* LoginController.swift */; };
 /* End PBXBuildFile section */
 
@@ -88,6 +89,7 @@
 		A5A96846219A3FCB00FDC941 /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
 		A5A9684E219A511600FDC941 /* NumberData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberData+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A5A9684F219A511600FDC941 /* NumberData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberData+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		A5B181B021A6124A0081347E /* ChallengeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeController.swift; sourceTree = "<group>"; };
 		A5BC16F521A0CCE900592A98 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		A5BC16F721A0D16600592A98 /* ProgressController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressController.swift; sourceTree = "<group>"; };
 		A5C59B262189C43300BABA7B /* Yellowtail-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Yellowtail-Regular.otf"; sourceTree = "<group>"; };
@@ -102,7 +104,7 @@
 		A5EFD9D8218674BF00A557C7 /* ModuleTypeContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleTypeContainerView.swift; sourceTree = "<group>"; };
 		A5F046BF21A4C01F0023B3D0 /* DropDownButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownButton.swift; sourceTree = "<group>"; };
 		A5F046C121A4C2B10023B3D0 /* DropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownView.swift; sourceTree = "<group>"; };
-		A5F046C321A4C3560023B3D0 /* ChallengeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeController.swift; sourceTree = "<group>"; };
+		A5F046C321A4C3560023B3D0 /* SetChallengeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetChallengeController.swift; sourceTree = "<group>"; };
 		A5F08CFC217AB11D00EC9B16 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		D1ED6231411182698A36C54F /* Pods-PrototypeV2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PrototypeV2.release.xcconfig"; path = "Pods/Target Support Files/Pods-PrototypeV2/Pods-PrototypeV2.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -234,7 +236,8 @@
 				A5CE7C22218C391D00C164A6 /* HeartsController.swift */,
 				A5CE7C2A218D344100C164A6 /* LoveController.swift */,
 				A5BC16F721A0D16600592A98 /* ProgressController.swift */,
-				A5F046C321A4C3560023B3D0 /* ChallengeController.swift */,
+				A5F046C321A4C3560023B3D0 /* SetChallengeController.swift */,
+				A5B181B021A6124A0081347E /* ChallengeController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -396,6 +399,7 @@
 				A50D9579216E7FAC002F1DC3 /* DesignableOptionView.swift in Sources */,
 				A5A968212197CB9200FDC941 /* PracticeAdvanceController.swift in Sources */,
 				A50348DA21693E8E005BE136 /* PracticeController.swift in Sources */,
+				A5B181B121A6124A0081347E /* ChallengeController.swift in Sources */,
 				A50348D821693E8E005BE136 /* AppDelegate.swift in Sources */,
 				A504558F218882DB0077CD5F /* BeautifulBarChart.swift in Sources */,
 				A51270EB2185696900222E6F /* SplashController.swift in Sources */,
@@ -413,7 +417,7 @@
 				A504558D218882040077CD5F /* BarEntry.swift in Sources */,
 				A504558B2187EE120077CD5F /* BasicBarChart.swift in Sources */,
 				A50B23B4217EC56B00D72B03 /* Color.swift in Sources */,
-				A5F046C421A4C3560023B3D0 /* ChallengeController.swift in Sources */,
+				A5F046C421A4C3560023B3D0 /* SetChallengeController.swift in Sources */,
 				A5A96851219A511600FDC941 /* NumberData+CoreDataProperties.swift in Sources */,
 				A5CE7C25218C3C2C00C164A6 /* Emitter.swift in Sources */,
 				A5A96845219A187E00FDC941 /* NumbersData.xcdatamodeld in Sources */,

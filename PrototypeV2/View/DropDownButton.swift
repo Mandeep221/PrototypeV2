@@ -10,7 +10,7 @@ import UIKit
 
 class DropDownButton: UIButton, dropDownProtocol {
     
-    var viewRef: ChallengeController?
+    var viewRef: SetChallengeController?
     
     func dropDownPressed(string: String) {
         self.setTitle(string, for: .normal)
