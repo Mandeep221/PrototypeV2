@@ -48,6 +48,9 @@
 		A5CE7C29218C461200C164A6 /* Christmas.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5CE7C26218C444F00C164A6 /* Christmas.ttf */; };
 		A5CE7C2B218D344100C164A6 /* LoveController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CE7C2A218D344100C164A6 /* LoveController.swift */; };
 		A5EFD9D9218674BF00A557C7 /* ModuleTypeContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5EFD9D8218674BF00A557C7 /* ModuleTypeContainerView.swift */; };
+		A5F046C021A4C01F0023B3D0 /* DropDownButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F046BF21A4C01F0023B3D0 /* DropDownButton.swift */; };
+		A5F046C221A4C2B10023B3D0 /* DropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F046C121A4C2B10023B3D0 /* DropDownView.swift */; };
+		A5F046C421A4C3560023B3D0 /* ChallengeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F046C321A4C3560023B3D0 /* ChallengeController.swift */; };
 		A5F08CFD217AB11D00EC9B16 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F08CFC217AB11D00EC9B16 /* LoginController.swift */; };
 /* End PBXBuildFile section */
 
@@ -97,6 +100,9 @@
 		A5CE7C27218C45BE00C164A6 /* Too Freakin Cute Demo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Too Freakin Cute Demo.ttf"; sourceTree = "<group>"; };
 		A5CE7C2A218D344100C164A6 /* LoveController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoveController.swift; sourceTree = "<group>"; };
 		A5EFD9D8218674BF00A557C7 /* ModuleTypeContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleTypeContainerView.swift; sourceTree = "<group>"; };
+		A5F046BF21A4C01F0023B3D0 /* DropDownButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownButton.swift; sourceTree = "<group>"; };
+		A5F046C121A4C2B10023B3D0 /* DropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownView.swift; sourceTree = "<group>"; };
+		A5F046C321A4C3560023B3D0 /* ChallengeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeController.swift; sourceTree = "<group>"; };
 		A5F08CFC217AB11D00EC9B16 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		D1ED6231411182698A36C54F /* Pods-PrototypeV2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PrototypeV2.release.xcconfig"; path = "Pods/Target Support Files/Pods-PrototypeV2/Pods-PrototypeV2.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -174,6 +180,8 @@
 				A504558C218882030077CD5F /* BarEntry.swift */,
 				A504558E218882DB0077CD5F /* BeautifulBarChart.swift */,
 				A5CE7C24218C3C2C00C164A6 /* Emitter.swift */,
+				A5F046BF21A4C01F0023B3D0 /* DropDownButton.swift */,
+				A5F046C121A4C2B10023B3D0 /* DropDownView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -226,6 +234,7 @@
 				A5CE7C22218C391D00C164A6 /* HeartsController.swift */,
 				A5CE7C2A218D344100C164A6 /* LoveController.swift */,
 				A5BC16F721A0D16600592A98 /* ProgressController.swift */,
+				A5F046C321A4C3560023B3D0 /* ChallengeController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -380,6 +389,7 @@
 				A5BC16F621A0CCE900592A98 /* Utility.swift in Sources */,
 				A5A96847219A3FCB00FDC941 /* PersistenceService.swift in Sources */,
 				A5F08CFD217AB11D00EC9B16 /* LoginController.swift in Sources */,
+				A5F046C221A4C2B10023B3D0 /* DropDownView.swift in Sources */,
 				A5BC16F821A0D16600592A98 /* ProgressController.swift in Sources */,
 				A5C59B292189D11500BABA7B /* ModuleDataInjector.swift in Sources */,
 				A5C59B2C2189D72F00BABA7B /* Module.swift in Sources */,
@@ -389,6 +399,7 @@
 				A50348D821693E8E005BE136 /* AppDelegate.swift in Sources */,
 				A504558F218882DB0077CD5F /* BeautifulBarChart.swift in Sources */,
 				A51270EB2185696900222E6F /* SplashController.swift in Sources */,
+				A5F046C021A4C01F0023B3D0 /* DropDownButton.swift in Sources */,
 				A5CE7C2B218D344100C164A6 /* LoveController.swift in Sources */,
 				A50348EB21697779005BE136 /* CellsContainerView.swift in Sources */,
 				A50455892187EDFF0077CD5F /* ChartController.swift in Sources */,
@@ -402,6 +413,7 @@
 				A504558D218882040077CD5F /* BarEntry.swift in Sources */,
 				A504558B2187EE120077CD5F /* BasicBarChart.swift in Sources */,
 				A50B23B4217EC56B00D72B03 /* Color.swift in Sources */,
+				A5F046C421A4C3560023B3D0 /* ChallengeController.swift in Sources */,
 				A5A96851219A511600FDC941 /* NumberData+CoreDataProperties.swift in Sources */,
 				A5CE7C25218C3C2C00C164A6 /* Emitter.swift in Sources */,
 				A5A96845219A187E00FDC941 /* NumbersData.xcdatamodeld in Sources */,

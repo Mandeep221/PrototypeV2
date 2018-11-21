@@ -90,7 +90,9 @@ class HomeController: UIViewController {
     }
     
     @objc func launchProgressController() {
-        let vc = ProgressController()
+//        let vc = ProgressController()
+//        self.navigationController?.pushViewController(vc, animated: true)
+        let vc = ChallengeController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
