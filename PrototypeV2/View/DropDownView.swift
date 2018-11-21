@@ -27,8 +27,8 @@ class DropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        tableView.backgroundColor = UIColor.darkGray
-        self.backgroundColor = UIColor.white
+        tableView.backgroundColor = UIColor.white
+        self.backgroundColor = UIColor.red
         
         
         tableView.delegate = self
@@ -63,7 +63,6 @@ class DropDownView: UIView, UITableViewDelegate, UITableViewDataSource  {
         cell.textLabel?.text = dropDownOptions[indexPath.row]
         cell.textLabel?.textColor = UIColor.darkGray
         cell.textLabel?.textAlignment = .center
-        cell.backgroundColor = UIColor.white
         return cell
     }
     
