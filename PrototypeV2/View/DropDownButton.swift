@@ -9,10 +9,19 @@
 import UIKit
 
 class DropDownButton: UIButton, dropDownProtocol {
-
+    
+    var viewRef: ChallengeController?
+    
     func dropDownPressed(string: String) {
         self.setTitle(string, for: .normal)
         self.dismissDropDown()
+        if string == ModuleType.counting.rawValue{
+            viewRef?.num2Label.isHidden = true
+            viewRef?.num2TextField.isHidden = true
+        }else{
+            viewRef?.num2Label.isHidden = false
+            viewRef?.num2TextField.isHidden = false
+        }
     }
     
     var dropView = DropDownView()

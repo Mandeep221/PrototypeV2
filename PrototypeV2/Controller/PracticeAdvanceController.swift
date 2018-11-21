@@ -69,6 +69,9 @@ class InstructionCellContainerView: UIView {
 }
 
 class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
+    
+    var startTime = 0.0
+    
     var speechSynthesizer: AVSpeechSynthesizer?
     var requiredNumbersForOptions: [Int]?
     var possibleRowValues: [NSNumber]?
@@ -169,7 +172,8 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       // delete()
+        // set the start time of the use of this module
+        startTime = CACurrentMediaTime()
 
         // set up core data
         if fetch() == 0 {
@@ -548,5 +552,13 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         self.navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        // calculate elapsed time
+        let elapsed = CACurrentMediaTime() - startTime
+        
+        // push the time of use of this module into Firebase
+        Utility.updateProgressTimestamp((moduleType!.rawValue), Int(elapsed))
     }
 }

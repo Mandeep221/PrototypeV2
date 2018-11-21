@@ -31,10 +31,15 @@ class HomeController: UIViewController {
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isTranslucent = false
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
-        // search
+        
+        // nav item buttons
         let timerImage = UIImage(named: "icon_timer")?.withRenderingMode(.alwaysTemplate)
         let progressButtonItem = UIBarButtonItem(image: timerImage, style: .plain, target: self, action: #selector(launchProgressController))
-        navigationItem.rightBarButtonItem = progressButtonItem
+        
+        let challengeImage = UIImage(named: "icon_challenge")?.withRenderingMode(.alwaysTemplate)
+        let challengeButtonItem = UIBarButtonItem(image: challengeImage, style: .plain, target: self, action: #selector(launchChallengeController))
+        
+        navigationItem.rightBarButtonItems = [progressButtonItem, challengeButtonItem]
     }
     
     override func viewDidLoad() {
@@ -90,8 +95,11 @@ class HomeController: UIViewController {
     }
     
     @objc func launchProgressController() {
-//        let vc = ProgressController()
-//        self.navigationController?.pushViewController(vc, animated: true)
+        let vc = ProgressController()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func launchChallengeController(){
         let vc = ChallengeController()
         self.navigationController?.pushViewController(vc, animated: true)
     }

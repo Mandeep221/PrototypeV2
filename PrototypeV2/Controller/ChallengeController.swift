@@ -56,7 +56,7 @@ class ChallengeController: UIViewController {
         return textField
     }()
     
-    let submitButton: UIButton = {
+    lazy var submitButton: UIButton = {
         let button = UIButton(type: .system)
         button.titleLabel?.font = UIFont(name: "Montserrat-Regular", size: 16)
         button.setTitle("Submit", for: .normal)
@@ -64,8 +64,19 @@ class ChallengeController: UIViewController {
         button.setTitleColor(UIColor.init(rgb: Color.whiteColor.rawValue, alpha: 1), for: .normal)
         button.tintColor = UIColor.init(rgb: Color.whiteColor.rawValue, alpha: 1)
         button.backgroundColor = UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1)
+        button.addTarget(self, action: #selector(handleSubmitChallenge), for: .touchUpInside)
         return button
     }()
+    
+    @objc func handleSubmitChallenge(){
+        let moduleType = dropDownButton.titleLabel!.text!
+        let num1 = Int(num1TextField.text!)!
+        var num2 = 0
+        if moduleType != ModuleType.counting.rawValue{
+            num2 = Int(num2TextField.text!)!
+        }
+        Utility.submitChallenge(moduleType: moduleType, num1: num1, num2: num2)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -129,6 +140,7 @@ class ChallengeController: UIViewController {
     func setupDropDown() {
         //Configure the button
 //        dropDownButton = DropDownButton.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        dropDownButton.viewRef = self
         dropDownButton.setTitle("Choose Module", for: .normal)
         dropDownButton.setImage(UIImage(named: "icon_chevron"), for: .normal)
         dropDownButton.setTitleColor(UIColor.init(rgb: Color.textPrimary.rawValue, alpha: 1), for: .normal)

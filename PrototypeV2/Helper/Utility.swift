@@ -119,6 +119,15 @@ class Utility{
         }
     }
     
+    static func submitChallenge(moduleType: String, num1: Int, num2: Int = 0){
+         ref = Database.database().reference()
+        if let user = Auth.auth().currentUser{
+            self.ref?.child("users/\(user.uid)/modules/\(moduleType)/challenge/num1").setValue(num1)
+            self.ref?.child("users/\(user.uid)/modules/\(moduleType)/challenge/num2").setValue(num2)
+        }
+        
+    }
+    
     static func checkIfDateIsSameAsToday(dateTimeStamp: Int64) -> Bool {
         
         // convert millis into a Date object
