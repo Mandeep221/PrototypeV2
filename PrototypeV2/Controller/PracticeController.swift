@@ -143,6 +143,7 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         var opt = [DesignableOptionView]()
         for index in 0...3 {
             let option = DesignableOptionView()
+            option.backGroundColor = UIColor.init(rgb: Color.whiteColor.rawValue, alpha: 0.1)
             option.isUserInteractionEnabled = true
             option.alpha = 0.0
             option.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleOptionSelection)))

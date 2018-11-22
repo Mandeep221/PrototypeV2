@@ -37,6 +37,7 @@
 		A5A96850219A511600FDC941 /* NumberData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A9684E219A511600FDC941 /* NumberData+CoreDataClass.swift */; };
 		A5A96851219A511600FDC941 /* NumberData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A9684F219A511600FDC941 /* NumberData+CoreDataProperties.swift */; };
 		A5B181B121A6124A0081347E /* ChallengeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B181B021A6124A0081347E /* ChallengeController.swift */; };
+		A5B181B321A6615E0081347E /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B181B221A6615E0081347E /* NetworkReachability.swift */; };
 		A5BC16F621A0CCE900592A98 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BC16F521A0CCE900592A98 /* Utility.swift */; };
 		A5BC16F821A0D16600592A98 /* ProgressController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BC16F721A0D16600592A98 /* ProgressController.swift */; };
 		A5C59B272189C60500BABA7B /* Yellowtail-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = A5C59B262189C43300BABA7B /* Yellowtail-Regular.otf */; };
@@ -90,6 +91,7 @@
 		A5A9684E219A511600FDC941 /* NumberData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberData+CoreDataClass.swift"; sourceTree = "<group>"; };
 		A5A9684F219A511600FDC941 /* NumberData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberData+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A5B181B021A6124A0081347E /* ChallengeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeController.swift; sourceTree = "<group>"; };
+		A5B181B221A6615E0081347E /* NetworkReachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
 		A5BC16F521A0CCE900592A98 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 		A5BC16F721A0D16600592A98 /* ProgressController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressController.swift; sourceTree = "<group>"; };
 		A5C59B262189C43300BABA7B /* Yellowtail-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Yellowtail-Regular.otf"; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 				A50B23B3217EC56B00D72B03 /* Color.swift */,
 				A5A96846219A3FCB00FDC941 /* PersistenceService.swift */,
 				A5BC16F521A0CCE900592A98 /* Utility.swift */,
+				A5B181B221A6615E0081347E /* NetworkReachability.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -395,6 +398,7 @@
 				A5F046C221A4C2B10023B3D0 /* DropDownView.swift in Sources */,
 				A5BC16F821A0D16600592A98 /* ProgressController.swift in Sources */,
 				A5C59B292189D11500BABA7B /* ModuleDataInjector.swift in Sources */,
+				A5B181B321A6615E0081347E /* NetworkReachability.swift in Sources */,
 				A5C59B2C2189D72F00BABA7B /* Module.swift in Sources */,
 				A50D9579216E7FAC002F1DC3 /* DesignableOptionView.swift in Sources */,
 				A5A968212197CB9200FDC941 /* PracticeAdvanceController.swift in Sources */,

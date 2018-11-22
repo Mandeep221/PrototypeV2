@@ -11,6 +11,12 @@ import UIKit
 
 class DesignableOptionView: UIView{
     
+    var backGroundColor: UIColor? {
+        didSet{
+            setUpViews()
+        }
+    }
+    
     let numberOptionLabel: UILabel = {
         let label = UILabel()
         //label.textColor = UIColor.init(rgb: 0x2C163B, alpha: 1)
@@ -34,7 +40,7 @@ class DesignableOptionView: UIView{
 //        self.layer.borderWidth = 1
 //        self.layer.borderColor = UIColor.init(rgb: 0xF6B691, alpha: 1).cgColor
         //self.backgroundColor = UIColor.init(rgb: 0x332042, alpha: 1)
-        self.backgroundColor = UIColor.init(rgb: 0xFFFFFF, alpha: 0.1)
+        self.backgroundColor = backGroundColor!
         
         addSubview(numberOptionLabel)
         addSubview(textOptionLabel)
@@ -48,7 +54,6 @@ class DesignableOptionView: UIView{
     override init(frame: CGRect) {
         super.init(frame: frame)
         //drawShadow()
-        setUpViews()
     }
     
     func drawShadow() {
@@ -72,7 +77,7 @@ class DesignableOptionView: UIView{
                 self.backgroundColor = UIColor.init(rgb: 0xED5169, alpha: 0.6)
             }) { (true) in
                 UIView.animate(withDuration: 0.25, animations: {
-                    self.backgroundColor = UIColor.init(rgb: 0xFFFFFF, alpha: 0.1)
+                    self.backgroundColor = self.backGroundColor
                 }, completion: nil)
             }
         }
@@ -88,7 +93,7 @@ class DesignableOptionView: UIView{
     
     func setDefaultAppearance() {
         UIView.animate(withDuration: 1, delay: 0.5, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-             self.backgroundColor = UIColor.init(rgb: 0xFFFFFF, alpha: 0.1)
+             self.backgroundColor = self.backGroundColor
         }, completion: nil)
     }
 }
