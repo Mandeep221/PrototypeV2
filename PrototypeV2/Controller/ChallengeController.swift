@@ -7,12 +7,17 @@
 //
 
 import UIKit
+import FirebaseAuth
+import Firebase
 
 class ChallengeController: UIViewController {
 
+    var ref: DatabaseReference?
+    var num1: Int?
+    var num2: Int?
     let reachability = NetworkReachability()!
     
-    var moduleType: String?
+    var moduleType: String? = ModuleType.counting.rawValue
     var answer = 0
     var requiredNumbersForOptions: [Int]?
     
@@ -34,10 +39,33 @@ class ChallengeController: UIViewController {
 //            //label.text = "Can you count the SNAKES you tapped?"
 //        }
         label.text = "Can you count the Circles?"
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.alpha = 1
         return label
     }()
     
+    
+    let genericChallengeContainer: UIView = {
+        let container = UIView()
+        container.translatesAutoresizingMaskIntoConstraints = false
+        return container
+    }()
+    
+    let genericChallengeViewWidthHeight: CGFloat = 40
+    
+    let genericChallengeLabels: [UILabel] = {
+        var challengeLabels = [UILabel]()
+        for _ in 0..<3{
+            let label = UILabel()
+            label.textColor = UIColor.init(rgb: Color.textPrimary.rawValue, alpha: 1)
+            label.font = UIFont(name: "Montserrat-Bold", size: 24)
+            label.text = "1"
+            label.textAlignment = .center
+            label.translatesAutoresizingMaskIntoConstraints = false
+            challengeLabels.append(label)
+        }
+        return challengeLabels
+    }()
     
     lazy var optionButtons: [DesignableOptionView] = {
         var opt = [DesignableOptionView]()
@@ -116,6 +144,60 @@ class ChallengeController: UIViewController {
         }
     }
     
+    func fetchDataFromFirebase() {
+        ref = Database.database().reference()
+        if let user = Auth.auth().currentUser{
+            
+            mapProgressData(user: user,
+                            moduleName: moduleType!)
+        }
+        
+    }
+    
+    func mapProgressData(user: User, moduleName: String) {
+        ref?.child("users").child(user.uid).child("modules").child(moduleName).child("challenge").observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let value = snapshot.value as? NSDictionary
+            if value == nil{
+                print("Value is nil, so dont proceed further")
+                return
+            }
+            
+            if let num1 = value!["num1"] as? NSInteger{
+                //print("Number is :", num1)
+                self.num1 = Int(num1)
+            }
+            
+            if let num2 = value!["num2"] as? NSInteger{
+                //print("Number is :", num1)
+                self.num2 = Int(num2)
+            }
+            
+            if moduleName == ModuleType.counting.rawValue{
+                self.answer = self.num1!
+            }
+            
+            if moduleName == ModuleType.addition.rawValue{
+                self.answer = self.num1! + self.num2!
+            }
+            
+            if moduleName == ModuleType.subtraction.rawValue{
+                self.answer = self.num1! - self.num2!
+            }
+            
+            if moduleName == ModuleType.multiplication.rawValue{
+                self.answer = self.num1! * self.num2!
+            }
+            
+            if moduleName == ModuleType.division.rawValue{
+                self.answer = self.num1! / self.num2!
+            }
+            
+            self.setupViews()
+        })
+    }
+    
+    
     func setUpNetworkObserver(){
         NotificationCenter.default.addObserver(self, selector: #selector(internetStateChanged), name: Notification.Name.reachabilityChanged, object: reachability)
         
@@ -130,17 +212,15 @@ class ChallengeController: UIViewController {
         let reachability = note.object as! NetworkReachability
         
         if reachability.connection != .none{
-            setupViews()
-            print("internetStateChanged hai")
+            fetchDataFromFirebase()
+            //print("internetStateChanged hai")
         }else{
-            print("internetStateChanged nai hai")
+            //print("internetStateChanged nai hai")
         }
     }
     
-    func setupViews() {
-        networkInfoView.alpha = 0
+    fileprivate func setupCountingChallenge() {
         circularCellsIndices = [String]()
-        requiredNumbersForOptions = [Int]()
         generateCircularCellIndices()
         
         let width = view.frame.width / CGFloat(numViewPerRow)
@@ -162,13 +242,68 @@ class ChallengeController: UIViewController {
                 cells[key] = cellView
             }
         }
+    }
+    
+    func setupViews() {
+        networkInfoView.alpha = 0
+        if moduleType == ModuleType.counting.rawValue{
+             setupCountingChallenge()
+        }else{
+            setupGenericChallenge()
+        }
+       
         view.addSubview(instructionThreeLabel)
         
         for index in 0...optionButtons.count - 1{
             view.addSubview(optionButtons[index])
         }
         setConstraintsForOptions()
+        requiredNumbersForOptions = [Int]()
         handleAllOptions(visible: true)
+        setupThirdInstruction()
+    }
+    
+    func setupThirdInstruction() {
+        if moduleType == ModuleType.counting.rawValue{
+            instructionThreeLabel.text = "Can you count the Circles?"
+        }else if moduleType == ModuleType.addition.rawValue{
+            instructionThreeLabel.text = "Can you add \(num1!) and \(num2!)?"
+        }else if moduleType == ModuleType.subtraction.rawValue{
+            instructionThreeLabel.text = "Can you subtract \(num2!) from \(num1!)?"
+        }else if moduleType == ModuleType.multiplication.rawValue{
+            instructionThreeLabel.text = "Can you multiply \(num1!) and \(num2!)?"
+        }else if moduleType == ModuleType.division.rawValue{
+            instructionThreeLabel.text = "Can you divide \(num1!) by \(num2!)?"
+        }
+    }
+    
+    func setupGenericChallenge() {
+        view.addSubview(genericChallengeContainer)
+        
+        genericChallengeContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        genericChallengeContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        genericChallengeContainer.widthAnchor.constraint(equalToConstant: genericChallengeViewWidthHeight * CGFloat(genericChallengeLabels.count)).isActive = true
+        genericChallengeContainer.heightAnchor.constraint(equalToConstant: genericChallengeViewWidthHeight).isActive = true
+        
+        for index in 0..<genericChallengeLabels.count{
+            genericChallengeContainer.addSubview(genericChallengeLabels[index])
+            
+            if index == 0 {
+                genericChallengeLabels[index].leftAnchor.constraint(equalTo: genericChallengeContainer.leftAnchor).isActive = true
+            }else{
+                genericChallengeLabels[index].leftAnchor.constraint(equalTo:  genericChallengeLabels[index-1].rightAnchor).isActive = true
+            }
+            
+            genericChallengeLabels[index].topAnchor.constraint(equalTo: genericChallengeContainer.topAnchor).isActive = true
+            genericChallengeLabels[index].widthAnchor.constraint(equalToConstant: genericChallengeViewWidthHeight).isActive = true
+            genericChallengeLabels[index].heightAnchor.constraint(equalToConstant: genericChallengeViewWidthHeight).isActive = true
+            
+        }
+        
+        genericChallengeLabels[0].text = "\(String(describing: num1!))"
+        genericChallengeLabels[1].text = ModuleType.getModuleSymbol(moduleType: moduleType!)
+        genericChallengeLabels[2].text = "\(String(describing: num2!))"
+    
     }
     
     func setConstraintsForOptions() {
@@ -243,7 +378,8 @@ class ChallengeController: UIViewController {
     }
     
     func generateCircularCellIndices(){
-        for _ in 0..<7{
+        // generate as many circle indices as num1 fetched from db
+        for _ in 0..<num1!{
             let num = generateRandomNumber()
             circularCellsIndices?.append(num)
         }
