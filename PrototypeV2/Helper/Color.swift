@@ -25,5 +25,6 @@ enum Color: UInt{
     case wineRed = 0xED5169
     case peacockPurple = 0xA83FE5
     case peakcockBlue = 0x11007D
+    case mudYellow = 0xF6B691
     
 }

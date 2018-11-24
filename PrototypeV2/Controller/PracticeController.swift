@@ -129,13 +129,24 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         let label = UILabel()
         label.numberOfLines = 2
         label.textColor = .white
-        label.font = UIFont(name: "Montserrat-Bold", size: 16)
+        label.font = UIFont(name: "Montserrat-Regular", size: 16)
         if moduleType == ModuleType.counting || moduleType == ModuleType.subtraction{
              label.text = "Can you count the STRAWBERRIES you tapped?"
         }else{
             label.text = "Can you count the SNAKES you tapped?"
         }
         label.alpha = 0
+        return label
+    }()
+    
+    lazy var mathExpressionLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.textColor = UIColor.init(rgb: Color.mudYellow.rawValue, alpha: 1)
+        label.font = UIFont(name: "Montserrat-Bold", size: 24)
+        label.alpha = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "4 x 5"
         return label
     }()
     
@@ -178,6 +189,7 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         view.addSubview(anchorForContainerTwo)
         view.addSubview(containerViewTwo)
         view.addSubview(instructionThreeLabel)
+        view.addSubview(mathExpressionLabel)
         
         for index in 0...optionButtons.count - 1{
             view.addSubview(optionButtons[index])
@@ -281,8 +293,13 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         optionTwoButton.anchor(top: nil, leading: nil, bottom: optionFourButton.topAnchor, trailing: view.trailingAnchor, padding: .init(top: 20, left: 16, bottom: 16, right: 16), size: .init(width: view.frame.width / 2 - 16 - 8, height: 64))
     
         // for the third instruction
+        mathExpressionLabel.anchor(top: nil, leading: view.leadingAnchor, bottom: instructionThreeLabel.topAnchor, trailing: view.trailingAnchor, padding: .init(top: 8, left: 16, bottom: 16, right: 16), size: .init(width: view.frame.width, height: 30))
+
+        
+        // for the third instruction
         instructionThreeLabel.anchor(top: nil, leading: view.leadingAnchor, bottom: optionOneButton.topAnchor, trailing: view.trailingAnchor, padding: .init(top: 8, left: 16, bottom: 16, right: 16), size: .init(width: view.frame.width, height: 40))
 
+        
     }
     
     
@@ -335,9 +352,11 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
             //hide second instruction
             handleScene(label: instructionTwoLabel , show: false)
 
-            //show third instruction
+            //show third instruction and mathExpression
             handleScene(label: instructionThreeLabel , show: true)
-            
+            handleScene(label: mathExpressionLabel , show: true)
+            let symbol = ModuleType.getModuleSymbol(moduleType: (moduleType?.rawValue)!)
+            mathExpressionLabel.text = "\(num1) \(symbol) \(num2)"
             handleAllOptions(visible: true)
             animateSwipedCells()
             if moduleType == ModuleType.subtraction {
@@ -420,7 +439,9 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
             UIView.animate(withDuration: 0.5, delay: 0.5, options: [.curveEaseOut], animations: {
                 label.alpha = 1.0
             }, completion: { (_) in
-                self.textToSpeech(text: label.text!)
+                if label != self.mathExpressionLabel{
+                     self.textToSpeech(text: label.text!)
+                }
             })
         }else{
             UIView.animate(withDuration: 1, animations: {
@@ -516,6 +537,7 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
             self.handleAllOptions(visible: false)
             self.handleScene(label: self.instructionThreeLabel, show: false)
+            self.handleScene(label: self.mathExpressionLabel, show: false)
             
             if self.moduleType == ModuleType.counting{
                 if self.level == 1 {
@@ -534,6 +556,12 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
             for option in self.optionButtons{
                 option.setDefaultAppearance()
             }
+            
+            // set lady speaking flag to true again to prevent premature swipe
+            // while lady is speaking
+            self.containerViewOne.isLadySpeaking = true
+            self.containerViewTwo.isLadySpeaking = true
+            
             
             if self.moduleType == ModuleType.subtraction{
                 self.handleArrows(visible: false)

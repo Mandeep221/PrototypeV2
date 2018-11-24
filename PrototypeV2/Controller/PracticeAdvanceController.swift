@@ -139,6 +139,27 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
         return instructionLabel
     }()
     
+    var i = 1
+    lazy var timer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: true) {timer in
+        guard self.i <= 10000 else {
+            timer.invalidate()
+            return
+        }
+        let cellContainerToAnimate = self.fetchNextCellsContainerToAnimate()
+        cellContainerToAnimate.scaleSwipedCells(repeatCount: 1)
+        
+        self.i += 1
+    }
+    
+    var indexForNextCellsContainerToAnimate = -1
+    func fetchNextCellsContainerToAnimate() -> CellsContainerView {
+        indexForNextCellsContainerToAnimate += 1
+        if indexForNextCellsContainerToAnimate == rows?.count{
+            indexForNextCellsContainerToAnimate = 0
+        }
+        return rows![indexForNextCellsContainerToAnimate].cellsContainerView
+    }
+    
     var rows: [InstructionCellContainerView]?
     
     lazy var optionButtons: [DesignableOptionView] = {
@@ -462,57 +483,7 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
     }
     
     func animateSwipedCells(index: Int) {
-        var nextIndex = index
-        // level 0
-        UIView.animate(withDuration: 2, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveLinear, animations: {
-            self.rows![nextIndex].cellsContainerView.scaleSwipedCells(repeatCount: 1)
-        }) { (bool) in
-//            if index == self.numRow - 1{
-//                nextIndex = -1
-//            }
-//            self.animateSwipedCells(index: nextIndex+1)
-//            if bool {
-//              self.rows![index+1].cellsContainerView.scaleSwipedCells(repeatCount: 2)
-//            }
-            // level 1
-            nextIndex+=1
-            UIView.animate(withDuration: 2, delay: 2, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveLinear, animations: {
-                self.rows![nextIndex].cellsContainerView.scaleSwipedCells(repeatCount: 1)
-            }) { (bool) in
-                
-                nextIndex+=1
-                if (nextIndex == self.numRow){
-                    return
-                }
-                
-                // level 2
-                UIView.animate(withDuration: 2, delay: 4, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveLinear, animations: {
-                    self.rows![nextIndex].cellsContainerView.scaleSwipedCells(repeatCount: 1)
-                }) { (bool) in
-                    nextIndex+=1
-                    if (nextIndex == self.numRow){
-                        return
-                    }
-                    
-                    // level 3
-                    UIView.animate(withDuration: 2, delay: 6, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveLinear, animations: {
-                        self.rows![nextIndex].cellsContainerView.scaleSwipedCells(repeatCount: 1)
-                    }) { (bool) in
-                        nextIndex+=1
-                        if (nextIndex == self.numRow){
-                            return
-                        }
-                        
-                        // level 4
-                        UIView.animate(withDuration: 2, delay: 8, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveLinear, animations: {
-                            self.rows![nextIndex].cellsContainerView.scaleSwipedCells(repeatCount: 1)
-                        }) { (bool) in
-                            
-                        }
-                    }
-                }
-            }
-        }
+        timer.fire()
     }
     func textToSpeech(text: String) {
         if speechSynthesizer == nil{

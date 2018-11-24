@@ -145,9 +145,9 @@ class CellsContainerView: UIView {
                 cellView.translatesAutoresizingMaskIntoConstraints = false
                 
                 // add right swipe gesture to the current cellView
-                let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture))
-                swipeRight.direction = .right
-                cellView.addGestureRecognizer(swipeRight)
+                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture))
+                //swipeRight.direction = .right
+                cellView.addGestureRecognizer(tapGesture)
                 
                 addSubview(cellView)
 
@@ -225,14 +225,12 @@ class CellsContainerView: UIView {
     
     /*This method changes the position of the object that is swiped
      and also increses the count for number of objects that has been swiped*/
-    @objc func handleSwipeGesture(gesture: UISwipeGestureRecognizer) {
-        
-        print("handleSwipeGesture!")
+    @objc func handleTapGesture(gesture: UITapGestureRecognizer) {
         if let view = gesture.view{
             if swipeCounter == swipableCellCount || swipeCounter == (cellViews?.count)! || isLadySpeaking{
                 return
             }
-            
+            view.tag = 2
             /*
              Only X-Cordinate is changing in animation
              Formula used to change X-Cordinate is :
@@ -286,12 +284,12 @@ class CellsContainerView: UIView {
     
     func scaleSwipedCells(repeatCount: Float){
         let totalCells = cellViews!.count
-        let abc = totalCells - swipableCellCount
+        //let abc = totalCells - swipableCellCount
         
         let pulse = CABasicAnimation(keyPath: "transform.scale")
         pulse.duration = 0.5
-        pulse.fromValue = 0.90
-        pulse.toValue = 1.0
+        pulse.fromValue = 1.0
+        pulse.toValue = 0.8
         pulse.repeatCount = repeatCount
         pulse.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
         pulse.autoreverses = true
@@ -299,14 +297,17 @@ class CellsContainerView: UIView {
         let flash = CABasicAnimation(keyPath: "opacity")
         flash.duration = 0.5
         flash.fromValue = 1
-        flash.toValue = 0.90
+        flash.toValue = 0.7
         flash.repeatCount = repeatCount
         flash.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
         flash.autoreverses = true
         
-        for index in abc..<totalCells {
-            cellViews?[index].layer.add(pulse, forKey: "scale")
-            cellViews?[index].layer.add(flash, forKey: "flash")
+        for index in 0..<totalCells {
+            // all tapped cells will have a tag = 2
+            if cellViews?[index].tag == 2{
+                cellViews?[index].layer.add(pulse, forKey: "scale")
+                cellViews?[index].layer.add(flash, forKey: "flash")
+            }
             
         }
     }

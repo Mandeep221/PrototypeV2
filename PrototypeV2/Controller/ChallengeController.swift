@@ -17,7 +17,7 @@ class ChallengeController: UIViewController {
     var num2: Int?
     let reachability = NetworkReachability()!
     
-    var moduleType: String? = ModuleType.counting.rawValue
+    var moduleType: String? = ModuleType.multiplication.rawValue
     var answer = 0
     var requiredNumbersForOptions: [Int]?
     

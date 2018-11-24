@@ -28,7 +28,7 @@ class DesignableOptionView: UIView{
     
     let textOptionLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.init(rgb: 0xF6B691, alpha: 1)
+        label.textColor = UIColor.init(rgb: Color.mudYellow.rawValue, alpha: 1)
         //label.textColor = UIColor.init(rgb: 0x908FAA, alpha: 1)
         label.font = UIFont(name: "Montserrat-Regular", size: 12)
         label.textAlignment = .center
