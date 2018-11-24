@@ -139,6 +139,59 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
         return instructionLabel
     }()
     
+    lazy var xAxisDimensionContainerView: UIView = {
+       let containerView = UIView()
+        containerView.alpha = 0
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let lineView = UIView()
+        lineView.translatesAutoresizingMaskIntoConstraints = false
+        lineView.backgroundColor = UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1)
+    
+        let instructionLabel = UILabel()
+        instructionLabel.numberOfLines = 1
+        instructionLabel.textColor = .white
+        instructionLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
+        instructionLabel.text = "2"
+        instructionLabel.textAlignment = .center
+        instructionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        containerView.addSubview(instructionLabel)
+        containerView.addSubview(lineView)
+        
+        instructionLabel.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        instructionLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        instructionLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        instructionLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        lineView.topAnchor.constraint(equalTo: instructionLabel.bottomAnchor, constant: 4).isActive = true
+        lineView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        lineView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+         //lineView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        lineView.heightAnchor.constraint(equalToConstant: 2).isActive = true
+        
+        return containerView
+    }()
+    
+    lazy var yAxisDimensionContainerView: UIView = {
+        let containerView = UIView()
+        
+        let arrowImageView = UIImageView()
+        arrowImageView.translatesAutoresizingMaskIntoConstraints = false
+        let arrowImage = UIImage(named: "up_down_arrow")?.withRenderingMode(.alwaysTemplate)
+        arrowImageView.image = arrowImage
+        arrowImageView.tintColor = .yellow
+        
+        let instructionLabel = UILabel()
+        instructionLabel.numberOfLines = 1
+        instructionLabel.textColor = .white
+        instructionLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
+        instructionLabel.text = "2"
+        instructionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        return containerView
+    }()
+    
     var i = 1
     lazy var timer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: true) {timer in
         guard self.i <= 10000 else {
@@ -213,6 +266,8 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
         view.addSubview(moduleSubTitleLabel)
          view.addSubview(moduleLevelLabel)
         view.addSubview(moduleTitleLabel)
+        view.addSubview(xAxisDimensionContainerView)
+        
         for index in 0...optionButtons.count - 1{
             view.addSubview(optionButtons[index])
         }
@@ -225,6 +280,12 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
         moduleTitleLabel.anchor(top: moduleSubTitleLabel.bottomAnchor, leading: view.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: view.frame.width * 0.66, height: 40))
         
         moduleLevelLabel.anchor(top: nil, leading: nil, bottom: moduleTitleLabel.bottomAnchor, trailing: view.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16), size: .init(width: view.frame.width * 0.34, height: 40))
+        
+        
+        xAxisDimensionContainerView.topAnchor.constraint(equalTo: moduleLevelLabel.bottomAnchor).isActive = true
+        xAxisDimensionContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        xAxisDimensionContainerView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        xAxisDimensionContainerView.heightAnchor.constraint(equalToConstant: 26).isActive = true
         
         numRow = Int(truncating: numData!.arrNumRows[0])
         numColumn = Int(truncating: numData!.arrNumColumns[0])
@@ -483,7 +544,17 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
     }
     
     func animateSwipedCells(index: Int) {
-        timer.fire()
+        if level == 1{
+            // animate rows one by one
+             timer.fire()
+        }else if level == 2{
+            // animate all rows at once
+            xAxisDimensionContainerView.alpha = 1
+            for row in rows!{
+                row.cellsContainerView.scaleSwipedCells(repeatCount: 1000)
+            }
+        }
+       
     }
     func textToSpeech(text: String) {
         if speechSynthesizer == nil{
