@@ -31,7 +31,7 @@ class SetChallengeController: UIViewController {
     
     
     let num1TextField: UITextField = {
-       let textField = UITextField()
+        let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.keyboardType = .numberPad
         textField.textAlignment = .center
@@ -42,7 +42,7 @@ class SetChallengeController: UIViewController {
         textField.layer.borderColor = UIColor.darkGray.cgColor
         return textField
     }()
-
+    
     let num2TextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -54,6 +54,18 @@ class SetChallengeController: UIViewController {
         textField.layer.borderWidth = 1
         textField.layer.borderColor = UIColor.darkGray.cgColor
         return textField
+    }()
+    
+    let validationErrorLabel: UILabel = {
+        let label = UILabel()
+        label.text = ""
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.alpha = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1)
+        label.font = UIFont(name: "Montserrat-Regular", size: 14)
+        return label
     }()
     
     lazy var submitButton: UIButton = {
@@ -69,13 +81,107 @@ class SetChallengeController: UIViewController {
     }()
     
     @objc func handleSubmitChallenge(){
+        validateInputs()
+    }
+    
+    func validateInputs() -> Bool {
         let moduleType = dropDownButton.titleLabel!.text!
+        
+        if moduleType == "Choose Module"{
+            dropDownButton.shake()
+            showErrorMessage(msg: "Please select module")
+            return false
+        }else if (num1TextField.text?.isEmpty)!{
+            if (num2TextField.text?.isEmpty)! && moduleType != ModuleType.counting.rawValue{
+                //                if moduleType == ModuleType.counting.rawValue{
+                //                    showErrorMessage(msg: "#1 can't be empty")
+                //                }else{
+                //                    showErrorMessage(msg: "#1 and #2 can't be empty")
+                //                }
+                showErrorMessage(msg: "#1 and #2 can't be empty")
+                num1TextField.shake()
+                num2TextField.shake()
+                return false
+            }
+            showErrorMessage(msg: "#1 can't be empty")
+            num1TextField.shake()
+            return false
+        }else if (num2TextField.text?.isEmpty)! && moduleType != ModuleType.counting.rawValue{
+            showErrorMessage(msg: "#2 can't be empty")
+            num2TextField.shake()
+            return false
+        }
+        
         let num1 = Int(num1TextField.text!)!
         var num2 = 0
         if moduleType != ModuleType.counting.rawValue{
             num2 = Int(num2TextField.text!)!
         }
+        if moduleType == ModuleType.counting.rawValue {
+            if num1 > 30{
+                print("validateInputs: ", "num1 needs to be less than equal to 30")
+                showErrorMessage(msg: "#1 needs to be less than 30")
+                return false
+            }
+        }else if moduleType == ModuleType.addition.rawValue {
+            if num1 > 20 || num2 > 20{
+                print("validateInputs: ", "num1 or num2 is greater than 20")
+                showErrorMessage(msg: "#1 and #2 noth need to be less than or equal to 20")
+                return false
+            }
+        }else if moduleType == ModuleType.subtraction.rawValue {
+            if num1 > 20 || num2 > 20{
+                print("validateInputs: ", "num1 or num2 is greater than 20")
+                showErrorMessage(msg: "#1 and #2 need to be less than or equal to 20")
+                return false
+            }else if num2 > num1{
+                print("validateInputs: ", "num2 is greater than num1")
+                showErrorMessage(msg: "#2 needs to be less than #1")
+                return false
+            }
+        }else if moduleType == ModuleType.multiplication.rawValue {
+            if num1 > 10 || num2 > 10{
+                print("validateInputs: ", "num1 or num2 is greater than 10")
+                showErrorMessage(msg: "#1 and #2 need to be less than or equal to 10")
+                return false
+            }
+        }else if moduleType == ModuleType.division.rawValue {
+            if num1 > 20 || num2 > 20{
+                print("validateInputs: ", "num1 or num2 is greater than 10")
+                showErrorMessage(msg: "#1 and #2 need to be less than or equal to 20")
+                return false
+            }else if num2 > num1{
+                showErrorMessage(msg: "#2 needs to be less than #1")
+                print("validateInputs: ", "num2 is greater than num1")
+                return false
+            }else if num2 == 0 {
+                showErrorMessage(msg: "#2 can't be zero")
+                print("validateInputs: ", "num2 cannot be zero")
+                return false
+            }else if num1 % num2 != 0{
+                showErrorMessage(msg: "Numbers should be perfectly divisible, Edit and try again")
+                print("validateInputs: ", "Numbers should be perfectly divisible, Edit and try again")
+                return false
+            }
+        }
+        
         Utility.submitChallenge(moduleType: moduleType, num1: num1, num2: num2)
+        print("validateInputs: ", "all good")
+        
+        return false
+    }
+    
+    func showErrorMessage(msg: String) {
+        validationErrorLabel.text = msg
+        
+        UIView.animate(withDuration: 0.5) {
+            self.validationErrorLabel.alpha = 1
+        }
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
+            UIView.animate(withDuration: 0.5) {
+                self.validationErrorLabel.alpha = 0
+            }
+        }
     }
     
     override func viewDidLoad() {
@@ -87,13 +193,14 @@ class SetChallengeController: UIViewController {
         view.addSubview(num1TextField)
         view.addSubview(num2TextField)
         view.addSubview(submitButton)
+        view.addSubview(validationErrorLabel)
         
         setupNavBar()
         setupDropDown()
         
         // add constraints
         addConstraints()
-
+        
         // Do any additional setup after loading the view.
     }
     
@@ -119,18 +226,24 @@ class SetChallengeController: UIViewController {
         num2TextField.rightAnchor.constraint(equalTo: dropDownButton.rightAnchor).isActive = true
         //num2TextField.widthAnchor.constraint(equalToConstant: 60).isActive = true
         num2TextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    
+        
         submitButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         submitButton.topAnchor.constraint(equalTo: num2Label.bottomAnchor, constant: 32).isActive = true
         submitButton.widthAnchor.constraint(equalToConstant: 160).isActive = true
         submitButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-    
+        
+        validationErrorLabel.topAnchor.constraint(equalTo: submitButton.bottomAnchor, constant: 20).isActive = true
+        validationErrorLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50).isActive = true
+        validationErrorLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50).isActive = true
+        validationErrorLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
         view.sendSubviewToBack(num1Label)
         view.sendSubviewToBack(num2Label)
         view.sendSubviewToBack(num1TextField)
         view.sendSubviewToBack(num2TextField)
         view.sendSubviewToBack(num1TextField)
         view.sendSubviewToBack(submitButton)
+        view.sendSubviewToBack(validationErrorLabel)
     }
     
     override func viewDidLayoutSubviews() {
@@ -139,7 +252,7 @@ class SetChallengeController: UIViewController {
     
     func setupDropDown() {
         //Configure the button
-//        dropDownButton = DropDownButton.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        //        dropDownButton = DropDownButton.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         dropDownButton.viewRef = self
         dropDownButton.setTitle("Choose Module", for: .normal)
         dropDownButton.setImage(UIImage(named: "icon_chevron"), for: .normal)
@@ -163,7 +276,7 @@ class SetChallengeController: UIViewController {
         //Set the drop down menu's options
         dropDownButton.dropView.dropDownOptions = ModuleType.allRawValues
     }
-
+    
     func setupNavBar() {
         self.edgesForExtendedLayout = []
         view.backgroundColor = .white
