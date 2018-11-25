@@ -113,6 +113,9 @@ class ModuleTypeContainerView: UIView, UIGestureRecognizerDelegate {
         button.titleLabel?.font = UIFont(name: "Montserrat-Regular", size: 20)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 24
+        let image = UIImage(named: "icon_strawberry")?.withRenderingMode(.alwaysOriginal)
+        button.setImage(image, for: .normal)
+        button.setTitle("", for: .normal)
         button.layer.borderColor = UIColor.black.cgColor
         button.layer.borderWidth = 1
         //button.tintColor = .black

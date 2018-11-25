@@ -147,23 +147,22 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
         lineView.translatesAutoresizingMaskIntoConstraints = false
         lineView.backgroundColor = UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1)
     
-        let instructionLabel = UILabel()
-        instructionLabel.numberOfLines = 1
-        instructionLabel.textColor = .white
-        instructionLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
-        instructionLabel.text = "2"
-        instructionLabel.textAlignment = .center
-        instructionLabel.translatesAutoresizingMaskIntoConstraints = false
+        let numColumnLabel = UILabel()
+        numColumnLabel.numberOfLines = 1
+        numColumnLabel.textColor = .white
+        numColumnLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
+        numColumnLabel.textAlignment = .center
+        numColumnLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        containerView.addSubview(instructionLabel)
+        containerView.addSubview(numColumnLabel)
         containerView.addSubview(lineView)
         
-        instructionLabel.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        instructionLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        instructionLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-        instructionLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        numColumnLabel.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        numColumnLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        numColumnLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        numColumnLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
-        lineView.topAnchor.constraint(equalTo: instructionLabel.bottomAnchor, constant: 4).isActive = true
+        lineView.topAnchor.constraint(equalTo: numColumnLabel.bottomAnchor, constant: 4).isActive = true
         lineView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
         lineView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
          //lineView.widthAnchor.constraint(equalToConstant: 100).isActive = true
@@ -174,28 +173,28 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
     
     lazy var yAxisDimensionContainerView: UIView = {
         let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
         
         let lineView = UIView()
         lineView.translatesAutoresizingMaskIntoConstraints = false
         lineView.backgroundColor = UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1)
         
-        let instructionLabel = UILabel()
-        instructionLabel.numberOfLines = 1
-        instructionLabel.textColor = .white
-        instructionLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
-        instructionLabel.text = "2"
-        instructionLabel.translatesAutoresizingMaskIntoConstraints = false
+        let numRowLabel = UILabel()
+        numRowLabel.numberOfLines = 1
+        numRowLabel.textColor = .white
+        numRowLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
+        numRowLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        containerView.addSubview(instructionLabel)
+        containerView.addSubview(numRowLabel)
         containerView.addSubview(lineView)
         
-        instructionLabel.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        instructionLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        instructionLabel.heightAnchor.constraint(equalTo: containerView.heightAnchor, multiplier: 1).isActive = true
-        instructionLabel.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        numRowLabel.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        numRowLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        numRowLabel.heightAnchor.constraint(equalTo: containerView.heightAnchor, multiplier: 1).isActive = true
+        numRowLabel.widthAnchor.constraint(equalToConstant: 20).isActive = true
         
         lineView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        lineView.leadingAnchor.constraint(equalTo: instructionLabel.trailingAnchor).isActive = true
+        lineView.leadingAnchor.constraint(equalTo: numRowLabel.trailingAnchor).isActive = true
         lineView.heightAnchor.constraint(equalTo: containerView.heightAnchor, multiplier: 1).isActive = true
         lineView.widthAnchor.constraint(equalToConstant: 2).isActive = true
         return containerView
@@ -565,9 +564,11 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
     }
     
     func handleDimensions(show: Bool) {
+        print("dimension column :", numColumn)
+        print("dimension row :", numRow)
         if show{
             view.addSubview(xAxisDimensionContainerView)
-            //view.addSubview(yAxisDimensionContainerView)
+            view.addSubview(yAxisDimensionContainerView)
             
             xAxisDimensionContainerView.topAnchor.constraint(equalTo: rows![0].topAnchor).isActive = true
             xAxisDimensionContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
@@ -575,14 +576,20 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
             xAxisDimensionContainerView.widthAnchor.constraint(equalToConstant: CGFloat(width)).isActive = true
             xAxisDimensionContainerView.heightAnchor.constraint(equalToConstant: 26).isActive = true
             
-//            yAxisDimensionContainerView.topAnchor.constraint(equalTo: xAxisDimensionContainerView.bottomAnchor).isActive = true
-//            yAxisDimensionContainerView.trailingAnchor.constraint(equalTo: xAxisDimensionContainerView.leadingAnchor).isActive = true
-//            let height = rows!.count * 25 + (rows!.count - 1) * 10
-//            yAxisDimensionContainerView.heightAnchor.constraint(equalToConstant: CGFloat(height)).isActive = true
-//            yAxisDimensionContainerView.widthAnchor.constraint(equalToConstant: 30).isActive = true
+            yAxisDimensionContainerView.topAnchor.constraint(equalTo: xAxisDimensionContainerView.bottomAnchor, constant: 16).isActive = true
+            yAxisDimensionContainerView.trailingAnchor.constraint(equalTo: rows![0].trailingAnchor, constant: CGFloat(-width - 20)).isActive = true
+            let height = numRow * 25 + (numRow - 1) * 10
+            yAxisDimensionContainerView.heightAnchor.constraint(equalToConstant: CGFloat(height)).isActive = true
+            yAxisDimensionContainerView.widthAnchor.constraint(equalToConstant: 30).isActive = true
+            
+            var label = xAxisDimensionContainerView.subviews[0] as! UILabel
+            label.text = "\(numColumn)"
+            label = yAxisDimensionContainerView.subviews[0] as! UILabel
+            label.text = "\(numRow)"
+            
         }else{
             xAxisDimensionContainerView.removeFromSuperview()
-            //yAxisDimensionContainerView.removeFromSuperview()
+            yAxisDimensionContainerView.removeFromSuperview()
         }
     }
     
