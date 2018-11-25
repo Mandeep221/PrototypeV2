@@ -14,7 +14,7 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     var startTime = 0.0
     
     var topMarginForInstructionLabelOne: CGFloat = 20
-    let cellCount: Int = 7
+    let cellCount: Int = 10
     var toyImage: UIImage? 
     var moduleType: ModuleType? = nil {
         didSet{
@@ -165,6 +165,10 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     }()
     
     @objc func handleOptionSelection(gesture: UITapGestureRecognizer) {
+        if speechSynthesizer != nil{
+            // means lady is speaking, so option selection not allowed
+            return
+        }
         let currentView = gesture.view as! DesignableOptionView
         if optionButtons.contains(currentView){
             
@@ -383,29 +387,50 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     
     func generateTwoRandomNumbers() {
         
-        let num1UpperCap = 6
-        let num2UpperCap = 5
+        var num1UpperCap = 6
+        var num2UpperCap = 5
         
         if moduleType == ModuleType.counting{
             if level == 2 {
-                num1 = Int(arc4random_uniform(UInt32(num1UpperCap/2)) + 1)
-                num2 = Int(arc4random_uniform(UInt32(num2UpperCap/2)) + 1)
-            }else{
-                num1 = Int(arc4random_uniform(UInt32(num1UpperCap)) + 1)
-                num2 = Int(arc4random_uniform(UInt32(num2UpperCap)) + 1)
+                num1UpperCap = num1UpperCap/2
+                num2UpperCap = num2UpperCap/2
             }
-        }else{
-            num1 = Int(arc4random_uniform(UInt32(num1UpperCap)) + 1)
-            num2 = Int(arc4random_uniform(UInt32(num2UpperCap)) + 1)
+        }else if moduleType == ModuleType.addition{
+            if level == 2{
+                num1UpperCap = 10
+                num2UpperCap = 10
+            }
+        }else if moduleType == ModuleType.subtraction{
+            if level == 1{
+                // numbers should be less than 7
+                num1UpperCap = 6
+                num2UpperCap = 6
+            }else if level == 2{
+                // numbers should be greater than 4 and less than 11
+                num1UpperCap = 10
+                num2UpperCap = 10
+            }
         }
+        
+        
+        num1 = Int(arc4random_uniform(UInt32(num1UpperCap)) + 1)
+        num2 = Int(arc4random_uniform(UInt32(num2UpperCap)) + 1)
         
         // both numbers should be different and in case of subtraction, num1 always greater than num2
         if num1 == num2{
             num1 = num1 + 1
-        }else if moduleType == ModuleType.subtraction && num2 > num1{
-            let temp = num1
-            num1 = num2
-            num2 = temp
+        }else if moduleType == ModuleType.subtraction{
+            if level == 2 {
+                if num1 < 4{
+                    num1 = num1 + 4
+                }
+            }
+            if num2 > num1{
+                let temp = num1
+                num1 = num2
+                num2 = temp
+            }
+            
         }
         
         //assign values to instructions

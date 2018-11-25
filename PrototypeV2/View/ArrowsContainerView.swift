@@ -10,7 +10,7 @@ import UIKit
 
 class ArrowsContainerView: UIView {
 
-    let cellWidth:CGFloat = 25
+    let cellWidth:CGFloat = 20
     let cellGap:CGFloat = 6
     var arrowViews: [UIView]?
     override init(frame: CGRect) {

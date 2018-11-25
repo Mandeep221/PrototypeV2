@@ -11,9 +11,9 @@ import UIKit
 
 class ChildCellView: UIView {
     
-    let cellWidth: CGFloat = 25
-    let cellHeight: CGFloat = 25
-    let cellInternalGap: CGFloat = 3
+    let cellWidth: CGFloat = 20
+    let cellHeight: CGFloat = 20
+    let cellInternalGap: CGFloat = 2
     var childCellImage: UIImage?
     
     func configureChildCell(cellChildCount: Int, childCellImage: UIImage) {
@@ -58,8 +58,8 @@ class ChildCellView: UIView {
 
 class CellsContainerView: UIView {
     
-    var cellWidth:CGFloat = 25
-    let cellHeight:CGFloat = 25
+    var cellWidth:CGFloat = 20
+    let cellHeight:CGFloat = 20
     let cellGap:CGFloat = 6
     let containerHeight:CGFloat = 0
     let anchorHeight: CGFloat = 2
@@ -153,7 +153,7 @@ class CellsContainerView: UIView {
 
                  let leftMargin = index * Int(cellWidth + cellGap)
                 
-                addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(leftMargin)-[v0(\(Int(cellWidth * CGFloat(cellChildCount) + CGFloat(cellChildCount - 1) * CGFloat(3))))]", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : cellView]))
+                addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-\(leftMargin)-[v0(\(Int(cellWidth * CGFloat(cellChildCount) + CGFloat(cellChildCount - 1) * CGFloat(2))))]", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["v0" : cellView]))
                 
                 //let containerHeight = self.frame.height
                 var letLeftMargin = 0
@@ -227,10 +227,14 @@ class CellsContainerView: UIView {
      and also increses the count for number of objects that has been swiped*/
     @objc func handleTapGesture(gesture: UITapGestureRecognizer) {
         if let view = gesture.view{
-            if swipeCounter == swipableCellCount || swipeCounter == (cellViews?.count)! || isLadySpeaking{
+            
+            let indexOfTappedView = cellViews!.index(of: view)
+            if swipeCounter == swipableCellCount || swipeCounter == (cellViews?.count)! || indexOfTappedView != cellViews!.count - swipeCounter - 1 || isLadySpeaking {
                 return
             }
+            // assign a tag, use this tag to animate swiped cells
             view.tag = 2
+            
             /*
              Only X-Cordinate is changing in animation
              Formula used to change X-Cordinate is :
