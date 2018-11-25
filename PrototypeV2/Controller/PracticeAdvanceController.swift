@@ -128,6 +128,17 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
         return instructionCellContainerView
     }()
     
+    lazy var mathExpressionLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 1
+        label.textColor = UIColor.init(rgb: Color.mudYellow.rawValue, alpha: 1)
+        label.font = UIFont(name: "Montserrat-Bold", size: 24)
+        label.alpha = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "4 x 5"
+        return label
+    }()
+    
     lazy var finalInstructionLabel: UILabel = {
         let instructionLabel = UILabel()
         instructionLabel.numberOfLines = 2
@@ -279,6 +290,7 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
             view.addSubview(optionButtons[index])
         }
         view.addSubview(finalInstructionLabel)
+        view.addSubview(mathExpressionLabel)
         setConstraintsForOptions()
         
         // constraints
@@ -368,6 +380,9 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
         optionTwoButton.anchor(top: nil, leading: nil, bottom: optionFourButton.topAnchor, trailing: view.trailingAnchor, padding: .init(top: 20, left: 16, bottom: 16, right: 16), size: .init(width: view.frame.width / 2 - 16 - 8, height: 64))
         
         // for the third instruction
+        mathExpressionLabel.anchor(top: nil, leading: view.leadingAnchor, bottom: finalInstructionLabel.topAnchor, trailing: view.trailingAnchor, padding: .init(top: 8, left: 16, bottom: 16, right: 16), size: .init(width: view.frame.width, height: 30))
+
+        // for the third instruction
         finalInstructionLabel.anchor(top: nil, leading: view.leadingAnchor, bottom: optionOneButton.topAnchor, trailing: view.trailingAnchor, padding: .init(top: 8, left: 16, bottom: 16, right: 16), size: .init(width: view.frame.width, height: 40))
         
     }
@@ -378,7 +393,9 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
             UIView.animate(withDuration: 0.5, delay: 0.5, options: [.curveEaseOut], animations: {
                 label.alpha = 1.0
             }, completion: { (_) in
-                self.textToSpeech(text: label.text!)
+                if label != self.mathExpressionLabel{
+                   self.textToSpeech(text: label.text!)
+                }
             })
         }else{
             UIView.animate(withDuration: 1, animations: {
@@ -448,6 +465,9 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
             answer = numRow * numColumn
             handleScene(label: rows![numRow-1].instructionLabel, show: false)
             handleScene(label: finalInstructionLabel, show: true)
+            handleScene(label: mathExpressionLabel , show: true)
+            let symbol = ModuleType.getModuleSymbol(moduleType: (moduleType?.rawValue)!)
+            mathExpressionLabel.text = "\(numRow) \(symbol) \(numColumn)"
             handleAllOptions(visible: true)
             animateSwipedCells(index: 0)
         }
@@ -535,6 +555,7 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
             self.removeSwipeBars()
             self.generateSwipeBars()
             self.handleScene(label: self.finalInstructionLabel, show: false)
+            self.handleScene(label: self.mathExpressionLabel, show: false)
             self.handleDimensions(show: false)
             // set default appearance for all options
             for option in self.optionButtons{
