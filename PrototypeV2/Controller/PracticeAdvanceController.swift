@@ -162,7 +162,8 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
     var numData: NumberData?
     var rowsDone = 0
     var answer: Int = 0
-    var toyImage: UIImage? 
+    var toyImage: UIImage?
+    var toyName: String? 
     var moduleType: ModuleType? = nil {
         didSet{
             moduleTitleLabel.text = moduleType?.rawValue
@@ -227,7 +228,7 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
         instructionLabel.numberOfLines = 2
         instructionLabel.textColor = .white
         instructionLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
-        instructionLabel.text = "Can you count the BUTTERFLIES in this rectangle?"
+        instructionLabel.text = "Can you count the \(toyName!)s in this rectangle?"
         instructionLabel.translatesAutoresizingMaskIntoConstraints = false
         instructionLabel.alpha = 0
         return instructionLabel
@@ -348,8 +349,6 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
         print("Columns: ", numColumn)
         // generate number of cell containers required based of number of rows,
         // number of cells in each cell container would be the numColumn generated
-        let toy = "BUTTERFLY"
-        let toys = "BUTTERFLIES"
         for index in 0..<numRow {
             let iCellContainerView = InstructionCellContainerView()
             iCellContainerView.translatesAutoresizingMaskIntoConstraints = false
@@ -357,7 +356,7 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
             //iCellContainerView.cellsContainerView.cellCount = 7
             iCellContainerView.cellsContainerView.setCellConfig(cellCount: 7, cellChildCount: 1, toyImage: toyImage!)
             iCellContainerView.cellsContainerView.setSwipableCells(count: numColumn)
-            iCellContainerView.instructionLabel.text = self.numColumn>1 ? "Can you tap "+String(self.numColumn) + " \(toys)?" : "Can you swipe 1 \(toy)?"
+            iCellContainerView.instructionLabel.text = self.numColumn>1 ? "Can you tap "+String(self.numColumn) + " \(toyName!)s?" : "Can you tap 1 \(toyName!)?"
             iCellContainerView.instructionLabel.alpha = 0
             // add views
             view.addSubview(iCellContainerView)

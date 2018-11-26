@@ -15,7 +15,9 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
     
     var topMarginForInstructionLabelOne: CGFloat = 20
     let cellCount: Int = 10
-    var toyImage: UIImage? 
+    var toyImage: UIImage?
+    var toyName: String?
+    
     var moduleType: ModuleType? = nil {
         didSet{
            moduleTitleLabel.text = moduleType?.rawValue
@@ -130,11 +132,7 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         label.numberOfLines = 2
         label.textColor = .white
         label.font = UIFont(name: "Montserrat-Regular", size: 16)
-        if moduleType == ModuleType.counting || moduleType == ModuleType.subtraction{
-             label.text = "Can you count the STRAWBERRIES you tapped?"
-        }else{
-            label.text = "Can you count the SNAKES you tapped?"
-        }
+        label.text = "Can you count the \(toyName!)s you tapped?"
         label.alpha = 0
         return label
     }()
@@ -200,7 +198,7 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         }
         
         if moduleType == ModuleType.subtraction {
-            instructionThreeLabel.text = "Can you count the DIFFERENCE in STRAWBERRIES in above two lines?"
+            instructionThreeLabel.text = "Can you count the difference in \(toyName!)s in above two lines?"
         }
     }
     
@@ -443,8 +441,8 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
             toys = "SNAKES"
             toy = "SNAKE"
         }
-        instructionOneLabel.text = self.num1>1 ? "Can you tap on "+String(self.num1) + " \(toys)?" : "Can you tap on 1 \(toy)?"
-        instructionTwoLabel.text = self.num2>1 ? "Can you tap on "+String(self.num2) + " \(toys)?" : "Can you tap on 1 \(toy)?"
+        instructionOneLabel.text = self.num1>1 ? "Can you tap on "+String(self.num1) + " \(toyName!)s?" : "Can you tap on 1 \(toyName!)?"
+        instructionTwoLabel.text = self.num2>1 ? "Can you tap on "+String(self.num2) + " \(toyName!)s?" : "Can you tap on 1 \(toyName!)?"
         
         //re-initialise
         answer = 0

@@ -155,11 +155,12 @@ class HomeController: UIViewController {
         self.tappedIndex =  -1
     }
     
-    func launchModule(level: Int, moduleType: ModuleType, toyImage: UIImage) {
+    func launchModule(level: Int, moduleType: ModuleType, toyImage: UIImage, toyName: String) {
         
         if moduleType == ModuleType.multiplication{
             let nextVc = PracticeAdvanceController()
             nextVc.toyImage = toyImage
+            nextVc.toyName = toyName
             nextVc.level = level
             nextVc.moduleType = moduleType
             navigationController?.pushViewController(nextVc, animated: true)
@@ -167,23 +168,10 @@ class HomeController: UIViewController {
             let nextVc = PracticeController()
             nextVc.moduleType = moduleType
             nextVc.toyImage = toyImage
+            nextVc.toyName = toyName
             nextVc.level = level
             navigationController?.pushViewController(nextVc, animated: true)
         }
-        
-         //MARK: Launch the real deal
-//        if let tappedView = gesture.view as! ModuleTypeContainerView?{
-//            let moduleName = tappedView.module?.name
-//            if moduleName == ModuleType.multiplication{
-//                let nextVc = PracticeAdvanceController()
-//                nextVc.moduleType = tappedView.module?.name
-//                navigationController?.pushViewController(nextVc, animated: true)
-//            }else{
-//                let nextVc = PracticeController()
-//                nextVc.moduleType = tappedView.module?.name
-//                navigationController?.pushViewController(nextVc, animated: true)
-//            }
-//        }
     }
     
     var bAnchor: NSLayoutConstraint?

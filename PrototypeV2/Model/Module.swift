@@ -20,4 +20,22 @@ class Module{
         UIImage(named: "icon_rainbow")!,
         UIImage(named: "icon_butterfly")!
     ]
+    
+    let toyNames: [String] = [
+        "strawberry",
+        "snake",
+        "rainbow",
+        "butterfly"
+    ]
+    
+    func getToyName(image: UIImage) -> String {
+        var found = ""
+        for i in 0..<images.count{
+            if images[i].isEqualToImage(image: image){
+                found = toyNames[i]
+                break
+            }
+        }
+        return found
+    }
 }

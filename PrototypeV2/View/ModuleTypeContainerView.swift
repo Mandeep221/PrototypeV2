@@ -104,7 +104,9 @@ class ModuleTypeContainerView: UIView, UIGestureRecognizerDelegate {
     }()
     
     @objc func launchModule(button: UIButton) {
-        viewRef?.launchModule(level: button.tag, moduleType: module!.name!, toyImage: selectToyButton.image(for: .normal)!)
+        let image = selectToyButton.image(for: .normal)!
+        let toyName =  module!.getToyName(image: image)
+        viewRef?.launchModule(level: button.tag, moduleType: module!.name!, toyImage: image, toyName: toyName)
     }
     
     lazy var selectToyButton: UIButton = {
@@ -141,15 +143,6 @@ class ModuleTypeContainerView: UIView, UIGestureRecognizerDelegate {
         //configuration options
         let iconHeight:CGFloat = 48
         let padding:CGFloat = 12
-        
-        //let images = [#imageLiteral(resourceName: "blue_like"), #imageLiteral(resourceName: "red_heart"), #imageLiteral(resourceName: "surprised"), #imageLiteral(resourceName: "cry_laugh"), #imageLiteral(resourceName: "cry"), #imageLiteral(resourceName: "angry")]
-       
-//         let images: [UIImage] = [
-//            UIImage(named: "icon_strawberry")!,
-//            UIImage(named: "icon_snake")!,
-//            UIImage(named: "icon_rainbow")!,
-//            UIImage(named: "icon_butterfly")!
-//        ]
         
         //#TODO: This is very important short cut, it returns an array of UIViews with different colors
         let arrangedSubviews = module!.images.map({ (image) -> UIView in
@@ -239,13 +232,7 @@ class ModuleTypeContainerView: UIView, UIGestureRecognizerDelegate {
     func addConstraints() {
         // Auto layout constraints
         accentBorderView.anchor(top: self.topAnchor, leading: self.leadingAnchor, bottom: self.bottomAnchor, trailing: nil, padding: .zero, size: .init(width: 4, height: self.frame.height))
-        
-//
-//        dummyButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 80).isActive = true
-//        dummyButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 48).isActive = true
-//        dummyButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
-//        dummyButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
+
         cancelImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16).isActive = true
         cancelImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16).isActive = true
         cancelImageView.widthAnchor.constraint(equalToConstant: 20).isActive = true
@@ -269,18 +256,7 @@ class ModuleTypeContainerView: UIView, UIGestureRecognizerDelegate {
         moduleImageView.bottomAnchor.constraint(equalTo: titleContainerView.bottomAnchor).isActive = true
         moduleImageView.widthAnchor.constraint(equalToConstant: 24).isActive = true
         moduleImageView.heightAnchor.constraint(equalToConstant: 24).isActive = true
-        
-//        dummyButton.leadingAnchor.constraint(equalTo: titleContainerView.leadingAnchor).isActive = true
-//        dummyButton.trailingAnchor.constraint(equalTo: titleContainerView.trailingAnchor).isActive = true
-//        dummyButton.topAnchor.constraint(equalTo: moduleTitleLabel.bottomAnchor, constant: 16).isActive = true
-//        dummyButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-//
-        
-//        optionsContainerView.leadingAnchor.constraint(equalTo: titleContainerView.leadingAnchor).isActive = true
-//        optionsContainerView.trailingAnchor.constraint(equalTo: titleContainerView.trailingAnchor).isActive = true
-//        optionsContainerView.topAnchor.constraint(equalTo: moduleTitleLabel.bottomAnchor).isActive = true
-//        optionsContainerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 100).isActive = true
-
+   
         levelOneButton.leadingAnchor.constraint(equalTo: titleContainerView.leadingAnchor).isActive = true
         levelOneButton.trailingAnchor.constraint(equalTo: titleContainerView.trailingAnchor).isActive = true
         levelOneButton.topAnchor.constraint(equalTo: titleContainerView.bottomAnchor, constant: 16).isActive = true

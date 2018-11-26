@@ -17,7 +17,7 @@ class ModuleDataInjector{
                                         UIColor.init(rgb: Color.skyBlue.rawValue, alpha: 1),
                                         UIColor.init(rgb: Color.primary.rawValue, alpha: 1)]
     
-    static let moduleImages: [UIImage] = [#imageLiteral(resourceName: "add_icon"), #imageLiteral(resourceName: "add_icon"), #imageLiteral(resourceName: "subtract_icon"), #imageLiteral(resourceName: "add_icon"), #imageLiteral(resourceName: "add_icon")]
+    static let moduleImages: [UIImage] = [ UIImage(named: "icon_module_counting")!, UIImage(named: "icon_module_addition")!, UIImage(named: "icon_module_subtraction")!, UIImage(named: "icon_module_multiplication")!, UIImage(named: "icon_module_division")!]
     
     static let moduleNames: [ModuleType] = [.counting, .addition, .subtraction, .multiplication, .division]
     
