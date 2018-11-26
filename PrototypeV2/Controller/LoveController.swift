@@ -10,43 +10,38 @@ import UIKit
 
 class LoveController: UIViewController {
 
-    var leftConstraintForYou: NSLayoutConstraint?
-    let group = DispatchGroup()
-    
-    let toyImage: UIImage = {
-        let img = UIImage(named: "icon_snake")
-        return img!
-    }()
-    
-    lazy var containerViewOne: CellsContainerView = {
-        let cv = CellsContainerView()
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.setCellConfig(cellCount: 5, cellChildCount: 1, toyImage: toyImage)
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        return cv
-    }()
-    
-    lazy var containerViewTwo: CellsContainerView = {
-        let cv = CellsContainerView()
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.setCellConfig(cellCount: 5, cellChildCount: 1, toyImage: toyImage)
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        return cv
-    }()
-    
-    lazy var containerViewThree: CellsContainerView = {
-        let cv = CellsContainerView()
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.setCellConfig(cellCount: 5, cellChildCount: 1, toyImage: toyImage)
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        return cv
-    }()
-
-    let wordContainerView: UIView = {
-        let container = UIView()
-        container.backgroundColor = .lightGray
-        container.translatesAutoresizingMaskIntoConstraints = false
-        return container
+    let xAxisDimensionContainerView: UIView = {
+        let containerView = UIView()
+        containerView.backgroundColor = .gray
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let lineView = UIView()
+        lineView.translatesAutoresizingMaskIntoConstraints = false
+        lineView.backgroundColor = UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1)
+        
+        let numColumnLabel = UILabel()
+        numColumnLabel.numberOfLines = 1
+        numColumnLabel.textColor = .white
+        numColumnLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
+        numColumnLabel.textAlignment = .center
+        numColumnLabel.text = "4"
+        numColumnLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        containerView.addSubview(numColumnLabel)
+        containerView.addSubview(lineView)
+        
+        numColumnLabel.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        numColumnLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        numColumnLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        numColumnLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        lineView.topAnchor.constraint(equalTo: numColumnLabel.bottomAnchor, constant: 4).isActive = true
+        lineView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        lineView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        //lineView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        lineView.heightAnchor.constraint(equalToConstant: 2).isActive = true
+        
+        return containerView
     }()
     
     lazy var letterCollection: [UILabel] = {
@@ -67,57 +62,38 @@ class LoveController: UIViewController {
         return collection
     }()
     
+    let arr: [CGFloat] = [100.0, 50.0, 150.0, 200.0, 250.0, 300.0]
+    
+    var tapCount = 0
+    
     @objc func handleTap(){
+        tapCount += 1
+        
+        if tapCount % 2 != 0{
+            view.addSubview(xAxisDimensionContainerView)
+            let width = arr.randomElement()!
+            print("Width: ", width)
+            xAxisDimensionContainerView.topAnchor.constraint(equalTo: view.topAnchor, constant: 120).isActive = true
+            xAxisDimensionContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+            //let width = numColumn * 20 + (numColumn - 1) * 6
+            xAxisDimensionContainerView.widthAnchor.constraint(equalToConstant: width).isActive = true
+            xAxisDimensionContainerView.heightAnchor.constraint(equalToConstant: 26).isActive = true
+        }else{
+            print("Width: ", "Removed")
+            xAxisDimensionContainerView.removeFromSuperview()
+            //xAxisDimensionContainerView.clearConstraints()
+        }
        
-//        for index in 0..<2{
-//            let whenWhen = DispatchTime.now() + DispatchTimeInterval.milliseconds((index+2) * 1000)
-//
-//        }
         
-        // Lazy initialization so the timer isn’t initialized until we call it
-        
-        
-        // Add to the button action…
-        //timer.fire()
-        
-        
-        
-        
-//        UIView.animate(withDuration: 2, animations: {
-//
-//        }) { (bool) in
-//            self.containerViewTwo.demoAnimate()
-//        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
+        
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
         
-        view.addSubview(containerViewOne)
-        view.addSubview(containerViewTwo)
-        view.addSubview(containerViewThree)
-        
-        containerViewOne.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        containerViewOne.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20).isActive = true
-        
-        containerViewOne.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50).isActive = true
-        containerViewOne.heightAnchor.constraint(equalToConstant: containerViewOne.cellHeight).isActive = true
-        
-        
-        containerViewTwo.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        containerViewTwo.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20).isActive = true
-        
-        containerViewTwo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100).isActive = true
-        containerViewTwo.heightAnchor.constraint(equalToConstant: containerViewTwo.cellHeight).isActive = true
-        
-        containerViewThree.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        containerViewThree.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20).isActive = true
-        
-        containerViewThree.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 150).isActive = true
-        containerViewThree.heightAnchor.constraint(equalToConstant: containerViewTwo.cellHeight).isActive = true
         
 //        // add views
 //        view.addSubview(wordContainerView)
@@ -160,7 +136,13 @@ class LoveController: UIViewController {
     }
     
     func compressAnimation() {
-        self.leftConstraintForYou?.constant = 0
         self.view.layoutIfNeeded()
     }
+    
+//    func clearConstraints(myView: UIView) {
+//        for subview in myView.subviews {
+//            subview.clearConstraints()
+//        }
+//        myView.removeConstraints(myView.constraints)
+//    }
 }

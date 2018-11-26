@@ -62,6 +62,7 @@ extension UIView{
         if size.height != 0 {
             heightAnchor.constraint(equalToConstant: size.height).isActive = true
         }
+        
     }
     
     
@@ -76,6 +77,13 @@ extension UIView{
         layer.shadowPath = UIBezierPath(rect: bounds).cgPath
 //        layer.shouldRasterize = true
 //        layer.rasterizationScale = scale ? UIScreen.main.scale : 1
+    }
+    
+    func clearConstraints() {
+        for subview in self.subviews {
+            subview.clearConstraints()
+        }
+        self.removeConstraints(self.constraints)
     }
 }
 

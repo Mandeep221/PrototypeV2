@@ -9,13 +9,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PrototypeV2/Controller/PracticeAdvanceController.swift"
-            timestampString = "564818948.853049"
+            filePath = "PrototypeV2/Controller/SetChallengeController.swift"
+            timestampString = "564818948.854338"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "595"
-            endingLineNumber = "595"
-            landmarkName = "handleDimensions(show:)"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
+            landmarkName = "validateInputs()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PrototypeV2/Controller/SetChallengeController.swift"
-            timestampString = "564818948.854338"
+            filePath = "PrototypeV2/Controller/PracticeAdvanceController.swift"
+            timestampString = "564898717.691242"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "87"
-            endingLineNumber = "87"
-            landmarkName = "validateInputs()"
+            startingLineNumber = "498"
+            endingLineNumber = "498"
+            landmarkName = "updateTotalCellsSwiped(cellsSwiped:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

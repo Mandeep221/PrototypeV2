@@ -10,6 +10,89 @@ import UIKit
 import CoreData
 import AVFoundation
 
+class XAxisDimensionContainerView: UIView {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupViews()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupViews(){
+        self.translatesAutoresizingMaskIntoConstraints = false
+        
+        let lineView = UIView()
+        lineView.translatesAutoresizingMaskIntoConstraints = false
+        lineView.backgroundColor = UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1)
+        
+        let numColumnLabel = UILabel()
+        numColumnLabel.numberOfLines = 1
+        numColumnLabel.textColor = .white
+        numColumnLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
+        numColumnLabel.textAlignment = .center
+        numColumnLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(numColumnLabel)
+        addSubview(lineView)
+        
+        numColumnLabel.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        numColumnLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        numColumnLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        numColumnLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        lineView.topAnchor.constraint(equalTo: numColumnLabel.bottomAnchor, constant: 4).isActive = true
+        lineView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        lineView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        //lineView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        lineView.heightAnchor.constraint(equalToConstant: 2).isActive = true
+        
+    }
+}
+
+class YAxisDimensionContainerView: UIView {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupViews()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupViews(){
+        
+        self.translatesAutoresizingMaskIntoConstraints = false
+        
+        let lineView = UIView()
+        lineView.translatesAutoresizingMaskIntoConstraints = false
+        lineView.backgroundColor = UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1)
+        
+        let numRowLabel = UILabel()
+        numRowLabel.numberOfLines = 1
+        numRowLabel.textColor = .white
+        numRowLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
+        numRowLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(numRowLabel)
+        addSubview(lineView)
+        
+        numRowLabel.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        numRowLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        numRowLabel.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1).isActive = true
+        numRowLabel.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        lineView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        lineView.leadingAnchor.constraint(equalTo: numRowLabel.trailingAnchor).isActive = true
+        lineView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1).isActive = true
+        lineView.widthAnchor.constraint(equalToConstant: 2).isActive = true
+    }
+    
+}
+
 class InstructionCellContainerView: UIView {
     
     var topAnchorForCells: NSLayoutConstraint?
@@ -150,77 +233,20 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
         return instructionLabel
     }()
     
-    lazy var xAxisDimensionContainerView: UIView = {
-       let containerView = UIView()
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let lineView = UIView()
-        lineView.translatesAutoresizingMaskIntoConstraints = false
-        lineView.backgroundColor = UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1)
-    
-        let numColumnLabel = UILabel()
-        numColumnLabel.numberOfLines = 1
-        numColumnLabel.textColor = .white
-        numColumnLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
-        numColumnLabel.textAlignment = .center
-        numColumnLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        containerView.addSubview(numColumnLabel)
-        containerView.addSubview(lineView)
-        
-        numColumnLabel.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        numColumnLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        numColumnLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-        numColumnLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
-        lineView.topAnchor.constraint(equalTo: numColumnLabel.bottomAnchor, constant: 4).isActive = true
-        lineView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        lineView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-         //lineView.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        lineView.heightAnchor.constraint(equalToConstant: 2).isActive = true
-        
-        return containerView
-    }()
-    
-    lazy var yAxisDimensionContainerView: UIView = {
-        let containerView = UIView()
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let lineView = UIView()
-        lineView.translatesAutoresizingMaskIntoConstraints = false
-        lineView.backgroundColor = UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1)
-        
-        let numRowLabel = UILabel()
-        numRowLabel.numberOfLines = 1
-        numRowLabel.textColor = .white
-        numRowLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
-        numRowLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        containerView.addSubview(numRowLabel)
-        containerView.addSubview(lineView)
-        
-        numRowLabel.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        numRowLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        numRowLabel.heightAnchor.constraint(equalTo: containerView.heightAnchor, multiplier: 1).isActive = true
-        numRowLabel.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        
-        lineView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        lineView.leadingAnchor.constraint(equalTo: numRowLabel.trailingAnchor).isActive = true
-        lineView.heightAnchor.constraint(equalTo: containerView.heightAnchor, multiplier: 1).isActive = true
-        lineView.widthAnchor.constraint(equalToConstant: 2).isActive = true
-        return containerView
-    }()
-    
     var i = 1
     lazy var timer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: true) {timer in
         guard self.i <= 10000 else {
             timer.invalidate()
             return
         }
-        let cellContainerToAnimate = self.fetchNextCellsContainerToAnimate()
-        cellContainerToAnimate.scaleSwipedCells(repeatCount: 1)
         
-        self.i += 1
+        // fire this code only when all rows have been dealt with
+        if self.rowsDone == self.numRow{
+            let cellContainerToAnimate = self.fetchNextCellsContainerToAnimate()
+            cellContainerToAnimate.scaleSwipedCells(repeatCount: 1)
+            
+            self.i += 1
+        }
     }
     
     var indexForNextCellsContainerToAnimate = -1
@@ -394,7 +420,7 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
                 label.alpha = 1.0
             }, completion: { (_) in
                 if label != self.mathExpressionLabel{
-                   self.textToSpeech(text: label.text!)
+                   //self.textToSpeech(text: label.text!)
                 }
             })
         }else{
@@ -548,6 +574,7 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
     
     func reset() {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+            self.indexForNextCellsContainerToAnimate = -1
             self.handleAllOptions(visible: false)
             self.numRow = Int(truncating: self.numData!.arrNumRows[0])
             self.numColumn = Int(truncating: self.numData!.arrNumColumns[0])
@@ -556,7 +583,11 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
             self.generateSwipeBars()
             self.handleScene(label: self.finalInstructionLabel, show: false)
             self.handleScene(label: self.mathExpressionLabel, show: false)
-            self.handleDimensions(show: false)
+            if self.moduleType!.rawValue == ModuleType.multiplication.rawValue{
+                if self.level == 2{
+                    self.handleDimensions(show: false)
+                }
+            }
             // set default appearance for all options
             for option in self.optionButtons{
                 option.setDefaultAppearance()
@@ -568,49 +599,55 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
     }
     
     func animateSwipedCells(index: Int) {
-        if level == 1{
-            // animate rows one by one
-             timer.fire()
-        }else if level == 2{
-            // animate all rows at once
-            handleDimensions(show: true)
-            for row in rows!{
-                row.cellsContainerView.scaleSwipedCells(repeatCount: 1000)
-                UIView.animate(withDuration: 0.5) {
-                      row.anchorForContainer.alpha = 0
+        if self.moduleType!.rawValue == ModuleType.multiplication.rawValue{
+            if level == 1{
+                // animate rows one by one
+                timer.fire()
+            }else if level == 2{
+                // animate all rows at once
+                handleDimensions(show: true)
+                for row in rows!{
+                    row.cellsContainerView.scaleSwipedCells(repeatCount: 1000)
+                    UIView.animate(withDuration: 0.5) {
+                        row.anchorForContainer.alpha = 0
+                    }
                 }
             }
         }
-       
     }
+    var xAxisDimension: UIView?
+    var yAxisDimension: UIView?
     
     func handleDimensions(show: Bool) {
-        print("dimension column :", numColumn)
-        print("dimension row :", numRow)
+        let width = numColumn * 20 + (numColumn - 1) * 6
         if show{
-            view.addSubview(xAxisDimensionContainerView)
-            view.addSubview(yAxisDimensionContainerView)
+            xAxisDimension = XAxisDimensionContainerView()
+            yAxisDimension = YAxisDimensionContainerView()
             
-            xAxisDimensionContainerView.topAnchor.constraint(equalTo: rows![0].topAnchor).isActive = true
-            xAxisDimensionContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-            let width = numColumn * 25 + (numColumn - 1) * 6
-            xAxisDimensionContainerView.widthAnchor.constraint(equalToConstant: CGFloat(width)).isActive = true
-            xAxisDimensionContainerView.heightAnchor.constraint(equalToConstant: 26).isActive = true
+            view.addSubview(xAxisDimension!)
+            view.addSubview(yAxisDimension!)
             
-            yAxisDimensionContainerView.topAnchor.constraint(equalTo: xAxisDimensionContainerView.bottomAnchor, constant: 16).isActive = true
-            yAxisDimensionContainerView.trailingAnchor.constraint(equalTo: rows![0].trailingAnchor, constant: CGFloat(-width - 20)).isActive = true
-            let height = numRow * 25 + (numRow - 1) * 10
-            yAxisDimensionContainerView.heightAnchor.constraint(equalToConstant: CGFloat(height)).isActive = true
-            yAxisDimensionContainerView.widthAnchor.constraint(equalToConstant: 30).isActive = true
+            xAxisDimension!.topAnchor.constraint(equalTo: rows![0].topAnchor).isActive = true
+            xAxisDimension!.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+            xAxisDimension!.widthAnchor.constraint(equalToConstant: CGFloat(width)).isActive = true
+            xAxisDimension!.heightAnchor.constraint(equalToConstant: 26).isActive = true
             
-            var label = xAxisDimensionContainerView.subviews[0] as! UILabel
+            var label = xAxisDimension!.subviews[0] as! UILabel
             label.text = "\(numColumn)"
-            label = yAxisDimensionContainerView.subviews[0] as! UILabel
-            label.text = "\(numRow)"
             
+            yAxisDimension!.topAnchor.constraint(equalTo: xAxisDimension!.bottomAnchor, constant: 16).isActive = true
+            yAxisDimension!.trailingAnchor.constraint(equalTo: rows![0].trailingAnchor, constant: CGFloat(-width - 20)).isActive = true
+            let height = numRow * 20 + (numRow - 1) * 10
+            yAxisDimension!.heightAnchor.constraint(equalToConstant: CGFloat(height)).isActive = true
+            yAxisDimension!.widthAnchor.constraint(equalToConstant: 30).isActive = true
+            label = yAxisDimension!.subviews[0] as! UILabel
+            label.text = "\(numRow)"
+           
         }else{
-            xAxisDimensionContainerView.removeFromSuperview()
-            yAxisDimensionContainerView.removeFromSuperview()
+            UIView.animate(withDuration: 0.5) {
+                self.xAxisDimension!.removeFromSuperview()
+                self.yAxisDimension!.removeFromSuperview()
+            }
         }
     }
     
