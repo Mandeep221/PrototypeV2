@@ -163,19 +163,22 @@ class ProgressController: UIViewController {
     func setupViews() {
         // scrollview setup
         view.addSubview(scrollView)
-        view.addSubview(contentView)
+        scrollView.addSubview(contentView)
         
         scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-//        scrollView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 2).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
         
         contentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
         contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
-        //        scrollView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 2).isActive = true
+        contentView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+        contentView.heightAnchor.constraint(equalToConstant: 750).isActive = true
+        
+        contentView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1).isActive = true
         
         
         // progress data views setup
