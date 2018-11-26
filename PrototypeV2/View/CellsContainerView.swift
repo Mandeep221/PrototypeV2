@@ -65,7 +65,7 @@ class CellsContainerView: UIView {
     let anchorHeight: CGFloat = 2
     var viewPracRef: PracticeController?
     var viewPracAdvRef: PracticeAdvanceController?
-    var isLadySpeaking: Bool = false
+    var isLadySpeaking: Bool = true
     var cellChildCount = 1
     var toyImage: UIImage?
     // Maximum number of cells that can be swiped

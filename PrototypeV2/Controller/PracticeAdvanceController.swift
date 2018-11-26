@@ -276,6 +276,10 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
     }()
     
     @objc func handleOptionSelection(gesture: UITapGestureRecognizer) {
+        if speechSynthesizer != nil{
+            // means lady is speaking, so option selection not allowed
+            return
+        }
         let currentView = gesture.view as! DesignableOptionView
         if optionButtons.contains(currentView){
             
@@ -420,7 +424,7 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
                 label.alpha = 1.0
             }, completion: { (_) in
                 if label != self.mathExpressionLabel{
-                   //self.textToSpeech(text: label.text!)
+                   self.textToSpeech(text: label.text!)
                 }
             })
         }else{
@@ -670,6 +674,10 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
                 row.instructionLabel.attributedText = mutableAttributedString
             }
         }
+        
+        if finalInstructionLabel.alpha == 1.0{
+            finalInstructionLabel.attributedText = mutableAttributedString
+        }
     }
     
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
@@ -679,6 +687,10 @@ class PracticeAdvanceController: UIViewController, AVSpeechSynthesizerDelegate {
                 row.instructionLabel.attributedText = NSAttributedString(string: utterance.speechString)
                 row.cellsContainerView.ladyDidFinishSpeaking()
             }
+        }
+        
+        if finalInstructionLabel.alpha == 1.0{
+            finalInstructionLabel.attributedText = NSAttributedString(string: utterance.speechString)
         }
         speechSynthesizer = nil
     }
