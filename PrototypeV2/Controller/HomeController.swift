@@ -44,12 +44,25 @@ class HomeController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // show splash
+        showSplash()
+        // user not logged in
+        if Auth.auth().currentUser?.uid == nil {
+            handleLogout()
+        }
         self.edgesForExtendedLayout = []
         view.backgroundColor = .white
         
         setNavbar()
         
         setupViews()
+        
+        
+    }
+    
+    func showSplash() {
+        let splash = SplashController()
+        self.navigationController?.present(splash, animated: false, completion: nil)
     }
     
     fileprivate func setupViews() {
@@ -105,24 +118,15 @@ class HomeController: UIViewController {
     }
     
     @objc func handleLogout() {
-        if let _ = Auth.auth().currentUser{
-            let firebaseAuth = Auth.auth()
             do {
-                try firebaseAuth.signOut()
+                try Auth.auth().signOut()
             } catch let signOutError as NSError {
                 print ("Error signing out: %@", signOutError)
             }
-            
-//            let kAppDelegate = UIApplication.shared.delegate as! AppDelegate
-//            kAppDelegate.showLoginViewController()
+        
             let nextVc = LoginController()
-            navigationController?.pushViewController(nextVc, animated: true)
+            navigationController?.pushViewController(nextVc, animated: false)
             print("Logged out")
-        }else{
-            let nextVc = LoginController()
-            navigationController?.pushViewController(nextVc, animated: true)
-            print("User was not logged in")
-        }
     }
     
     func handleCancelModule(){

@@ -212,8 +212,7 @@ class SplashController: UIViewController {
                                  self.rotatingView.subviews[1].subviews[1].layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
                             }, completion: { (_) in
                                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-                                    let nextVc = LoginController()
-                                    self.navigationController?.pushViewController(nextVc, animated: true)
+                                    self.dismiss(animated: true, completion: nil)
                                 }
                             })
                         })

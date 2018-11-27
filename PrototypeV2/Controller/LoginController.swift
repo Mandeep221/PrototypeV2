@@ -200,8 +200,9 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 })
                 
                 print("sucessfully logged in...")
-                let nextVc = HomeController()
-                self.navigationController?.pushViewController(nextVc, animated: true)
+                
+               self.navigationController?.popViewController(animated: true)
+                //self.navigationController?.pushViewController(nextVc, animated: true)
             }
         }
     }
