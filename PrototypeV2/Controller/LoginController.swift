@@ -224,6 +224,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 // Success Scenario
                 let defaults = UserDefaults.standard
                 defaults.set(false, forKey: "isUserGuest")
+                self.delegate.userType(flag: false)
                 //check if user is returning or new
                 self.ref?.child("users").child((user?.uid)!).child("mobile").observeSingleEvent(of: .value, with: {(snap) in
                     

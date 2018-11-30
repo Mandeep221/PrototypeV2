@@ -16,6 +16,9 @@ class HomeController: UIViewController, loginProtocol {
             // user is guest
             self.navigationItem.rightBarButtonItems  = nil
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Login", style: .plain, target: self, action: #selector(handleLogout))
+        }else{
+            // user is logged in
+            setNavbar()
         }
     }
     
@@ -156,6 +159,7 @@ class HomeController: UIViewController, loginProtocol {
             }
         
             let nextVc = LoginController()
+            nextVc.delegate = self
             navigationController?.pushViewController(nextVc, animated: false)
             print("Logged out")
     }
