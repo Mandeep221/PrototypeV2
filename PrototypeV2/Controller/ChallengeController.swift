@@ -17,7 +17,7 @@ class ChallengeController: UIViewController {
     var num2: Int?
     let reachability = NetworkReachability()!
     
-    var moduleType: String? = ModuleType.division.rawValue
+    var moduleType: String? = ModuleType.addition.rawValue
     var answer = 0
     var requiredNumbersForOptions: [Int]?
     
@@ -28,7 +28,7 @@ class ChallengeController: UIViewController {
     
     var circularCellsIndices: [String]?
     
-    lazy var instructionThreeLabel: UILabel = {
+    lazy var finalInstructionLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
         label.textColor = UIColor.init(rgb: Color.textPrimary.rawValue, alpha: 1)
@@ -148,13 +148,13 @@ class ChallengeController: UIViewController {
         ref = Database.database().reference()
         if let user = Auth.auth().currentUser{
             
-            mapProgressData(user: user,
+            mapChallengeData(user: user,
                             moduleName: moduleType!)
         }
         
     }
     
-    func mapProgressData(user: User, moduleName: String) {
+    func mapChallengeData(user: User, moduleName: String) {
         ref?.child("users").child(user.uid).child("modules").child(moduleName).child("challenge").observeSingleEvent(of: .value, with: { (snapshot) in
             
             let value = snapshot.value as? NSDictionary
@@ -252,7 +252,7 @@ class ChallengeController: UIViewController {
             setupGenericChallenge()
         }
        
-        view.addSubview(instructionThreeLabel)
+        view.addSubview(finalInstructionLabel)
         
         for index in 0...optionButtons.count - 1{
             view.addSubview(optionButtons[index])
@@ -260,20 +260,20 @@ class ChallengeController: UIViewController {
         setConstraintsForOptions()
         requiredNumbersForOptions = [Int]()
         handleAllOptions(visible: true)
-        setupThirdInstruction()
+        setupFinalInstruction()
     }
     
-    func setupThirdInstruction() {
+    func setupFinalInstruction() {
         if moduleType == ModuleType.counting.rawValue{
-            instructionThreeLabel.text = "Can you count the Circles?"
+            finalInstructionLabel.text = "Can you count the Circles?"
         }else if moduleType == ModuleType.addition.rawValue{
-            instructionThreeLabel.text = "Can you add \(num1!) and \(num2!)?"
+            finalInstructionLabel.text = "Can you add \(num1!) and \(num2!)?"
         }else if moduleType == ModuleType.subtraction.rawValue{
-            instructionThreeLabel.text = "Can you subtract \(num2!) from \(num1!)?"
+            finalInstructionLabel.text = "Can you subtract \(num2!) from \(num1!)?"
         }else if moduleType == ModuleType.multiplication.rawValue{
-            instructionThreeLabel.text = "Can you multiply \(num1!) and \(num2!)?"
+            finalInstructionLabel.text = "Can you multiply \(num1!) and \(num2!)?"
         }else if moduleType == ModuleType.division.rawValue{
-            instructionThreeLabel.text = "Can you divide \(num1!) by \(num2!)?"
+            finalInstructionLabel.text = "Can you divide \(num1!) by \(num2!)?"
         }
     }
     
@@ -324,7 +324,7 @@ class ChallengeController: UIViewController {
         optionTwoButton.anchor(top: nil, leading: nil, bottom: optionFourButton.topAnchor, trailing: view.trailingAnchor, padding: .init(top: 16, left: 16, bottom: 16, right: 16), size: .init(width: view.frame.width / 2 - 16 - 8, height: 60))
         
         // for the third instruction
-        instructionThreeLabel.anchor(top: nil, leading: view.leadingAnchor, bottom: optionOneButton.topAnchor, trailing: view.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 8, right: 16), size: .init(width: view.frame.width, height: 30))
+        finalInstructionLabel.anchor(top: nil, leading: view.leadingAnchor, bottom: optionOneButton.topAnchor, trailing: view.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 8, right: 16), size: .init(width: view.frame.width, height: 30))
         
     }
     

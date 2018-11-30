@@ -432,15 +432,13 @@ class PracticeController: UIViewController, AVSpeechSynthesizerDelegate {
         }
         
         //assign values to instructions
-        var toy = ""
-        var toys = ""
-        if moduleType == ModuleType.counting || moduleType == ModuleType.subtraction{
-            toys = "STRAWBERRIES"
-            toy = "STRAWBERRY"
-        }else{
-            toys = "SNAKES"
-            toy = "SNAKE"
-        }
+//        if moduleType == ModuleType.counting || moduleType == ModuleType.subtraction{
+//            toys = "STRAWBERRIES"
+//            toy = "STRAWBERRY"
+//        }else{
+//            toys = "SNAKES"
+//            toy = "SNAKE"
+//        }
         instructionOneLabel.text = self.num1>1 ? "Can you tap on "+String(self.num1) + " \(toyName!)s?" : "Can you tap on 1 \(toyName!)?"
         instructionTwoLabel.text = self.num2>1 ? "Can you tap on "+String(self.num2) + " \(toyName!)s?" : "Can you tap on 1 \(toyName!)?"
         
