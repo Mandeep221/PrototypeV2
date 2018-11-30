@@ -10,10 +10,16 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 
+protocol loginProtocol {
+    func userType(flag : Bool)
+}
+
 class LoginController: UIViewController, UITextFieldDelegate {
     var navbarTitleLabel: UILabel?
     var backBarButtonItem: UIBarButtonItem?
     var numberOfOtpFieldsEmpty = 6
+    
+    var delegate : loginProtocol!
     
     // firebase database Ref
     var ref: DatabaseReference?
@@ -82,6 +88,38 @@ class LoginController: UIViewController, UITextFieldDelegate {
         button.addTarget(self, action: #selector(handleSubmitPhoneNumber), for: .touchUpInside)
         return button
     }()
+    
+    let orLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.init(rgb: 0xFFFFFF, alpha: 1)
+        label.text = "OR"
+        label.textAlignment = .center
+        label.alpha = 1
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "Montserrat-Bold", size: 18)
+        return label
+    }()
+    
+    let continueAsGuestButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = UIColor.init(rgb: Color.whiteColor.rawValue, alpha: 0.1)
+        button.layer.cornerRadius = 25
+        button.setTitle("Continue as guest  →", for: .normal)
+        button.alpha = 1
+        button.titleLabel!.font = UIFont(name: "Montserrat-Regular", size: 14)
+        //button.tintColor = UIColor.init(rgb: Color.primary.rawValue, alpha: 1)
+        button.tintColor = UIColor.init(rgb: Color.whiteColor.rawValue, alpha: 1)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(handleContinueAsGuest), for: .touchUpInside)
+        return button
+    }()
+    
+    @objc func handleContinueAsGuest() {
+        self.delegate.userType(flag: true)
+        let defaults = UserDefaults.standard
+        defaults.set(true, forKey: "isUserGuest")
+        self.navigationController?.popViewController(animated: true)
+    }
     
     //firebase verification ID
     var verificationId: String?
@@ -184,7 +222,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 print("error: \(error.localizedDescription)")
             }else{
                 // Success Scenario
-                
+                let defaults = UserDefaults.standard
+                defaults.set(false, forKey: "isUserGuest")
                 //check if user is returning or new
                 self.ref?.child("users").child((user?.uid)!).child("mobile").observeSingleEvent(of: .value, with: {(snap) in
                     
@@ -258,11 +297,15 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                     self.proceedButton.alpha = 1
                     self.proceedButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+                    self.orLabel.alpha = 0
+                    self.continueAsGuestButton.alpha = 0
                 }, completion: nil)
             }else{
                 UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                     self.proceedButton.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
                     self.proceedButton.alpha = 0
+                    self.orLabel.alpha = 1
+                    self.continueAsGuestButton.alpha = 1
                 }, completion: nil)
             }
         }else{
@@ -343,13 +386,6 @@ class LoginController: UIViewController, UITextFieldDelegate {
         setupNavigationBar()
         addViews()
         addConstraints()
-        
-        // add background gradient
-//        let gradient = CAGradientLayer()
-//        gradient.frame = view.bounds
-//        gradient.colors = [UIColor.init(rgb: Color.primaryPurple.rawValue, alpha: 1).cgColor, UIColor.init(rgb: Color.primaryBlue.rawValue, alpha: 1).cgColor]
-//        view.layer.insertSublayer(gradient, at: 0)
-//
     }
     
     func setupNavigationBar() {
@@ -393,6 +429,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
         containerForPhoneNumberScene.addSubview(phoneBorderView)
         containerForPhoneNumberScene.addSubview(isdBordeView)
         containerForPhoneNumberScene.addSubview(proceedButton)
+        containerForPhoneNumberScene.addSubview(orLabel)
+        containerForPhoneNumberScene.addSubview(continueAsGuestButton)
         
         //add OTP views
         view.addSubview(containerForOtpScene)
@@ -422,9 +460,18 @@ class LoginController: UIViewController, UITextFieldDelegate {
         
         proceedButton.topAnchor.constraint(equalTo: phoneContainerView.bottomAnchor, constant: 48).isActive = true
         proceedButton.centerXAnchor.constraint(equalTo: containerForPhoneNumberScene.centerXAnchor).isActive = true
-        
         proceedButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
         proceedButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        orLabel.topAnchor.constraint(equalTo: phoneContainerView.bottomAnchor, constant: 48).isActive = true
+        orLabel.centerXAnchor.constraint(equalTo: containerForPhoneNumberScene.centerXAnchor).isActive = true
+        orLabel.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        orLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        continueAsGuestButton.topAnchor.constraint(equalTo: orLabel.bottomAnchor, constant: 20).isActive = true
+        continueAsGuestButton.leadingAnchor.constraint(equalTo: containerForPhoneNumberScene.leadingAnchor, constant: 64).isActive = true
+        continueAsGuestButton.trailingAnchor.constraint(equalTo: containerForPhoneNumberScene.trailingAnchor, constant: -64).isActive = true
+        continueAsGuestButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
         
         // For OTP screen
         

@@ -10,7 +10,15 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 
-class HomeController: UIViewController {
+class HomeController: UIViewController, loginProtocol {
+    func userType(flag: Bool) {
+        if flag{
+            // user is guest
+            self.navigationItem.rightBarButtonItems  = nil
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Login", style: .plain, target: self, action: #selector(handleLogout))
+        }
+    }
+    
     var tappedIndex = -1
     var topMarginForViews: CGFloat?
     var remainingTotalheight: CGFloat?
@@ -40,6 +48,7 @@ class HomeController: UIViewController {
         let challengeButtonItem = UIBarButtonItem(image: challengeImage, style: .plain, target: self, action: #selector(launchChallengeController))
         
         navigationItem.rightBarButtonItems = [progressButtonItem, challengeButtonItem]
+        //navigationItem.rightBarButtonItem = progressButtonItem
     }
     
     override func viewDidLoad() {
@@ -47,13 +56,35 @@ class HomeController: UIViewController {
         // show splash
         showSplash()
         // user not logged in
-        if Auth.auth().currentUser?.uid == nil {
-            handleLogout()
+//        if Auth.auth().currentUser?.uid == nil {
+//            let defaults = UserDefaults.standard
+//            let isUserGuest = defaults.bool(forKey: "isUserGuest")
+//
+//            if !isUserGuest{
+//                 handleLogout()
+//            }else{
+//                // User is a guest
+//                navigationItem.rightBarButtonItems = nil
+//            }
+//        }
+        
+         setNavbar()
+        
+        let defaults = UserDefaults.standard
+        let isUserGuest = defaults.bool(forKey: "isUserGuest")
+        print("isUserGuest:", isUserGuest)
+        if isUserGuest{
+            self.navigationItem.rightBarButtonItems  = nil
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Login", style: .plain, target: self, action: #selector(handleLogout))
+        }else{
+            if Auth.auth().currentUser?.uid == nil {
+                handleLogout()
+            }
         }
+        
+     
         self.edgesForExtendedLayout = []
         view.backgroundColor = .white
-        
-        setNavbar()
         
         setupViews()
         
