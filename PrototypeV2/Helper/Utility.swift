@@ -121,9 +121,15 @@ class Utility{
     
     static func submitChallenge(moduleType: String, num1: Int, num2: Int = 0){
          ref = Database.database().reference()
+//        if let user = Auth.auth().currentUser{
+//            self.ref?.child("users/\(user.uid)/modules/\(moduleType)/challenge/num1").setValue(num1)
+//            self.ref?.child("users/\(user.uid)/modules/\(moduleType)/challenge/num2").setValue(num2)
+//        }
+//
         if let user = Auth.auth().currentUser{
-            self.ref?.child("users/\(user.uid)/modules/\(moduleType)/challenge/num1").setValue(num1)
-            self.ref?.child("users/\(user.uid)/modules/\(moduleType)/challenge/num2").setValue(num2)
+            self.ref?.child("users/\(user.uid)/modules/challenge/module").setValue(moduleType)
+            self.ref?.child("users/\(user.uid)/modules/challenge/num1").setValue(num1)
+            self.ref?.child("users/\(user.uid)/modules/challenge/num2").setValue(num2)
         }
         
     }

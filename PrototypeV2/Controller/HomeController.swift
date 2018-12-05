@@ -11,7 +11,11 @@ import FirebaseAuth
 import FirebaseDatabase
 
 class HomeController: UIViewController, loginProtocol {
+    
+    var isLoginPressedForTheFirstTime = true
+    
     func userType(flag: Bool) {
+        
         if flag{
             // user is guest
             self.navigationItem.rightBarButtonItems  = nil
@@ -21,6 +25,23 @@ class HomeController: UIViewController, loginProtocol {
             setNavbar()
         }
     }
+    
+    let challengeUrKidButtonHeight: CGFloat = 50
+    let challengeUrKidButtonBottomPadding: CGFloat = 20
+    
+    let challengeUrKidButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = UIColor.init(rgb: Color.primaryPurple.rawValue, alpha: 1)
+        //button.layer.cornerRadius = 25
+        button.setTitle("Challenge your kid  →", for: .normal)
+        button.alpha = 1
+        button.titleLabel!.font = UIFont(name: "Montserrat-Regular", size: 14)
+        //button.tintColor = UIColor.init(rgb: Color.primary.rawValue, alpha: 1)
+        button.tintColor = UIColor.init(rgb: Color.whiteColor.rawValue, alpha: 1)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(launchChallengeController), for: .touchUpInside)
+        return button
+    }()
     
     var tappedIndex = -1
     var topMarginForViews: CGFloat?
@@ -50,29 +71,25 @@ class HomeController: UIViewController, loginProtocol {
         let challengeImage = UIImage(named: "icon_challenge")?.withRenderingMode(.alwaysTemplate)
         let challengeButtonItem = UIBarButtonItem(image: challengeImage, style: .plain, target: self, action: #selector(launchChallengeController))
         
-        navigationItem.rightBarButtonItems = [progressButtonItem, challengeButtonItem]
+        let setChallengeImage = UIImage(named: "icon_set_challenge")?.withRenderingMode(.alwaysTemplate)
+        let setChallengeButtonItem = UIBarButtonItem(image: setChallengeImage, style: .plain, target: self, action: #selector(launchSetChallengeController))
+        
+        navigationItem.rightBarButtonItems = [progressButtonItem, challengeButtonItem, setChallengeButtonItem]
         //navigationItem.rightBarButtonItem = progressButtonItem
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let navBarHeight = self.navigationController?.navigationBar.frame.height
+        let statusBarHeight = UIApplication.shared.statusBarFrame.height
+        topMarginForViews = navBarHeight! + statusBarHeight
+
+        setNavbar()
+        
         // show splash
         showSplash()
         // user not logged in
-//        if Auth.auth().currentUser?.uid == nil {
-//            let defaults = UserDefaults.standard
-//            let isUserGuest = defaults.bool(forKey: "isUserGuest")
-//
-//            if !isUserGuest{
-//                 handleLogout()
-//            }else{
-//                // User is a guest
-//                navigationItem.rightBarButtonItems = nil
-//            }
-//        }
-        
-         setNavbar()
-        
         let defaults = UserDefaults.standard
         let isUserGuest = defaults.bool(forKey: "isUserGuest")
         print("isUserGuest:", isUserGuest)
@@ -84,14 +101,9 @@ class HomeController: UIViewController, loginProtocol {
                 handleLogout()
             }
         }
-        
-     
-        self.edgesForExtendedLayout = []
         view.backgroundColor = .white
         
         setupViews()
-        
-        
     }
     
     func showSplash() {
@@ -100,11 +112,8 @@ class HomeController: UIViewController, loginProtocol {
     }
     
     fileprivate func setupViews() {
-        let navBarHeight = self.navigationController?.navigationBar.frame.height
-        let statusBarHeight = UIApplication.shared.statusBarFrame.height
-        topMarginForViews = navBarHeight! + statusBarHeight
-
         // MARK: map module data
+        self.edgesForExtendedLayout = []
         homeViews = [ModuleTypeContainerView]()
         for index in 0..<5 {
             let module = ModuleDataInjector.getModuleAt(index: index)
@@ -117,7 +126,7 @@ class HomeController: UIViewController, loginProtocol {
         
         // MARK: Constraints
         if let topPaddingForAllViews = topMarginForViews, let moduleViews = homeViews{
-            remainingTotalheight = view.frame.height - topPaddingForAllViews - topMargin - CGFloat(moduleViews.count) * bottomMargin
+             remainingTotalheight = view.frame.height - topPaddingForAllViews - topMargin - CGFloat(moduleViews.count) * bottomMargin
         }
         
         if let remainingTotalheight = remainingTotalheight, let homeViews = homeViews{
@@ -138,6 +147,15 @@ class HomeController: UIViewController, loginProtocol {
                 }
                 
             }
+            
+//            if Auth.auth().currentUser?.uid != nil {
+//                view.addSubview(challengeUrKidButton)
+//
+//                challengeUrKidButton.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+//                challengeUrKidButton.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+//                challengeUrKidButton.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+//                challengeUrKidButton.heightAnchor.constraint(equalToConstant: challengeUrKidButtonHeight).isActive = true
+//            }
         }
     }
     
@@ -148,6 +166,11 @@ class HomeController: UIViewController, loginProtocol {
     
     @objc func launchChallengeController(){
         let vc = ChallengeController()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func launchSetChallengeController(){
+        let vc = SetChallengeController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

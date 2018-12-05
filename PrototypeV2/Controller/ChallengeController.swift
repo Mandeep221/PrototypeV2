@@ -17,7 +17,7 @@ class ChallengeController: UIViewController {
     var num2: Int?
     let reachability = NetworkReachability()!
     
-    var moduleType: String? = ModuleType.addition.rawValue
+    var moduleType: String?
     var answer = 0
     var requiredNumbersForOptions: [Int]?
     
@@ -148,19 +148,25 @@ class ChallengeController: UIViewController {
         ref = Database.database().reference()
         if let user = Auth.auth().currentUser{
             
-            mapChallengeData(user: user,
-                            moduleName: moduleType!)
+            mapChallengeData(user: user)
         }
         
     }
     
-    func mapChallengeData(user: User, moduleName: String) {
-        ref?.child("users").child(user.uid).child("modules").child(moduleName).child("challenge").observeSingleEvent(of: .value, with: { (snapshot) in
+    func mapChallengeData(user: User) {
+       
+//       ref?.child("users").child(user.uid).child("modules").child(moduleName).child("challenge").observeSingleEvent(of: .value, with: { (snapshot) in
+        ref?.child("users").child(user.uid).child("modules").child("challenge").observeSingleEvent(of: .value, with: { (snapshot) in
             
             let value = snapshot.value as? NSDictionary
             if value == nil{
                 print("Value is nil, so dont proceed further")
                 return
+            }
+            
+            if let module = value!["module"] as? NSString{
+                //print("Number is :", num1)
+                self.moduleType = module as String
             }
             
             if let num1 = value!["num1"] as? NSInteger{
@@ -173,23 +179,23 @@ class ChallengeController: UIViewController {
                 self.num2 = Int(num2)
             }
             
-            if moduleName == ModuleType.counting.rawValue{
+            if self.moduleType! == ModuleType.counting.rawValue{
                 self.answer = self.num1!
             }
             
-            if moduleName == ModuleType.addition.rawValue{
+            if self.moduleType! == ModuleType.addition.rawValue{
                 self.answer = self.num1! + self.num2!
             }
             
-            if moduleName == ModuleType.subtraction.rawValue{
+            if self.moduleType! == ModuleType.subtraction.rawValue{
                 self.answer = self.num1! - self.num2!
             }
             
-            if moduleName == ModuleType.multiplication.rawValue{
+            if self.moduleType! == ModuleType.multiplication.rawValue{
                 self.answer = self.num1! * self.num2!
             }
             
-            if moduleName == ModuleType.division.rawValue{
+            if self.moduleType! == ModuleType.division.rawValue{
                 self.answer = self.num1! / self.num2!
             }
             

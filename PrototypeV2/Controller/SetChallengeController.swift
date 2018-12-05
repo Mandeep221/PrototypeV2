@@ -164,7 +164,7 @@ class SetChallengeController: UIViewController {
                 return false
             }
         }
-        
+        print("validateInputs", moduleType)
         Utility.submitChallenge(moduleType: moduleType, num1: num1, num2: num2)
         print("validateInputs: ", "all good")
         
