@@ -11,9 +11,9 @@ import UIKit
 
 class ModuleDataInjector{
     
-    static let moduleAccentColor: [UIColor] = [UIColor.init(rgb: Color.red.rawValue, alpha: 1),
+    static let moduleAccentColor: [UIColor] = [UIColor.init(rgb: Color.wineRed.rawValue, alpha: 1),
                                         UIColor.init(rgb: Color.orange.rawValue, alpha: 1),
-                                        UIColor.init(rgb: Color.offWhite.rawValue, alpha: 1),
+                                        UIColor.init(rgb: Color.mudYellow.rawValue, alpha: 1),
                                         UIColor.init(rgb: Color.skyBlue.rawValue, alpha: 1),
                                         UIColor.init(rgb: Color.primary.rawValue, alpha: 1)]
     

@@ -164,10 +164,10 @@ class SetChallengeController: UIViewController {
                 return false
             }
         }
-        print("validateInputs", moduleType)
+        //print("validateInputs", moduleType)
         Utility.submitChallenge(moduleType: moduleType, num1: num1, num2: num2)
         print("validateInputs: ", "all good")
-        
+        self.navigationController?.popViewController(animated: true)
         return false
     }
     
@@ -282,6 +282,15 @@ class SetChallengeController: UIViewController {
         view.backgroundColor = .white
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isTranslucent = false
+        
+        // Custom Navigation bar title
+        let navbarTitleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32, height: view.frame.height))
+        
+            navbarTitleLabel.text = "Set challenge"
+            navbarTitleLabel.textColor = UIColor.init(rgb: Color.whiteColor.rawValue, alpha: 1)
+            navbarTitleLabel.textAlignment = .center
+            navbarTitleLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
+            navigationItem.titleView = navbarTitleLabel
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -281,6 +281,15 @@ class ProgressController: UIViewController {
         view.backgroundColor = .white
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.isTranslucent = false
+        
+        // Custom Navigation bar title
+        let navbarTitleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32, height: view.frame.height))
+        
+        navbarTitleLabel.text = "Progress"
+        navbarTitleLabel.textColor = UIColor.init(rgb: Color.whiteColor.rawValue, alpha: 1)
+        navbarTitleLabel.textAlignment = .center
+        navbarTitleLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
+        navigationItem.titleView = navbarTitleLabel
     }
     
     override func viewWillAppear(_ animated: Bool) {
